@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    myserver.cpp
+    myserver.cpp \
+    person.cpp
 
 HEADERS += \
-    myserver.h
+    myserver.h \
+    person.h
 
 FORMS += \
     myserver.ui
