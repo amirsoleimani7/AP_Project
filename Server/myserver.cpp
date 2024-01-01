@@ -9,7 +9,7 @@ myServer::myServer(QWidget *parent)
     ui->setupUi(this);
 }
 
-
+//commect added
 myServer::~myServer()
 
 {
