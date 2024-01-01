@@ -10,6 +10,7 @@ myServer::myServer(QWidget *parent)
 }
 
 //commect added
+//commecnt 2 on branch amir
 myServer::~myServer()
 
 {
