@@ -6,7 +6,8 @@
 #include <vector>
 #include <QVector>
 #include "person.h"
-
+#include <QDebug>
+#include <algorithm>
 
 class Organization
 
@@ -26,6 +27,8 @@ public:
     void addTeamToOrganization(const QString& givenTeamToAddName);
     void removeMemberFromOrganization(const QString& givenPersonToRemove);
     void removeTeamFromOrganization(const QString& givenTeamToRemove);
+    QVector<QString> getmembersInOrganization();
+    QVector<QString> getTeamsInOrganization();
 
 };
 
