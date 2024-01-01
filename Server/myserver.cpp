@@ -9,7 +9,6 @@ myServer::myServer(QWidget *parent)
     ui->setupUi(this);
 }
 
-
 myServer::~myServer()
 
 {
