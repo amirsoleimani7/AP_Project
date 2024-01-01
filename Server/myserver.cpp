@@ -9,8 +9,6 @@ myServer::myServer(QWidget *parent)
     ui->setupUi(this);
 }
 
-//commect added
-//commecnt 2 on branch amir
 myServer::~myServer()
 
 {
