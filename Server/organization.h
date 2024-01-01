@@ -5,26 +5,30 @@
 #include <QString>
 #include <vector>
 #include <QVector>
+#include "person.h"
+#include <QDebug>
+#include <algorithm>
 
 class Organization
 
 {
-
 private:
 
     QString organizationName;
-    QVector<Person> membersInOrganization;
-    QVector<Team> TeamsInOrganization;
+    QVector<QString> membersInOrganization;
+    QVector<QString> TeamsInOrganization;
 
 public:
 
     Organization(QString organizatonName);
     QString getOrganizationName();
-    void setOrganizationName(QString givenName);
-    void addMemberToOrganization(const Person& givenPersonToAdd);
-    void addTeamToOrganization(const Team& givenTeamToAdd);
-    void removeMemberFromOrganization(const Person& givelPersonToRemove);
-    void removeTeamFromOrganization(const Team& givenTeamToRemove);
+    void setOrganizationName(const QString& givenName);
+    void addMemberToOrganization(const QString& givenPersonToAddName);
+    void addTeamToOrganization(const QString& givenTeamToAddName);
+    void removeMemberFromOrganization(const QString& givenPersonToRemove);
+    void removeTeamFromOrganization(const QString& givenTeamToRemove);
+    QVector<QString> getmembersInOrganization();
+    QVector<QString> getTeamsInOrganization();
 
 };
 

@@ -2,6 +2,7 @@
 #define MYSERVER_H
 
 #include <QMainWindow>
+#include "person.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
