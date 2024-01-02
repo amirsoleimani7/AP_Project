@@ -8,6 +8,7 @@ QMAKE_CXX.COMPILER_MACROS = \
     QMAKE_GCC_MINOR_VERSION \
     QMAKE_GCC_PATCH_VERSION
 QMAKE_CXX.INCDIRS = \
+
     C:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ \
     C:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 \
     C:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward \
