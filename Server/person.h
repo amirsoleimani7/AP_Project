@@ -3,7 +3,7 @@
 #include <iostream>
 #include <QString>
 #include <QVector>
-#include "organization.h"
+//#include "organization.h"
 class Person
 {
 private:
