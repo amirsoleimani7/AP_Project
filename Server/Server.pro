@@ -13,6 +13,7 @@ SOURCES += \
     myserver.cpp \
     organization.cpp  \
     person.cpp \
+    project.cpp \
     team.cpp
     person.cpp 
 
@@ -20,6 +21,7 @@ HEADERS += \
     myserver.h \
     organization.h  \
     person.h \
+    project.h \
     team.h
     person.h 
 
