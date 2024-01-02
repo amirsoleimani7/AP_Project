@@ -23,7 +23,8 @@ HEADERS += \
     person.h \
     project.h \
     team.h
-    person.h 
+    person.h \
+
 
 FORMS += \
     myserver.ui
