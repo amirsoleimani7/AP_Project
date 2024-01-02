@@ -12,13 +12,17 @@ SOURCES += \
     main.cpp \
     myserver.cpp \
     organization.cpp  \
-    person.cpp
+    person.cpp \
+    project.cpp \
+    team.cpp
     person.cpp 
 
 HEADERS += \
     myserver.h \
     organization.h  \
-    person.h
+    person.h \
+    project.h \
+    team.h
     person.h 
 
 FORMS += \
