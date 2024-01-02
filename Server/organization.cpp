@@ -46,52 +46,60 @@ void Organization::addTeamToOrganization(const QString& givenTeam)
 
     if(can_add_the_team){
         TeamsInOrganization.push_back(givenTeam);
-        qDebug() << "new team added : " <<givenTeam <<"\n";
+        qDebug() << "new team added : " << givenTeam <<"\n";
     }
 
 }
 
-// void Organization::removeMemberFromOrganization(const QString& givenPersonToRemove)
-// {
+void Organization::removeMemberFromOrganization(const QString& givenPersonToRemove)
+{
 
-//     bool can_remove_the_member = false;
-//     for(int i = 0;i<membersInOrganization.size();i++){
-//         if(membersInOrganization[i].getUserName() == givenPersonToRemove){ //a getter function for getname
-//             can_remove_the_member = true;
-//             //qDebug() << "can not add member : " <<givenPersonToRemove <<"\n";
-//         }
-//     }
+    bool can_remove_the_member = false;
+    for(int i = 0;i<membersInOrganization.size();i++){
+        if(membersInOrganization[i].getUserName() == givenPersonToRemove){ //a getter function for getname
+            can_remove_the_member = true;
+        }
+    }
 
-//     if(!can_remove_the_member){
-//         for(int i = 0;i<membersInOrganization.size();i++){
-//             //if(membersInOrganization[i].getUserName() == givenPersonToRemove){ //a getter function for getname
-//             //membersInOrganization.remove(membersInOrganization.begin(),membersInOrganization.end(),find(givenPersonToRemove));
-//         //}
-//     }
-//         qDebug() << "member removed : " <<givenPersonToRemove <<"\n";
-//     }
-//     else{
-//         qDebug() << "there is no member: " <<givenPersonToRemove <<"\n";
+    if(!can_remove_the_member){
+        for(int i = 0;i<membersInOrganization.size();i++){
+            if(membersInOrganization[i].getUserName() == givenPersonToRemove){ //a getter function for getname
+                membersInOrganization.erase(membersInOrganization.begin()+i); //not sure to use erase or remove
+                qDebug() << "member removed : " <<givenPersonToRemove <<"\n";
+            }
+        }
+    }
 
-//     }
-// }
+    else{
+        qDebug() << "there is no member: " <<givenPersonToRemove <<"\n";
 
-// void Organization::removeTeamFromOrganization(const QString& givenTeamToRemove)
-// {
+    }
+}
 
-//     bool can_remove_the_team = false;
-//     for(int i = 0;i<TeamsInOrganization.size();i++){
-//         if(TeamsInOrganization[i].getTeamName() == givenTeamToRemove){ //a getter function for team_name
-//             can_add_the_team = false;
-//             qDebug() << "can not add member : " <<givenTeamToRemove <<"\n";
-//         }
-//     }
+void Organization::removeTeamFromOrganization(const QString& givenTeamToRemove)
+{
 
-//     if(can_add_the_team){
-//         TeamsInOrganization.push_back(givenTeamToRemove);
-//         qDebug() << "new member added : " <<givenTeamToRemove <<"\n";
-//     }
-// }
+    bool can_remove_the_team = false;
+    for(int i = 0;i<TeamsInOrganization.size();i++){
+        if(TeamsInOrganization[i].getTeamName() == givenTeamToRemove){ //a getter function for getname
+            can_remove_the_team = true;
+        }
+    }
+
+    if(!can_remove_the_team){
+        for(int i = 0;i<TeamsInOrganization.size();i++){
+            if(TeamsInOrganization[i].getTeamName() == givenTeamToRemove){ //a getter function for getname
+                TeamsInOrganization.erase(TeamsInOrganization.begin()+i); //not sure to use erase or remove
+                qDebug() << "team removed : " << givenTeamToRemove <<"\n";
+            }
+        }
+    }
+
+    else{
+        qDebug() << "there is no team : " << givenTeamToRemove <<"\n";
+    }
+
+}
 
 QVector<QString> Organization::getmembersInOrganization()
 {
