@@ -1,7 +1,7 @@
 #include "comment.h"
 
 
-Comment::Comment(const QString &commentValue, Comment &commectReply) : commentValue(commentValue),
+Comment::Comment(const QString &commentValue, Comment *commectReply) : commentValue(commentValue),
     commectReply(commectReply)
 {}
 
