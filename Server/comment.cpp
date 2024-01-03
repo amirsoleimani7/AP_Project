@@ -1,9 +1,33 @@
 #include "comment.h"
 
+int Comment::commentIdGenerator = 1;
+int Comment::getCommentId() const
+{
+    return commentId;
+}
 
-Comment::Comment(const QString &commentValue, Comment *commectReply) : commentValue(commentValue),
-    commectReply(commectReply)
-{}
+int Comment::getLastCommentId() const
+{
+    return lastCommentId;
+}
+
+void Comment::setLastCommentId(int newLastCommentId)
+{
+    lastCommentId = newLastCommentId;
+}
+
+Comment::Comment(const QString &commentValue, Comment *commentReply) : commentValue(commentValue),
+    commentReply(commentReply), commentId(commentIdGenerator+lastCommentId)
+{
+    commentIdGenerator ++;
+}
+
+Comment::Comment(const Comment &other)
+{
+    commentId = other.commentId;
+    commentValue = other.commentValue;
+    commentReply = other.commentReply;
+}
 
 
 void Comment::setcommectValue(const QString &newComment)
@@ -16,12 +40,17 @@ QString Comment::getcommectValue() const
     return commentValue;
 }
 
-Comment* Comment::getcommectReply() const
+Comment* Comment::getcommentReply() const
 {
-    return commectReply;
+    return commentReply;
 }
 
-void Comment::setcommectReply(Comment *newCommectReply)
+void Comment::setcommentReply(Comment *newCommentReply)
 {
-    this->commectReply = newCommectReply;
+    this->commentReply = newCommentReply;
+}
+
+bool Comment::operator ==(const Comment &other)
+{
+    return (commentId == commentId);
 }

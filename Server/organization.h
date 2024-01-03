@@ -15,21 +15,26 @@ class Organization
 {
 private:
 
-    QString organizationName;
     static int organizationIdGenerator;
-    const int organizationId;
     int lastOrganizationId;
+    int organizationId;
+    QString organizationName;
     QVector<Person> membersInOrganization;
     QVector<Team> TeamsInOrganization;
 
 public:
 
-    bool operator==(const Organization& organizationGiven);
-
-    void setlastOrganizationId(int x);
     Organization(QString organizatonName);
+    Organization(const Organization& other);
+
+    int getLastOrganizationId() const;
+    int getOrganizationId() const;
     QString getOrganizationName();
+    QVector<Person> getmembersInOrganization();
+    QVector<Team> getTeamsInOrganization();
+
     void setOrganizationName(const QString& givenName);
+    void setOrganizationId(int newOrganizationId);
 
     void addMemberToOrganization(const Person& givenPersonToAddName);
     void addTeamToOrganization(const Team& givenTeamToAddName);
@@ -37,8 +42,7 @@ public:
     void removeMemberFromOrganization(const Person& givenPersonToRemove);
     void removeTeamFromOrganization(const Team& givenTeamToRemove);
 
-    QVector<Person> getmembersInOrganization();
-    QVector<Team> getTeamsInOrganization();
+    bool operator==(const Organization& organizationGiven);
 
 };
 

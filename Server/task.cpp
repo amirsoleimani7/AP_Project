@@ -51,6 +51,11 @@ void Task::UnDone()
     isDone = false;
 }
 
+bool Task::operator ==(const Task &other)
+{
+    return (taskId == other.taskId);
+}
+
 Person Task::getTaskPerson() const
 {
     return taskPerson;
@@ -64,6 +69,14 @@ bool Task::getIsDone() const
 Task::Task(Project pro, QString TT,Person pers,int prio):taskId(taskIdGenerator+lastTaskId),taskProject(pro),taskText(TT),taskPerson(pers),priority(prio)
 {
     taskIdGenerator++;
-    lastTaskId = taskIdGenerator;
     isDone = false;
+}
+
+Task::Task(const Task &other)
+{
+    lastTaskId = other.lastTaskId;
+    taskId = other.taskId;
+    taskPerson = other.taskPerson;
+    taskProject = other.taskProject;
+    taskText = other.taskText;
 }

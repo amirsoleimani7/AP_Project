@@ -7,6 +7,9 @@
 class Person
 {
 private:
+    static int personIdGenerator;
+    int lastPersonId;
+    int personId;
     QString userName;
     QString passWord;
     QString personalName;
@@ -19,6 +22,7 @@ private:
     QVector<QString> personPeroject;
 public:
     Person(QString UN,QString PW,QString PN,QString EM,QString RA,QString RC,QString RCO);
+    Person(const Person& other);
     virtual ~Person();
     QString getUserName() const;
     QString getPassWord() const;
@@ -36,6 +40,10 @@ public:
     void addProject (QString);
     void addTeam(QString);
     void addOrganization(QString);
+    int getLastPersonId() const;
+    void setLastPersonId(int newLastPersonId);
+    int getPersonId() const;
+    bool operator ==(const Person& other);
 };
 
 #endif // PERSON_H

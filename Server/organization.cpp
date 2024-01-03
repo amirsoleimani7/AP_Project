@@ -3,9 +3,33 @@
 
 int Organization::organizationIdGenerator = 1;
 
-void Organization::setlastOrganizationId(int x)
+bool Organization::operator==(const Organization &organizationGiven)
 {
-    lastOrganizationId = x;
+    return (organizationId == organizationGiven.organizationId);
+}
+
+Organization::Organization(const Organization &other)
+{
+    lastOrganizationId = other.lastOrganizationId;
+    organizationId = other.organizationId;
+    organizationName = other.organizationName;
+    membersInOrganization = other.membersInOrganization;
+    TeamsInOrganization = other.TeamsInOrganization;
+}
+
+int Organization::getLastOrganizationId() const
+{
+    return lastOrganizationId;
+}
+
+int Organization::getOrganizationId() const
+{
+    return organizationId;
+}
+
+void Organization::setOrganizationId(int newOrganizationId)
+{
+    organizationId = newOrganizationId;
 }
 
 Organization::Organization(QString organizatonName):organizationId(organizationIdGenerator+lastOrganizationId),organizationName(organizatonName)

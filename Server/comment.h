@@ -6,16 +6,22 @@
 class Comment
 {
 private:
+    static int commentIdGenerator;
+    int commentId;
+    int lastCommentId;
     QString commentValue;
-    // int commentId;
-
-    Comment *commectReply;
+    Comment *commentReply;
 public:
-    Comment(const QString &commentValue, Comment *commectReply);
-    void setcommectValue(const QString &newComment);
+    Comment(const QString &commentValue, Comment *commentReply);
+    Comment(const Comment& other);
     QString getcommectValue() const;
-    Comment* getcommectReply() const;
-    void setcommectReply(Comment *newCommectReply);
+    Comment* getcommentReply() const;
+    int getCommentId() const;
+    int getLastCommentId() const;
+    void setcommectValue(const QString &newComment);
+    void setcommentReply(Comment *newCommentReply);
+    bool operator ==(const Comment& other);
+    void setLastCommentId(int newLastCommentId);
 };
 
 #endif // COMMENT_H
