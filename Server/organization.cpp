@@ -1,4 +1,5 @@
 #include "organization.h"
+#include "person.h"
 
 int Organization::organizationIdGenerator = 1;
 
