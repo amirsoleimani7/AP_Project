@@ -81,9 +81,46 @@ void Person::addOrganization(QString newOrganization)
     personOrganization.push_back(newOrganization);
 }
 
-Person::Person(QString UN, QString PW, QString PN, QString EM, QString RA, QString RC, QString RCO):userName{UN},passWord{PW},personalName{PN},eMail{EM},recoveryWordAnimal{RA},recoveryWordCity{RC},recoveryWordColor{RCO}
+int Person::getLastPersonId() const
 {
+    return lastPersonId;
+}
 
+void Person::setLastPersonId(int newLastPersonId)
+{
+    lastPersonId = newLastPersonId;
+}
+
+int Person::getPersonId() const
+{
+    return personId;
+}
+
+bool Person::operator ==(const Person &other)
+{
+    return(personId == other.personId);
+}
+
+Person::Person(QString UN, QString PW, QString PN, QString EM, QString RA, QString RC, QString RCO):userName{UN},passWord{PW},
+    personalName{PN},eMail{EM},recoveryWordAnimal{RA},recoveryWordCity{RC},recoveryWordColor{RCO},
+    personId(personIdGenerator+lastPersonId)
+{
+    personIdGenerator ++;
+}
+
+Person::Person(const Person &other){
+    lastPersonId = other.lastPersonId;
+    personalName = other.personalName;
+    personId = other.personId;
+    personOrganization = other.personOrganization;
+    personPeroject = other.personPeroject;
+    personTeam = other.personTeam;
+    userName = other.userName;
+    passWord = other.passWord;
+    eMail = other.eMail;
+    recoveryWordAnimal = other.recoveryWordAnimal;
+    recoveryWordCity = other.recoveryWordCity;
+    recoveryWordColor = other.recoveryWordColor;
 }
 
 Person::~Person()
