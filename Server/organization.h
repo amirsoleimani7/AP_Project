@@ -10,6 +10,7 @@
 #include <QDebug>
 
 
+
 class Organization
 {
 private:
