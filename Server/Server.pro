@@ -15,6 +15,7 @@ SOURCES += \
     organization.cpp  \
     person.cpp \
     project.cpp \
+    task.cpp \
     team.cpp
     person.cpp 
 
@@ -24,6 +25,7 @@ HEADERS += \
     organization.h  \
     person.h \
     project.h \
+    task.h \
     team.h
     person.h \
 
