@@ -46,6 +46,13 @@ void ForgotPass::on_pushButton_clicked()
 
 void ForgotPass::on_pushButton_change_pass_word_clicked()
 {
+    if(ui->lineEdit_new_pass_1->text().isEmpty() || ui->lineEdit_new_pass_2->text().isEmpty()){
+        QMessageBox::information(this,"this","fill all the fields");
+
+    }
+    else{
+
+
     if(flag_change){
         QString user_new_pass_1 = ui->lineEdit_new_pass_1->text();
         QString user_new_pass_2 = ui->lineEdit_new_pass_2->text();
@@ -82,6 +89,7 @@ void ForgotPass::on_pushButton_change_pass_word_clicked()
     }
     else{
         QMessageBox::information(this,"this","cant enter new pass");
+        }
     }
 }
 
