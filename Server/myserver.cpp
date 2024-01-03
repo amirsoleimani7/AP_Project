@@ -66,6 +66,31 @@ void myServer::on_sendFileBTN_clicked()
 
 void myServer::sendFile(QTcpSocket *socket, QString fileName)
 {
-
+    if (socket){
+        if(socket->isOpen()){
+            Qfile filedata(filename);
+            if (filedata.open(QIODevice::ReadOnly)){
+                QFileInfo fileInfo(filedata);
+                QString fileNameWith(fileInfo.filename());
+                QDataStream socketstream(socket);
+                socketstream.setVersion(QDataStream::Qt_6_6);
+                QByteArray header;
+                header.prepend("filename: " + fileNameWith + ",filesize: "+QString::number(filedata.size()));
+                header.resize(128);
+                QByteArray ByteFileData = filedata.readAll();
+                ByteFileData.prepend(header);
+                socketstream << ByteFileData;
+            }
+            else{
+                qDebug<<"file not open";
+            }
+        }
+        else{
+            qDebug<<"clien socket not open";
+        }
+    }
+    else{
+        qDebug<<"clien socket is invalid";
+    }
 }
 
