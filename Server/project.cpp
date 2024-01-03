@@ -1,5 +1,6 @@
 #include "project.h"
 
+int Project::projectIdGenerator = 1;
 
 QString Project::getProjectName() const
 {
@@ -11,7 +12,7 @@ int Project::getProjectType() const
     return projectType;
 }
 
-QString Project::getProjectPerson() const
+Person Project::getProjectPerson() const
 {
     return projectPerson;
 }
@@ -59,6 +60,11 @@ void Project::setProjectPerson(const Person &newProjectPerson)
 bool Project::operator ==(const Project &other)
 {
     return (projectId == other.projectId);
+}
+
+Project::Project()
+{
+
 }
 
 Project::Project(QString PN, int PT):projectName{PN},projectType{PT},projectId{projectIdGenerator + lastProjectId}

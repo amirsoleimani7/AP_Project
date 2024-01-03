@@ -21,6 +21,7 @@ private:
     QVector<QString> personTeam;
     QVector<QString> personPeroject;
 public:
+    Person();
     Person(QString UN,QString PW,QString PN,QString EM,QString RA,QString RC,QString RCO);
     Person(const Person& other);
     virtual ~Person();
@@ -44,6 +45,7 @@ public:
     void setLastPersonId(int newLastPersonId);
     int getPersonId() const;
     bool operator ==(const Person& other);
+    bool operator =(const Person& other);
 };
 
 #endif // PERSON_H

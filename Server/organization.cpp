@@ -79,7 +79,7 @@ void Organization::addTeamToOrganization(const Team& givenTeam)
 
     if(can_add_the_team){
         TeamsInOrganization.push_back(givenTeam);
-        qDebug() << "new team added : " << givenTeam.getTeamMembers() <<"\n";
+        // qDebug() << "new team added : " << givenTeam.getTeamMembers() <<"\n";
     }
 
 }
@@ -96,7 +96,7 @@ void Organization::removeMemberFromOrganization(const Person& givenPersonToRemov
 
     if(!can_remove_the_member){
         for(int i = 0;i<membersInOrganization.size();i++){
-            if(membersInOrganization[i]. == givenPersonToRemove){ //a getter function for getname
+            if(membersInOrganization[i] == givenPersonToRemove){ //a getter function for getname
                 membersInOrganization.erase(membersInOrganization.begin()+i); //not sure to use erase or remove
                 qDebug() << "member removed : " << givenPersonToRemove.getUserName() <<"\n";
             }
