@@ -1,4 +1,5 @@
 #include "organization.h"
+#include "person.h"
 
 Organization::Organization(QString organizatonName):organizationName(organizatonName)
 {
