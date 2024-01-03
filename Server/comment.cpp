@@ -29,7 +29,6 @@ Comment::Comment(const Comment &other)
     commentReply = other.commentReply;
 }
 
-
 void Comment::setcommectValue(const QString &newComment)
 {
     commentValue = newComment;
