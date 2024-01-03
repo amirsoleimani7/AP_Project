@@ -18,11 +18,7 @@ private:
     int priority;
 
 public:
-<<<<<<< HEAD
-
-=======
     Task();
->>>>>>> 8116a58548394d78a41a9c898a9c3e47639dc91e
     Task(Project pro,QString TT,Person pers,int prio);
     Task(const Task& other);
     int getTaskId() const;

@@ -15,4 +15,3 @@ myServer::~myServer()
     delete ui;
 }
 
-
