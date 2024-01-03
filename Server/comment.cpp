@@ -16,8 +16,8 @@ void Comment::setLastCommentId(int newLastCommentId)
     lastCommentId = newLastCommentId;
 }
 
-Comment::Comment(const QString &commentValue, Comment *commentReply) : commentValue(commentValue),
-    commentReply(commentReply), commentId(commentIdGenerator+lastCommentId)
+Comment::Comment(const QString &commentValue, int commentReplyId,Task newCommentTask) : commentValue(commentValue),
+    commentReplyId(commentReplyId),commentTask(newCommentTask) , commentId(commentIdGenerator+lastCommentId)
 {
     commentIdGenerator ++;
 }
@@ -26,7 +26,8 @@ Comment::Comment(const Comment &other)
 {
     commentId = other.commentId;
     commentValue = other.commentValue;
-    commentReply = other.commentReply;
+    commentReplyId = other.commentReplyId;
+    commentTask = other.commentTask;
 }
 
 
@@ -40,14 +41,14 @@ QString Comment::getcommectValue() const
     return commentValue;
 }
 
-Comment* Comment::getcommentReply() const
+int Comment::getcommentReply() const
 {
-    return commentReply;
+    return commentReplyId;
 }
 
-void Comment::setcommentReply(Comment *newCommentReply)
+void Comment::setcommentReply(int newCommentReply)
 {
-    this->commentReply = newCommentReply;
+    this->commentReplyId = newCommentReply;
 }
 
 bool Comment::operator ==(const Comment &other)

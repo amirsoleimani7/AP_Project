@@ -15,6 +15,7 @@ private:
     QVector <QString> projectTeams;
     QVector <QString> projectTasks;
 public:
+    Project();
     Project(QString PN, int PT);
     Project(const Project& other);
     ~Project();

@@ -1,5 +1,6 @@
 #include "team.h"
 
+int Team::teamIdGenerator = 1;
 
 QString Team::getTeamName() const
 {
