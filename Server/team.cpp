@@ -1,7 +1,6 @@
 #include "team.h"
 
 
-
 QString Team::getTeamName() const
 {
     return teamName;
