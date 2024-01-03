@@ -1,6 +1,6 @@
 #include "person.h"
 
-
+int Person::personIdGenerator = 1;
 
 QString Person::getUserName() const
 {
@@ -99,6 +99,27 @@ int Person::getPersonId() const
 bool Person::operator ==(const Person &other)
 {
     return(personId == other.personId);
+}
+
+bool Person::operator =(const Person &other)
+{
+    lastPersonId = other.lastPersonId;
+    personalName = other.personalName;
+    personId = other.personId;
+    personOrganization = other.personOrganization;
+    personPeroject = other.personPeroject;
+    personTeam = other.personTeam;
+    userName = other.userName;
+    passWord = other.passWord;
+    eMail = other.eMail;
+    recoveryWordAnimal = other.recoveryWordAnimal;
+    recoveryWordCity = other.recoveryWordCity;
+    recoveryWordColor = other.recoveryWordColor;
+}
+
+Person::Person()
+{
+
 }
 
 Person::Person(QString UN, QString PW, QString PN, QString EM, QString RA, QString RC, QString RCO):userName{UN},passWord{PW},

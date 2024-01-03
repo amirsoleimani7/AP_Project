@@ -18,6 +18,7 @@ private:
     int priority;
 
 public:
+    Task();
     Task(Project pro,QString TT,Person pers,int prio);
     Task(const Task& other);
     int getTaskId() const;

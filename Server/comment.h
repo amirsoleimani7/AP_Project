@@ -2,6 +2,7 @@
 #define COMMENT_H
 #include <QString>
 #include <QVector>
+#include "task.h"
 
 class Comment
 {
@@ -10,16 +11,17 @@ private:
     int commentId;
     int lastCommentId;
     QString commentValue;
-    Comment *commentReply;
+    Task commentTask;
+    int commentReplyId;
 public:
-    Comment(const QString &commentValue, Comment *commentReply);
+    Comment(const QString &commentValue, int commentReplyId ,Task newCommentTask);
     Comment(const Comment& other);
     QString getcommectValue() const;
-    Comment* getcommentReply() const;
+    int getcommentReply() const;
     int getCommentId() const;
     int getLastCommentId() const;
     void setcommectValue(const QString &newComment);
-    void setcommentReply(Comment *newCommentReply);
+    void setcommentReply(int newCommentReply);
     bool operator ==(const Comment& other);
     void setLastCommentId(int newLastCommentId);
 };
