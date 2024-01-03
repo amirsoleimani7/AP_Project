@@ -11,7 +11,7 @@ int Project::getProjectType() const
     return projectType;
 }
 
-QString Project::getProjectPerson() const
+Person Project::getProjectPerson() const
 {
     return projectPerson;
 }

@@ -6,32 +6,32 @@ QString Team::getTeamName() const
     return teamName;
 }
 
-QString Team::getAdmin() const
+Person Team::getAdmin() const
 {
     return admin;
 }
 
-void Team::setAdmin(const QString &newAdmin)
+void Team::setAdmin(const Person &newAdmin)
 {
     admin = newAdmin;
 }
 
-QVector<QString> Team::getTeamMembers() const
+QVector<Person> Team::getTeamMembers() const
 {
     return teamMembers;
 }
 
-QVector<QString> Team::getTeamProjects() const
+QVector<Project> Team::getTeamProjects() const
 {
     return teamProjects;
 }
 
-void Team::addMember(const QString &newMember)
+void Team::addMember(const Person &newMember)
 {
     teamMembers.push_back(newMember);
 }
 
-void Team::addProject(const QString &newProject)
+void Team::addProject(const Project &newProject)
 {
     teamProjects.push_back(newProject);
 }
@@ -41,9 +41,24 @@ void Team::setTeamName(const QString &newTeamName)
     teamName = newTeamName;
 }
 
-Team::Team(QString TN):teamName{TN}
+bool Team::operator ==(const Team &other)
 {
+    return (teamId = other.teamId);
+}
 
+Team::Team(QString TN):teamName{TN},teamId{teamIdGenerator+lastTeamId}
+{
+    teamIdGenerator ++;
+}
+
+Team::Team(const Team &other)
+{
+    teamId = other.teamId;
+    teamMembers = other.teamMembers;
+    teamName = other.teamName;
+    teamProjects = other.teamProjects;
+    lastTeamId = other.lastTeamId;
+    admin = other.admin;
 }
 
 Team::~Team()
