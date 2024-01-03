@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    comment.cpp \
     main.cpp \
     myserver.cpp \
     organization.cpp  \
@@ -19,6 +20,7 @@ SOURCES += \
     person.cpp 
 
 HEADERS += \
+    comment.h \
     myserver.h \
     organization.h  \
     person.h \
