@@ -66,6 +66,11 @@ bool Task::getIsDone() const
     return isDone;
 }
 
+Task::Task()
+{
+
+}
+
 Task::Task(Project pro, QString TT,Person pers,int prio):taskId(taskIdGenerator+lastTaskId),taskProject(pro),taskText(TT),taskPerson(pers),priority(prio)
 {
     taskIdGenerator++;
