@@ -14,11 +14,14 @@ private:
 public:
     Comment(const QString &commentValue, Comment *commentReply);
     Comment(const Comment& other);
-    void setcommectValue(const QString &newComment);
     QString getcommectValue() const;
     Comment* getcommentReply() const;
+    int getCommentId() const;
+    int getLastCommentId() const;
+    void setcommectValue(const QString &newComment);
     void setcommentReply(Comment *newCommentReply);
     bool operator ==(const Comment& other);
+    void setLastCommentId(int newLastCommentId);
 };
 
 #endif // COMMENT_H

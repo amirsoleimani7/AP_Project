@@ -1,6 +1,21 @@
 #include "comment.h"
 
 int Comment::commentIdGenerator = 1;
+int Comment::getCommentId() const
+{
+    return commentId;
+}
+
+int Comment::getLastCommentId() const
+{
+    return lastCommentId;
+}
+
+void Comment::setLastCommentId(int newLastCommentId)
+{
+    lastCommentId = newLastCommentId;
+}
+
 Comment::Comment(const QString &commentValue, Comment *commentReply) : commentValue(commentValue),
     commentReply(commentReply), commentId(commentIdGenerator+lastCommentId)
 {

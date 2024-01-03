@@ -74,6 +74,7 @@ Task::Task(Project pro, QString TT,Person pers,int prio):taskId(taskIdGenerator+
 
 Task::Task(const Task &other)
 {
+    lastTaskId = other.lastTaskId;
     taskId = other.taskId;
     taskPerson = other.taskPerson;
     taskProject = other.taskProject;
