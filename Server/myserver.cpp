@@ -1356,7 +1356,88 @@ void myServer::change_admin_of_the_team(QString &team_id, QString &new_name)
 
 }
 //----------------------------------------
-void myServer::add_person_to_team(QString &team_id, QStrnig new_person)
+void myServer::add_person_to_team(QString &team_id, QString& new_person)
 {
+    QString team_id_in_data_base = team_id;  // Set the actual username
+    QString person_to_add = new_person;
+
+    QSqlQuery selectQuery;
+
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString list_of_person = selectQuery.value("team_persons").toString();
+
+        QStringList existingperson = list_of_person.split(",");
+
+        if (!existingperson.contains(person_to_add)) {
+            list_of_person += "," + person_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE team_info_database SET team_persons = :new_person WHERE team_id = :team_id_in_data_base");
+            updateQuery.bindValue(":new_person", list_of_person);
+            updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "person already exists in the list.";
+        }
+
+    } else {
+        qDebug() << "team not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//--------------------------------------
+void myServer::add_project_to_team(QString team_id, QString &new_project)
+{
+    QString team_id_in_data_base = team_id;  // Set the actual username
+    QString project_to_add = new_project;
+
+    QSqlQuery selectQuery;
+
+
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString list_of_project = selectQuery.value("team_projects").toString();
+
+        QStringList existingprojects = list_of_project.split(",");
+
+        if (!existingprojects.contains(project_to_add)) {
+            list_of_project += "," + project_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE team_info_database SET team_projects = :new_project WHERE team_id = :team_id_in_data_base");
+            updateQuery.bindValue(":new_project", list_of_project);
+            updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "project already exists in the list.";
+        }
+
+    } else {
+        qDebug() << "team not found or an error occurred." << selectQuery.lastError();
+    }
 
 }
+

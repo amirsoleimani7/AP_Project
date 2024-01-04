@@ -71,7 +71,8 @@ private slots:
     void add_team_to_data_base(QString& team_data);
     void change_name_of_team(QString& team_id,QString new_name);
     void change_admin_of_the_team(QString& team_id ,QString& new_name);
-    void add_person_to_team(QString& team_id,QStrnig new_person);
+    void add_person_to_team(QString& team_id,QString& new_person);
+    void add_project_to_team(QString team_id ,QString& new_project);
 
 
 private:
