@@ -124,6 +124,11 @@ void myServer::on_sendFileBTN_clicked()
     }
 }
 
+void myServer::change_user_personal_name(QString &name_in_data_base, QString &new_name_1)
+{
+
+}
+
 
 
 void myServer::sendFile(QTcpSocket *socket, QString fileName)
@@ -166,11 +171,14 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
 }
 
 //adding functions
+//---------------
+//adding person to function
 void myServer::add_person_to_data_base(QString &user_data)
 {
-    //format should be something like
+
+    //format should be something like {id*username*personal_name*.....}
     QStringList fields = user_data.split("*");
-    QString user_name_to_database = fields[1];
+    QString user_name_to_database = fields[2];
 
     // Check if the user already exists
     QSqlQuery checkQuery;
@@ -183,16 +191,18 @@ void myServer::add_person_to_data_base(QString &user_data)
         // User doesn't exist, add them to the database
         QSqlQuery insertQuery;
 
-        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Bind values for the insertion
-        insertQuery.addBindValue(fields[1]);  // username
-        insertQuery.addBindValue(fields[2]);  // password
-        insertQuery.addBindValue(fields[3]);  // personal_name
-        insertQuery.addBindValue(fields[4]);  // email
-        insertQuery.addBindValue(fields[5]);  // fav_animal
-        insertQuery.addBindValue(fields[6]);  // fav_color
-        insertQuery.addBindValue(fields[7]);  // fav_city
+        insertQuery.addBindValue(fields[1]);  // id
+        insertQuery.addBindValue(fields[2]);  // username
+        insertQuery.addBindValue(fields[3]);  // pass
+        insertQuery.addBindValue(fields[4]);  // personalname
+        insertQuery.addBindValue(fields[5]);  // email
+        insertQuery.addBindValue(fields[6]);  // fav_animal
+        insertQuery.addBindValue(fields[7]);  // fav_color
+        insertQuery.addBindValue(fields[8]);  // fav_city
+
 
         insertQuery.addBindValue("default_org");
         insertQuery.addBindValue("default_teams");
@@ -209,3 +219,79 @@ void myServer::add_person_to_data_base(QString &user_data)
     }
 }
 
+
+//----------------------
+void change_user_personal_name(QString& name_in_data_base,QString &new_name_1)
+{
+    QString user_name_in_data_base = name_in_data_base;
+    QString new_name  = new_name_1;
+
+    //updating personal_name
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE person_info_database SET personal_name = :new_name WHERE username = :user_name_in_data_base");
+    updateQuery.bindValue(":new_name", new_name);
+    updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "Personal name updated successfully.";
+        //feed back should be handled here
+
+
+    } else {
+        qDebug() << "Could not update personal name." << updateQuery.lastError();
+        //feedback should be handled here
+    }
+
+
+}
+//------------------------
+void myServer::change_user_email(QString &name_in_data_base, QString &new_email_1)
+{
+    QString user_name_in_data_base = name_in_data_base;
+    QString new_email  = new_email_1;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE person_info_database SET email = :new_email WHERE username = :user_name_in_data_base");
+    updateQuery.bindValue(":new_email", new_email);
+    updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "email  updated successfully.";
+        //feed back should be handled here
+
+
+
+
+    } else {
+        qDebug() << "Could not update email." << updateQuery.lastError();
+        //feedback should be handled here
+
+
+    }
+
+
+
+}
+//-------------------------------
+void myServer::chnage_user_pass(QString &name_in_data_base, QString &new_pass_1)
+{
+    QString user_name_in_data_base = name_in_data_base;
+    QString new_pass  = new_pass_1;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE person_info_database SET password = :new_pass WHERE username = :user_name_in_data_base");
+    updateQuery.bindValue(":new_pass", new_pass);
+    updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "pass  updated successfully.";
+        //feed back should be handled here
+
+
+    } else {
+        qDebug() << "Could not update pass." << updateQuery.lastError();
+        //feedback should be handled here
+    }
+
+}

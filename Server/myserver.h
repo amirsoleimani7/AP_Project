@@ -34,7 +34,10 @@ private slots:
     void newConnection();
     void addToSocketList(QTcpSocket* socket);
     void on_sendFileBTN_clicked();
+    void change_user_personal_name(QString& name_in_data_base,QString &new_name_1);
     void add_person_to_data_base(QString &user_data);
+    void change_user_email(QString& name_in_data_base,QString &new_email_1);
+    void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
