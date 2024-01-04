@@ -1,6 +1,7 @@
 #ifndef TASK_H
 #define TASK_H
 #include <QString>
+#include <QDateTime>
 #include "project.h"
 #include "person.h"
 
@@ -14,12 +15,12 @@ private:
     Project taskProject;
     Person taskPerson;
     bool isDone;
-    //date
+    QDateTime taskDeadLine;
     int priority;
 
 public:
     Task();
-    Task(Project pro,QString TT,Person pers,int prio);
+    Task(Project pro,QString TT,Person pers,int prio,QDateTime dat);
     Task(const Task& other);
     int getTaskId() const;
     int getLastTaskId() const;
@@ -34,6 +35,8 @@ public:
     void Done();
     void UnDone();
     bool operator ==(const Task& other);
+    QDateTime getTaskDeadLine() const;
+    void setTaskDeadLine(const QDateTime &newTaskDeadLine);
 };
 
 #endif // TASK_H

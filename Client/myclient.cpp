@@ -20,7 +20,7 @@ myClient::myClient(QWidget *parent)
     }
     else
     {
-        qDebug()<<"client is NOT connected:"+ tcpSocket->errorString();
+        qDebug()<< "client is NOT connected:"+ tcpSocket->errorString();
     }
 }
 
@@ -71,7 +71,7 @@ void myClient::Doing_senging_file()
     {
         if (tcpSocket->isOpen())
         {
-                QString filePath = QFileDialog::getOpenFileName(this,"Select File",QCoreApplication::applicationDirPath(),"File (*.txt *.db)");
+            QString filePath = QCoreApplication::applicationDirPath() + '/' + "User.txt";
             sendFile(tcpSocket,filePath);
         }
     }
