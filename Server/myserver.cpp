@@ -1543,4 +1543,130 @@ void myServer::removing_project_from_team(QString &team_id, QString &project_id_
     }
 
 }
+//--------------------------
 
+QVector<QString> myServer::getting_persons_of_team(QString team_id)
+{
+    QString team_id_in_data_base = team_id;  // Set the actual username
+
+    // CREATE TABLE "team_info_database" (
+    //     "team_id"	TEXT,
+    //     "team_name"	TEXT,
+    //     "team_admin"	TEXT,
+    //     "team_persons"	TEXT,
+    //     "team_projects"	TEXT
+    //     )
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString personString = selectQuery.value("team_persons").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList personList = personString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> personVector = personList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<personVector.size();i++){
+            qDebug() <<personVector[i];
+        }
+
+        qDebug() << "person  Vector: " << personVector;
+        return personVector;
+
+    } else {
+        qDebug() << "team not found or an error occurred." << selectQuery.lastError();
+    }
+
+
+}
+
+//-------------------------------------
+QVector<QString> myServer::getting_projects_of_team(QString team_id)
+{
+    QString team_id_in_data_base = team_id;  // Set the actual username
+
+    // CREATE TABLE "team_info_database" (
+    //     "team_id"	TEXT,
+    //     "team_name"	TEXT,
+    //     "team_admin"	TEXT,
+    //     "team_persons"	TEXT,
+    //     "team_projects"	TEXT
+    //     )
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString personprojects = selectQuery.value("team_projects").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList projectList = personprojects.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> projectVector = projectList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<projectVector.size();i++){
+            qDebug() <<projectVector[i];
+        }
+
+        qDebug() << "project  Vector: " << projectVector;
+        return projectVector;
+
+    } else {
+        qDebug() << "team not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//---------------------------
+
+QString myServer::getting_info_of_team(QString team_id)
+{
+
+    // CREATE TABLE "team_info_database" (
+    //     "team_id"	TEXT,
+    //     "team_name"	TEXT,
+    //     "team_admin"	TEXT,
+    //     "team_persons"	TEXT,
+    //     "team_projects"	TEXT
+    //     )
+
+    QString team_id_in_data_base = team_id;
+    QString team_info;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        // Retrieve values from the query result
+
+        QString id = selectQuery.value("team_id").toString();
+        QString name = selectQuery.value("team_name").toString();
+        QString admin = selectQuery.value("team_admin").toString();
+        QString person = selectQuery.value("team_persons").toString();
+        QString projects = selectQuery.value("team_projects").toString();
+
+
+        // Construct user_info string in the desired format
+        team_info = QString("%1*%2*%3*%4*%5")
+                        .arg(id, name, admin, person, projects);
+
+        qDebug() << team_info;
+        return team_info;
+        //socket_handle
+
+    }
+    else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//-----------------------------

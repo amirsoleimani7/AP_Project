@@ -75,6 +75,9 @@ private slots:
     void add_project_to_team(QString team_id ,QString& new_project);
     void removing_person_from_team(QString& team_id,QString& person_id_to_remove);
     void removing_project_from_team(QString& team_id,QString& project_id_to_remove);
+    QVector<QString> getting_persons_of_team(QString team_id);
+    QVector<QString> getting_projects_of_team(QString team_id);
+    QString getting_info_of_team(QString team_id);
 
 
 private:
