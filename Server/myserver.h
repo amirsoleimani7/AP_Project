@@ -39,6 +39,7 @@ private slots:
     void change_user_email(QString& name_in_data_base,QString &new_email_1);
     void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
     QString get_user_info(QString& name_in_data_base);
+    QString check_for_pass_word(QString& name_in_data_base,QString& input_password);
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);

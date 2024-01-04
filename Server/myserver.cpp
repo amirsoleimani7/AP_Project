@@ -325,4 +325,35 @@ QString myServer::get_user_info(QString& name_in_data_base)
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
     }
 }
-//-------------------------------------
+
+//----------------------------
+
+QString myServer::check_for_pass_word(QString &name_in_data_base, QString &input_password)
+{
+    QString user_name = name_in_data_base;
+    QString user_pass = input_password;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_name);
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString password = selectQuery.value("password").toString();
+        if(password == user_pass){
+            qDebug() << "correct\n";
+            //sending feedbacks
+
+
+        }
+        else{
+            qDebug() << "not correct\n";
+            //sending feedbacks
+
+
+        }
+    }
+    else{
+        qDebug() << "person was not found\n";
+        //sending feedbacks
+    }
+}
+//----------------------
