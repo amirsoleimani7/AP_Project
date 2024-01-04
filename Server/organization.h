@@ -10,7 +10,6 @@
 #include <QDebug>
 
 
-
 class Organization
 {
 private:
@@ -18,13 +17,14 @@ private:
     static int organizationIdGenerator;
     int lastOrganizationId;
     int organizationId;
+    Person organizationOwner;
     QString organizationName;
     QVector<Person> membersInOrganization;
     QVector<Team> TeamsInOrganization;
 
 public:
 
-    Organization(QString organizatonName);
+    Organization(QString organizatonName,Person& organization_owner);
     Organization(const Organization& other);
 
     int getLastOrganizationId() const;

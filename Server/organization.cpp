@@ -15,6 +15,7 @@ Organization::Organization(const Organization &other)
     organizationName = other.organizationName;
     membersInOrganization = other.membersInOrganization;
     TeamsInOrganization = other.TeamsInOrganization;
+    organizationOwner = other.organizationOwner;
 }
 
 int Organization::getLastOrganizationId() const
@@ -32,7 +33,7 @@ void Organization::setOrganizationId(int newOrganizationId)
     organizationId = newOrganizationId;
 }
 
-Organization::Organization(QString organizatonName):organizationId(organizationIdGenerator+lastOrganizationId),organizationName(organizatonName)
+Organization::Organization(QString organizatonName,Person& organization_owner):organizationId(organizationIdGenerator+lastOrganizationId),organizationOwner(organization_owner),organizationName(organizatonName)
 {
     organizationIdGenerator++;
 }
