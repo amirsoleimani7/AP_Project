@@ -8,11 +8,13 @@ myServer::myServer(QWidget *parent)
 {
     ui->setupUi(this);
     tcpServe = new QTcpServer;
-    if (tcpServe->listen(QHostAddress::AnyIPv4,43000)){
+    if (tcpServe->listen(QHostAddress::AnyIPv4,43000))
+    {
         connect(tcpServe,&QTcpServer::newConnection,this,&myServer::newConnection);
         ui->statusbar->showMessage("Tcp started");
     }
-    else{
+    else
+    {
         QMessageBox::information(this, "tcp error ",tcpServe->errorString());
     }
 }
@@ -32,11 +34,13 @@ void myServer::discardsocket()
 {
     QTcpSocket* socket = reinterpret_cast<QTcpSocket*>(sender());
     int id = clientList.indexOf(socket);
-    if (id>-1){
+    if (id>-1)
+    {
         clientList.removeAt(id);
     }
     ui->clientListCombo->clear();
-    foreach (QTcpSocket* sockettemp, clientList) {
+    foreach (QTcpSocket* sockettemp, clientList)
+    {
         ui->clientListCombo->addItem(QString::number(sockettemp->socketDescriptor()));
     }
     socket->deleteLater();
@@ -44,7 +48,8 @@ void myServer::discardsocket()
 
 void myServer::newConnection()
 {
-    while(tcpServe->hasPendingConnections()){
+    while(tcpServe->hasPendingConnections())
+    {
         addToSocketList(tcpServe->nextPendingConnection());
     }
 
@@ -61,15 +66,36 @@ void myServer::addToSocketList(QTcpSocket *socket)
 
 void myServer::on_sendFileBTN_clicked()
 {
-
+    QString filePath = QFileDialog::getOpenFileName(this,"Select File",QCoreApplication::applicationDirPath(),"File (*.txt *.db)");
+    if (ui->transferType->currentText() == "broadcast")
+    {
+        foreach (QTcpSocket* sockettemp, clientList)
+        {
+            sendFile(sockettemp,filePath);
+        }
+    }
+    else if(ui->transferType->currentText() == "reciver")
+    {
+        QString receiverId = ui->clientListCombo->currentText();
+        foreach (QTcpSocket* sockettemp, clientList)
+        {
+            if (sockettemp->socketDescriptor() == receiverId.toLongLong())
+            {
+            sendFile(sockettemp,filePath);
+            }
+        }
+    }
 }
 
 void myServer::sendFile(QTcpSocket *socket, QString fileName)
 {
-    if (socket){
-        if(socket->isOpen()){
+    if (socket)
+    {
+        if(socket->isOpen())
+        {
             Qfile filedata(filename);
-            if (filedata.open(QIODevice::ReadOnly)){
+            if (filedata.open(QIODevice::ReadOnly))
+            {
                 QFileInfo fileInfo(filedata);
                 QString fileNameWith(fileInfo.filename());
                 QDataStream socketstream(socket);
@@ -81,15 +107,18 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
                 ByteFileData.prepend(header);
                 socketstream << ByteFileData;
             }
-            else{
+            else
+            {
                 qDebug<<"file not open";
             }
         }
-        else{
+        else
+        {
             qDebug<<"clien socket not open";
         }
     }
-    else{
+    else
+    {
         qDebug<<"clien socket is invalid";
     }
 }
