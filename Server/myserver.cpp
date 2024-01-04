@@ -124,6 +124,11 @@ void myServer::on_sendFileBTN_clicked()
     }
 }
 
+void myServer::change_user_personal_name(QString &name_in_data_base, QString &new_name_1)
+{
+
+}
+
 
 
 void myServer::sendFile(QTcpSocket *socket, QString fileName)
@@ -166,11 +171,14 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
 }
 
 //adding functions
+//---------------
+//adding person to function
 void myServer::add_person_to_data_base(QString &user_data)
 {
-    //format should be something like
+
+    //format should be something like {id*username*personal_name*.....}
     QStringList fields = user_data.split("*");
-    QString user_name_to_database = fields[1];
+    QString user_name_to_database = fields[2];
 
     // Check if the user already exists
     QSqlQuery checkQuery;
@@ -183,16 +191,18 @@ void myServer::add_person_to_data_base(QString &user_data)
         // User doesn't exist, add them to the database
         QSqlQuery insertQuery;
 
-        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Bind values for the insertion
-        insertQuery.addBindValue(fields[1]);  // username
-        insertQuery.addBindValue(fields[2]);  // password
-        insertQuery.addBindValue(fields[3]);  // personal_name
-        insertQuery.addBindValue(fields[4]);  // email
-        insertQuery.addBindValue(fields[5]);  // fav_animal
-        insertQuery.addBindValue(fields[6]);  // fav_color
-        insertQuery.addBindValue(fields[7]);  // fav_city
+        insertQuery.addBindValue(fields[1]);  // id
+        insertQuery.addBindValue(fields[2]);  // username
+        insertQuery.addBindValue(fields[3]);  // pass
+        insertQuery.addBindValue(fields[4]);  // personalname
+        insertQuery.addBindValue(fields[5]);  // email
+        insertQuery.addBindValue(fields[6]);  // fav_animal
+        insertQuery.addBindValue(fields[7]);  // fav_color
+        insertQuery.addBindValue(fields[8]);  // fav_city
+
 
         insertQuery.addBindValue("default_org");
         insertQuery.addBindValue("default_teams");
@@ -208,4 +218,632 @@ void myServer::add_person_to_data_base(QString &user_data)
         }
     }
 }
+
+
+//----------------------
+void change_user_personal_name(QString& name_in_data_base,QString &new_name_1)
+{
+    QString user_name_in_data_base = name_in_data_base;
+    QString new_name  = new_name_1;
+
+    //updating personal_name
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE person_info_database SET personal_name = :new_name WHERE username = :user_name_in_data_base");
+    updateQuery.bindValue(":new_name", new_name);
+    updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "Personal name updated successfully.";
+        //feed back should be handled here
+
+
+    } else {
+        qDebug() << "Could not update personal name." << updateQuery.lastError();
+        //feedback should be handled here
+    }
+
+
+}
+//------------------------
+void myServer::change_user_email(QString &name_in_data_base, QString &new_email_1)
+{
+    QString user_name_in_data_base = name_in_data_base;
+    QString new_email  = new_email_1;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE person_info_database SET email = :new_email WHERE username = :user_name_in_data_base");
+    updateQuery.bindValue(":new_email", new_email);
+    updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "email  updated successfully.";
+        //feed back should be handled here
+
+
+
+
+    } else {
+        qDebug() << "Could not update email." << updateQuery.lastError();
+        //feedback should be handled here
+
+
+    }
+
+
+
+}
+//-------------------------------
+void myServer::chnage_user_pass(QString &name_in_data_base, QString &new_pass_1)
+{
+    QString user_name_in_data_base = name_in_data_base;
+    QString new_pass  = new_pass_1;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE person_info_database SET password = :new_pass WHERE username = :user_name_in_data_base");
+    updateQuery.bindValue(":new_pass", new_pass);
+    updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "pass  updated successfully.";
+        //feed back should be handled here
+
+
+    } else {
+        qDebug() << "Could not update pass." << updateQuery.lastError();
+        //feedback should be handled here
+    }
+}
+//----------------------------------
+QString myServer::get_user_info(QString& name_in_data_base)
+{
+    QString user_in_data_base = name_in_data_base;
+    QString user_info;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString id = selectQuery.value("person_id").toString();
+        QString user_name = selectQuery.value("username").toString();
+        QString password = selectQuery.value("password").toString();
+        QString personal_name = selectQuery.value("personal_name").toString();
+        QString email = selectQuery.value("email").toString();
+        QString fav_animal = selectQuery.value("fav_animal").toString();
+        QString fav_color = selectQuery.value("fav_color").toString();
+        QString fav_city = selectQuery.value("fav_city").toString();
+
+        user_info = QString("%1*%2*%3*%4*%5*%6*%7*%8")
+                        .arg(id, user_name, password, personal_name, email, fav_animal, fav_color, fav_city);
+
+        qDebug() << user_info;
+        return user_info;
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//----------------------------
+
+bool myServer::check_for_pass_word(QString &name_in_data_base, QString &input_password)
+{
+    QString user_name = name_in_data_base;
+    QString user_pass = input_password;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_name);
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString password = selectQuery.value("password").toString();
+        if(password == user_pass){
+            qDebug() << "correct\n";
+            //sending feedbacks
+            return true;
+
+        }
+        else{
+            qDebug() << "not correct\n";
+            //sending feedbacks
+            return false;
+        }
+    }
+    else{
+        qDebug() << "person was not found\n";
+        return false;
+        //sending feedbacks
+    }
+}
+
+//----------------------
+//adding organization
+void myServer::add_organizations_to_person(QString &name_in_data_base, QString &organizations_name)
+{
+    QString user_name_in_data_base = name_in_data_base;  // Set the actual username
+    QString organizations_to_add = organizations_name;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_organizations = selectQuery.value("organizations").toString();
+
+        QStringList existingOrganizations = list_of_organizations.split(",");
+
+        if (!existingOrganizations.contains(organizations_to_add)) {
+            list_of_organizations += "," + organizations_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET organizations = :new_organizations WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_organizations", list_of_organizations);
+            updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+            if (updateQuery.exec()) {
+                qDebug() << "Row updated successfully.";
+                //feed back for updating the row
+
+
+
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //fail
+
+
+            }
+        } else {
+            qDebug() << "Organization already exists in the list.";
+            //organizations already exits
+
+
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        //feedback for user not existing
+
+
+    }
+}
+
+//-------------------------
+
+void myServer::add_team_to_person(QString &name_in_data_base, QString &team_name)
+{
+    QString user_name_in_data_base = name_in_data_base;  // Set the actual username
+    QString team_to_add = team_name;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_team = selectQuery.value("teams").toString();
+
+        QStringList existingteam = list_of_team.split(",");
+
+        if (!existingteam.contains(team_to_add)) {
+            list_of_team += "," + team_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET teams = :new_teams WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_teams", list_of_team);
+            updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "team already exists in the list.";
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//---------------------------------
+void myServer::add_project_to_person(QString &name_in_data_base, QString &project_name)
+{
+    QString user_name_in_data_base = name_in_data_base;  // Set the actual username
+    QString project_to_add = project_name;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_project = selectQuery.value("projects").toString();
+
+        QStringList existingProject = list_of_project.split(",");
+
+        if (!existingProject.contains(project_to_add)) {
+            list_of_project += "," + project_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET projects = :new_project WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_project", list_of_project);
+            updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "project already exists in the list.";
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//---------------------------------
+void myServer::add_task_to_person(QString &name_in_data_base, QString &task_name)
+{
+    QString user_name_in_data_base = name_in_data_base;  // Set the actual username
+    QString task_to_add = task_name;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_task = selectQuery.value("tasks").toString();
+
+        QStringList existingTask = list_of_task.split(",");
+
+        if (!existingTask.contains(task_to_add)) {
+            list_of_task += "," + task_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET tasks = :new_task WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_task", list_of_task);
+            updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "task already exists in the list.";
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//-----------------------------------------
+
+void myServer::remove_organization_from_person(QString &name_in_data_base, QString &organizations_name)
+{
+    QString user_name_in_data_base = name_in_data_base;  // Set the actual username
+    QString remove_name_organization = organizations_name;  // Set the organization to remove
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_organizations = selectQuery.value("organizations").toString();
+
+        // Split the existing organizations
+        QStringList existingOrganizations = list_of_organizations.split(",");
+
+        // Check if the organization to remove exists
+        if (existingOrganizations.contains(remove_name_organization)) {
+            // Remove the organization
+            existingOrganizations.removeAll(remove_name_organization);
+
+            // Join the organizations back into a string
+            QString newListOfOrganizations = existingOrganizations.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET organizations = :new_organizations WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_organizations", newListOfOrganizations);
+            updateQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "Organization removed successfully.";
+                //should hande feedback
+
+
+
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+
+                //should handle feedback
+            }
+        } else {
+            qDebug() << "Organization not found in the list.";
+            //should handle the feedback
+
+
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        //should handle the feedback
+
+    }
+
+}
+
+//-------------------------------------
+void myServer::remove_team_from_person(QString &name_in_data_base, QString &team_name)
+{
+    QString user_name_in_data_base = name_in_data_base;  // Set the actual username
+    QString remove_name_team = team_name;  // Set the team to remove
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_team = selectQuery.value("teams").toString();
+
+        QStringList existingTeam = list_of_team.split(",");
+
+        if (existingTeam.contains(remove_name_team)) {
+            existingTeam.removeAll(remove_name_team);
+
+            QString newListOfteams = existingTeam.join(",");
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET teams = :new_team WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_team", newListOfteams);
+            updateQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "team removed successfully.";
+                //handeling socket
+
+
+
+
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //handeling socket
+            }
+        } else {
+            qDebug() << "team not found in the list.";
+            //handleing socket
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        //feed back
+    }
+}
+
+//--------------------
+void myServer::remove_project_from_person(QString &name_in_data_base_1, QString &project_name)
+{
+    QString name_in_data_base = name_in_data_base_1;  // Set the actual username
+    QString remove_name_project = project_name;  // Set the organization to remove
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_project = selectQuery.value("projects").toString();
+
+        QStringList existingProject = list_of_project.split(",");
+
+        if (existingProject.contains(remove_name_project)) {
+            existingProject.removeAll(remove_name_project);
+
+            QString newListOfproject = existingProject.join(",");
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET projects = :new_project WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_project", newListOfproject);
+            updateQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "project removed successfully.";
+                //feed back
+
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //feed back
+
+            }
+        } else {
+            qDebug() << "project not found in the list.";
+                //feed back
+
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+            //feed back
+
+    }
+}
+//---------------------------------------
+void myServer::remove_task_from_person(QString& name_in_data_base,QString& task_name){
+    // QString name_in_data_base = name_in_data_base;  // Set the actual username
+    QString remove_name_task = task_name;  // Set the organization to remove
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_tasks = selectQuery.value("tasks").toString();
+
+        // Split the existing organizations
+        QStringList existingTasks = list_of_tasks.split(",");
+
+        // Check if the organization to remove exists
+        if (existingTasks.contains(remove_name_task)) {
+            // Remove the organization
+            existingTasks.removeAll(remove_name_task);
+
+            // Join the organizations back into a string
+            QString newListOftasks = existingTasks.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE person_info_database SET tasks = :new_task WHERE username = :user_in_data_base");
+            updateQuery.bindValue(":new_task", newListOftasks);
+            updateQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "task removed successfully.";
+                //should handle the feedback
+
+
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //should hande the feedback
+
+
+
+            }
+        } else {
+            qDebug() << "task not found in the list.";
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//-----------------------------------
+QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
+{
+    //QString name_in_data_base = "";  // Set the actual username
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString teamsString = selectQuery.value("teams").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList teamsList = teamsString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> teamsVector = teamsList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<teamsVector.size();i++){
+            qDebug() <<teamsVector[i];
+        }
+
+        //qDebug() << "Teams Vector: " << teamsVector;
+        return teamsVector;
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//----------------------------
+
+QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
+{
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString organizationString = selectQuery.value("organizations").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList organizationList = organizationString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> organizationVector = organizationList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<organizationVector.size();i++){
+            qDebug() <<organizationVector[i];
+        }
+
+
+        qDebug() << "organization Vector: " << organizationVector;
+        return organizationVector;
+        //handeling
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//------------------------------
+QVector<QString> myServer::task_of_person(QString &name_in_data_base)
+{
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString taskString = selectQuery.value("tasks").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList taskList = taskString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> taskVector = taskList.toVector();
+
+        // Use task as needed
+        for(int i = 0;i<taskVector.size();i++){
+            qDebug() <<taskVector[i];
+        }
+
+        qDebug() << "task  Vector: " << taskVector;
+
+        return taskVector;
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+
+}
+
+//--------------------------------------
+QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
+{
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString projectString = selectQuery.value("projects").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList projectList = projectString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> projectVector = projectList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<projectVector.size();i++){
+            qDebug() <<projectVector[i];
+        }
+
+        qDebug() << "project  Vector: " << projectVector;
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//----------------------------------
 
