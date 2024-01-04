@@ -45,7 +45,9 @@ private slots:
     void add_project_to_person(QString& name_in_data_base,QString& project_name);
     void add_task_to_person(QString& name_in_data_base,QString& task_name);
     void remove_organization_from_person(QString& name_in_data_base,QString& organizations_name);
-
+    void remove_team_from_person(QString& name_in_data_base,QString& team_name);
+    void remove_project_from_person(QString& name_in_data_base_1,QString& project_name);
+    void remove_task_from_person(QString& name_in_data_base,QString& task_name);
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
 
