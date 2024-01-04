@@ -293,5 +293,36 @@ void myServer::chnage_user_pass(QString &name_in_data_base, QString &new_pass_1)
         qDebug() << "Could not update pass." << updateQuery.lastError();
         //feedback should be handled here
     }
-
 }
+//----------------------------------
+QString myServer::get_user_info(QString& name_in_data_base)
+{
+    QString user_in_data_base = name_in_data_base;
+    QString user_info;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", user_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString id = selectQuery.value("person_id").toString();
+        QString user_name = selectQuery.value("username").toString();
+        QString password = selectQuery.value("password").toString();
+        QString personal_name = selectQuery.value("personal_name").toString();
+        QString email = selectQuery.value("email").toString();
+        QString fav_animal = selectQuery.value("fav_animal").toString();
+        QString fav_color = selectQuery.value("fav_color").toString();
+        QString fav_city = selectQuery.value("fav_city").toString();
+
+        user_info = QString("%1*%2*%3*%4*%5*%6*%7*%8")
+                        .arg(id, user_name, password, personal_name, email, fav_animal, fav_color, fav_city);
+
+        qDebug() << user_info;
+        return user_info;
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//-------------------------------------

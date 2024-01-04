@@ -38,6 +38,7 @@ private slots:
     void add_person_to_data_base(QString &user_data);
     void change_user_email(QString& name_in_data_base,QString &new_email_1);
     void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
+    QString get_user_info(QString& name_in_data_base);
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
