@@ -751,6 +751,7 @@ QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
     }
 }
+
 //----------------------------
 
 QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
@@ -777,6 +778,68 @@ QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
         qDebug() << "organization Vector: " << organizationVector;
         return organizationVector;
         //handeling
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//------------------------------
+QVector<QString> myServer::task_of_person(QString &name_in_data_base)
+{
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString taskString = selectQuery.value("tasks").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList taskList = taskString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> taskVector = taskList.toVector();
+
+        // Use task as needed
+        for(int i = 0;i<taskVector.size();i++){
+            qDebug() <<taskVector[i];
+        }
+
+        qDebug() << "task  Vector: " << taskVector;
+
+        return taskVector;
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+
+}
+
+//--------------------------------------
+QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
+{
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString projectString = selectQuery.value("projects").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList projectList = projectString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> projectVector = projectList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<projectVector.size();i++){
+            qDebug() <<projectVector[i];
+        }
+
+        qDebug() << "project  Vector: " << projectVector;
 
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();

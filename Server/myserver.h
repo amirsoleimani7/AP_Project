@@ -51,8 +51,12 @@ private slots:
     void remove_task_from_person(QString& name_in_data_base,QString& task_name);
     QVector<QString> organizations_of_person(QString& name_in_data_base);
     QVector<QString> teams_of_person(QString& name_in_data_base);
-
+    QVector<QString> task_of_person(QString& name_in_data_base);
+    QVector<QString> projects_of_person(QString& name_in_data_base);
     //-------------------------
+
+
+
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
 
