@@ -30,7 +30,6 @@ Comment::Comment(const Comment &other)
     commentTask = other.commentTask;
 }
 
-
 void Comment::setcommectValue(const QString &newComment)
 {
     commentValue = newComment;
