@@ -34,6 +34,7 @@ private slots:
     void newConnection();
     void addToSocketList(QTcpSocket* socket);
     void on_sendFileBTN_clicked();
+
     //function for person ----------------
     void change_user_personal_name(QString& name_in_data_base,QString &new_name_1);
     void add_person_to_data_base(QString &user_data);
@@ -54,6 +55,8 @@ private slots:
     QVector<QString> task_of_person(QString& name_in_data_base);
     QVector<QString> projects_of_person(QString& name_in_data_base);
     //-------------------------
+    //functions for organization
+    void add_organization_to_data_base(QString& organization_data);
 
 
 
@@ -62,7 +65,7 @@ private:
 
 private:
     Ui::myServer *ui;
-    QSqlDatabase mydb;
+    QSqlDatabase mydb_person;
     QTcpServer *tcpServe;
     QList<QTcpSocket*> clientList;
 

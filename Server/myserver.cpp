@@ -18,10 +18,10 @@ myServer::myServer(QWidget *parent)
         QMessageBox::information(this, "tcp error ",tcpServe->errorString());
     }
 
-    mydb= QSqlDatabase::addDatabase("QSQLITE");
-    mydb.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/person_database.db");
+    mydb_person= QSqlDatabase::addDatabase("QSQLITE");
+    mydb_person.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/person_database.db");
 
-    if(!mydb.open()){
+    if(!mydb_person.open()){
         qDebug() << ("data is no open");
     }
     else{
@@ -845,5 +845,61 @@ QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
     }
 }
+
 //----------------------------------
+
+//organization functions
+
+
+void myServer::add_organization_to_data_base(QString &organization_data)
+{
+    QString data_recieved_by_socket_to_add_to_organization = organization_data;
+    QStringList fields = data_recieved_by_socket_to_add_to_organization.split("*");
+    QString id_organization_to_database = fields[1];
+
+    QSqlQuery checkQuery;
+
+    checkQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :id_organization_to_database");
+    checkQuery.bindValue(":id_organization_to_database", id_organization_to_database);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "organization with the same id already exists in the database.";
+
+    }
+
+    //data base structure
+    // CREATE TABLE "organization_info_database" (
+    //     "organization_id"	TEXT,
+    //     "organization_name"	TEXT,
+    //     "organization_owner"	TEXT,
+    //     "organization_team"	TEXT,
+    //     "organization_person"	TEXT
+    //     )
+
+    else {
+        QSqlQuery insertQuery;
+
+        insertQuery.prepare("INSERT INTO organization_info_database (organization_id,organization_name, organization_owner, organization_team,organization_person) VALUES (?, ?, ?, ?, ?)");
+
+        // Bind values for the insertion
+        insertQuery.addBindValue(fields[1]); //organization_id
+        insertQuery.addBindValue(fields[2]); //organization_name
+        insertQuery.addBindValue(fields[3]); //organization_owner
+        insertQuery.addBindValue(fields[4]); //organization_team
+        insertQuery.addBindValue(fields[5]); //organization_person
+
+
+        // Execute the insertion query
+        if (insertQuery.exec()) {
+            qDebug() << "organization added successfully.";
+            // Sending feedback through socket that organization added to the database
+
+        }
+        else {
+            qDebug() << "Could not add organization." <<insertQuery.lastError();
+        }
+    }
+
+}
+//----------------------------
 
