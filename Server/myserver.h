@@ -40,6 +40,11 @@ private slots:
     void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
     QString get_user_info(QString& name_in_data_base);
     QString check_for_pass_word(QString& name_in_data_base,QString& input_password);
+    void add_organizations_to_person(QString& name_in_data_base,QString& organizations_name);
+    void add_team_to_person(QString& name_in_data_base,QString& team_name);
+    void add_project_to_person(QString& name_in_data_base,QString& project_name);
+    void add_task_to_person(QString& name_in_data_base,QString& task_name);
+    void remove_organization_from_person(QString& name_in_data_base,QString& organizations_name);
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
