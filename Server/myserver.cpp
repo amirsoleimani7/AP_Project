@@ -1330,3 +1330,33 @@ void myServer::change_name_of_team(QString &team_id, QString new_name)
     }
 }
 
+
+//------------------------------
+void myServer::change_admin_of_the_team(QString &team_id, QString &new_name)
+{
+    QString team_id_in_data_base = team_id;
+    QString new_admin  = new_name;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE team_info_database SET team_admin = :new_team_admin WHERE team_id = :team_id_in_data_base");
+    updateQuery.bindValue(":new_team_admin", new_admin);
+    updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "team admin updated successfully.";
+
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update team admin." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+
+}
+//----------------------------------------
+void myServer::add_person_to_team(QString &team_id, QStrnig new_person)
+{
+
+}
