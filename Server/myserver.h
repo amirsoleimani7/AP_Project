@@ -35,7 +35,7 @@ private slots:
     void addToSocketList(QTcpSocket* socket);
     void on_sendFileBTN_clicked();
 
-    //function for person ----------------
+    //function for person ---------------- //sould work with id
     void change_user_personal_name(QString& name_in_data_base,QString &new_name_1);
     void add_person_to_data_base(QString &user_data);
     void change_user_email(QString& name_in_data_base,QString &new_email_1);
@@ -57,8 +57,12 @@ private slots:
     //-------------------------
     //functions for organization
     void add_organization_to_data_base(QString& organization_data);
-
-
+    void chnage_name_of_organization(QString& organization_id,QString& new_name_for_organization);
+    void chnage_owner_of_organization(QString& organization_id,QString& new_owner_for_organization);
+    void adding_teams_to_organization(QString& organization_id,QString& id_of_team_to_add);
+    void adding_person_to_organization(QString& organization_id,QString& id_of_person_to_add);
+    void removing_team_from_organization(QString& organization_id,QString& id_of_team_to_remove);
+    void removing_team_from_organization(QString& organization_id,QString& id_of_person_to_remove);
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
@@ -66,6 +70,8 @@ private:
 private:
     Ui::myServer *ui;
     QSqlDatabase mydb_person;
+    QSqlDatabase mydb_organization;
+
     QTcpServer *tcpServe;
     QList<QTcpSocket*> clientList;
 

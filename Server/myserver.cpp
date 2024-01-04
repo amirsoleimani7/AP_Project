@@ -28,7 +28,17 @@ myServer::myServer(QWidget *parent)
         qDebug() << ("data is open");
     }
 
+    mydb_organization= QSqlDatabase::addDatabase("QSQLITE");
+    mydb_organization.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/organization_database.db");
+
+    if(!mydb_organization.open()){
+        qDebug() << ("organization is no open");
+    }
+    else{
+        qDebug() << ("organization is open");
+    }
 }
+
 
 myServer::~myServer()
 
@@ -901,5 +911,202 @@ void myServer::add_organization_to_data_base(QString &organization_data)
     }
 
 }
-//----------------------------
 
+//----------------------------
+void myServer::chnage_name_of_organization(QString &organization_id, QString &new_name_for_organization)
+{
+
+    QString organization_id_in_data_base = organization_id;
+    QString new_name  = new_name_for_organization;
+
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE organization_info_database SET organization_name = :new_organization_name WHERE organization_id = :organization_id_in_data_base");
+    updateQuery.bindValue(":new_organization_name", new_name);
+    updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "organization name updated successfully.";
+
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+
+    } else {
+        qDebug() << "Could not update organization name." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+
+    }
+}
+
+//----------------------------
+void myServer::chnage_owner_of_organization(QString &organization_id, QString &new_owner_for_organization)
+{
+
+    QString organization_id_in_data_base = organization_id;
+    QString name_of_new_owner  = new_owner_for_organization;
+    QSqlQuery updateQuery;
+
+    updateQuery.prepare("UPDATE organization_info_database SET organization_owner = :new_organization_owner_name WHERE organization_id = :organization_id_in_data_base");
+    updateQuery.bindValue(":new_organization_owner_name", name_of_new_owner);
+    updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "organization owner updated successfully.";
+
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+
+    } else {
+        qDebug() << "Could not update organization owner." << updateQuery.lastError();
+
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+
+//-----------------------------
+
+void myServer::adding_teams_to_organization(QString &organization_id, QString &id_of_team_to_add)
+{
+    QString organization_id_in_data_base = organization_id;  // Set the actual username
+    QString team_to_add = id_of_team_to_add;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_team = selectQuery.value("organization_team").toString();
+
+        QStringList existingteam = list_of_team.split(",");
+
+        if (!existingteam.contains(team_to_add)) {
+            list_of_team += "," + team_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE organization_info_database SET organization_team = :new_teams WHERE organization_id = :organization_id_in_data_base");
+            updateQuery.bindValue(":new_teams", list_of_team);
+            updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+                //
+
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //should hnadle the feedback
+
+            }
+        } else {
+            qDebug() << "team already exists in the list.";
+            //
+
+        }
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+
+}
+//----------------------------------------------------
+
+void myServer::adding_person_to_organization(QString &organization_id, QString &id_of_person_to_add)
+{
+    QString organization_id_in_data_base = organization_id;  // Set the actual username
+    QString person_to_add = id_of_person_to_add;
+
+
+    QSqlQuery selectQuery;
+
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_person = selectQuery.value("organization_person").toString();
+
+        QStringList existingperson = list_of_person.split(",");
+
+        if (!existingperson.contains(person_to_add)) {
+            list_of_person += "," + person_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE organization_info_database SET organization_person = :new_person WHERE organization_id = :organization_id_in_data_base");
+            updateQuery.bindValue(":new_person", list_of_person);
+            updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+                //should handle the socket
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //should handle the socket
+
+
+            }
+        } else {
+            qDebug() << "person already exists in the list.";
+
+        }
+
+    } else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//------------------------------
+void myServer::removing_team_from_organization(QString &organization_id, QString &cid_of_team_to_remove)
+{
+    QString organization_id_in_data_base  = organization_id;  // Set the actual username
+    QString remove_team_from_organization = cid_of_team_to_remove;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_teams = selectQuery.value("organization_team").toString();
+
+        // Split the existing organizations
+        QStringList existingteams = list_of_teams.split(",");
+
+        // Check if the organization to remove exists
+        if (existingteams.contains(remove_team_from_organization)) {
+            // Remove the organization
+            existingteams.removeAll(remove_team_from_organization);
+
+            // Join the organizations back into a string
+            QString newListOfproject = existingteams.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE organization_info_database SET organization_team = :new_organization_team WHERE organization_id = :organization_id_in_data_base");
+            updateQuery.bindValue(":new_organization_team", newListOfproject);
+            updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "project removed successfully.";
+                //should handle feedback
+
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //should handle feedback
+
+            }
+        } else {
+            qDebug() << "project not found in the list.";
+                //should handle feedback
+
+        }
+    } else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//-----------------------
