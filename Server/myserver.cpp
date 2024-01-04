@@ -37,8 +37,18 @@ myServer::myServer(QWidget *parent)
     else{
         qDebug() << ("organization is open");
     }
-}
 
+
+    mydb_team = QSqlDatabase::addDatabase("QSQLITE");
+    mydb_team.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/team_database.db");
+
+    if(!mydb_team.open()){
+        qDebug() << ("team is no open");
+    }
+    else{
+        qDebug() << ("team is open");
+    }
+}
 
 myServer::~myServer()
 
@@ -1110,7 +1120,7 @@ void myServer::removing_team_from_organization(QString &organization_id, QString
     }
 }
 //-----------------------
-void myServer::removing_team_from_organization(QString& organization_id,QString& id_of_person_to_remove)
+void myServer::removing_person_from_organization(QString& organization_id,QString& id_of_person_to_remove)
 {
     QString organization_id_in_data_base = organization_id;  // Set the actual username
     QString remove_person_from_organization = id_of_person_to_remove;
@@ -1157,7 +1167,6 @@ void myServer::removing_team_from_organization(QString& organization_id,QString&
 QString myServer::getting_info_of_organizatios(QString &organization_id)
 {
 
-    QString organization_id = organization_id;
     QString organization_info;
 
     QSqlQuery selectQuery;
@@ -1186,6 +1195,138 @@ QString myServer::getting_info_of_organizatios(QString &organization_id)
     }
     else {
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//-------------------------------
+
+QVector<QString> myServer::get_team_of_organization(QString &organization_id)
+{
+    //getting teams
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.bindValue(":organization_id_in_data_base", organization_id);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString teamsString = selectQuery.value("organization_team").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList teamList = teamsString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> teamVector = teamList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<teamVector.size();i++){
+            qDebug() <<teamVector[i];
+        }
+
+        qDebug() << "team  Vector: " << teamVector;
+        return  teamVector;
+
+    } else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//-------------------------------
+QVector<QString> myServer::get_person_of_organization(QString &organization_id)
+{
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.bindValue(":organization_id_in_data_base", organization_id);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString personString = selectQuery.value("organization_person").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList personList = personString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> personVector = personList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<personVector.size();i++){
+            qDebug() <<personVector[i];
+        }
+
+        qDebug() << "person  Vector: " << personVector;
+        return personVector;
+
+    } else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//-------------------------------
+//team function
+
+void myServer::add_team_to_data_base(QString &team_data)
+{
+
+    QString data_recieved_by_socket_to_add_to_team = team_data;
+
+    QStringList fields = data_recieved_by_socket_to_add_to_team.split("*");
+    QString id_team_to_database = fields[1];
+
+    QSqlQuery checkQuery;
+
+    checkQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :id_team_to_database");
+    checkQuery.bindValue(":id_team_to_database", id_team_to_database);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "team with the same id already exists in the database.";
+    }
+
+    else {
+
+        QSqlQuery insertQuery;
+
+        insertQuery.prepare("INSERT INTO team_info_database (team_id,team_name, team_admin, team_persons,team_projects) VALUES (?, ?, ?, ?, ?)");
+
+        // Bind values for the insertion
+        insertQuery.addBindValue(fields[1]); //team_id
+        insertQuery.addBindValue(fields[2]); //team_name
+        insertQuery.addBindValue(fields[3]); //team_admin
+        insertQuery.addBindValue(fields[4]); //team_persons
+        insertQuery.addBindValue(fields[5]); //team_projects
+
+
+        // Execute the insertion query
+        if (insertQuery.exec()) {
+            qDebug() << "team added successfully.";
+            // Sending feedback through socket that organization added to the database
+
+        }
+        else {
+            qDebug() << "Could not add team." <<insertQuery.lastError();
+        }
+    }
+}
+
+//------------------------------
+
+void myServer::change_name_of_team(QString &team_id, QString new_name)
+{
+    QString team_id_in_data_base = team_id;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE team_info_database SET team_name = :new_team_name WHERE team_id = :team_id_in_data_base");
+    updateQuery.bindValue(":new_team_name", new_name);
+    updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "team name updated successfully.";
+
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update team name." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
     }
 }
 

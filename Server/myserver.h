@@ -62,8 +62,15 @@ private slots:
     void adding_teams_to_organization(QString& organization_id,QString& id_of_team_to_add);
     void adding_person_to_organization(QString& organization_id,QString& id_of_person_to_add);
     void removing_team_from_organization(QString& organization_id,QString& id_of_team_to_remove);
-    void removing_team_from_organization(QString& organization_id,QString& id_of_person_to_remove);
+    void removing_person_from_organization(QString& organization_id,QString& id_of_person_to_remove);
     QString getting_info_of_organizatios(QString& organization_id);
+    QVector<QString> get_team_of_organization(QString& organization_id);
+    QVector<QString> get_person_of_organization(QString& organization_id);
+    //--------------------------
+    //team functions
+    void add_team_to_data_base(QString& team_data);
+    void change_name_of_team(QString& team_id,QString new_name);
+
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
@@ -72,6 +79,7 @@ private:
     Ui::myServer *ui;
     QSqlDatabase mydb_person;
     QSqlDatabase mydb_organization;
+    QSqlDatabase mydb_team;
 
     QTcpServer *tcpServe;
     QList<QTcpSocket*> clientList;
