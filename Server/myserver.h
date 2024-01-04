@@ -73,6 +73,8 @@ private slots:
     void change_admin_of_the_team(QString& team_id ,QString& new_name);
     void add_person_to_team(QString& team_id,QString& new_person);
     void add_project_to_team(QString team_id ,QString& new_project);
+    void removing_person_from_team(QString& team_id,QString& person_id_to_remove);
+    void removing_project_from_team(QString& team_id,QString& project_id_to_remove);
 
 
 private:
