@@ -845,3 +845,5 @@ QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
     }
 }
+//----------------------------------
+
