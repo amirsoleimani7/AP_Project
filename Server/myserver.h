@@ -63,6 +63,7 @@ private slots:
     void adding_person_to_organization(QString& organization_id,QString& id_of_person_to_add);
     void removing_team_from_organization(QString& organization_id,QString& id_of_team_to_remove);
     void removing_team_from_organization(QString& organization_id,QString& id_of_person_to_remove);
+    QString getting_info_of_organizatios(QString& organization_id);
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);

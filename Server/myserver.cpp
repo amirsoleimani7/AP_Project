@@ -1110,3 +1110,82 @@ void myServer::removing_team_from_organization(QString &organization_id, QString
     }
 }
 //-----------------------
+void myServer::removing_team_from_organization(QString& organization_id,QString& id_of_person_to_remove)
+{
+    QString organization_id_in_data_base = organization_id;  // Set the actual username
+    QString remove_person_from_organization = id_of_person_to_remove;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_person = selectQuery.value("organization_person").toString();
+
+        // Split the existing organizations
+        QStringList existingperson = list_of_person.split(",");
+
+        // Check if the organization to remove exists
+        if (existingperson.contains(remove_person_from_organization)) {
+            // Remove the organization
+            existingperson.removeAll(remove_person_from_organization);
+
+            // Join the organizations back into a string
+            QString newListOfperson = existingperson.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE organization_info_database SET organization_person = :new_organization_person WHERE organization_id = :organization_id_in_data_base");
+            updateQuery.bindValue(":new_organization_person", newListOfperson);
+            updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "person removed successfully.";
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "person not found in the list.";
+        }
+    } else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//
+
+QString myServer::getting_info_of_organizatios(QString &organization_id)
+{
+
+    QString organization_id = organization_id;
+    QString organization_info;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.bindValue(":organization_id_in_data_base", organization_id);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        // Retrieve values from the query result
+
+        QString id = selectQuery.value("organization_id").toString();
+        QString name = selectQuery.value("organization_name").toString();
+        QString owner = selectQuery.value("organization_owner").toString();
+        QString teams = selectQuery.value("organization_team").toString();
+        QString persons = selectQuery.value("organization_person").toString();
+
+
+        // Construct user_info string in the desired format
+        organization_info = QString("%1*%2*%3*%4*%5")
+                                .arg(id, name, owner, teams, persons);
+
+        qDebug() << organization_info;
+        return organization_info;
+        //socket_handle
+
+
+    }
+    else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
