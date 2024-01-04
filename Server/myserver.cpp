@@ -17,6 +17,17 @@ myServer::myServer(QWidget *parent)
     {
         QMessageBox::information(this, "tcp error ",tcpServe->errorString());
     }
+
+    mydb= QSqlDatabase::addDatabase("QSQLITE");
+    mydb.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/person_database.db");
+
+    if(!mydb.open()){
+        qDebug() << ("data is no open");
+    }
+    else{
+        qDebug() << ("data is open");
+    }
+
 }
 
 myServer::~myServer()
@@ -113,6 +124,8 @@ void myServer::on_sendFileBTN_clicked()
     }
 }
 
+
+
 void myServer::sendFile(QTcpSocket *socket, QString fileName)
 {
     if (socket)
@@ -149,6 +162,50 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
     else
     {
         qDebug()<<"clien socket is invalid";
+    }
+}
+
+//adding functions
+void myServer::add_person_to_data_base(QString &user_data)
+{
+    //format should be something like
+    QStringList fields = user_data.split("*");
+    QString user_name_to_database = fields[1];
+
+    // Check if the user already exists
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_name_given");
+    checkQuery.bindValue(":user_name_given", user_name_to_database);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "User with the same username already exists in the database.";
+    } else {
+        // User doesn't exist, add them to the database
+        QSqlQuery insertQuery;
+
+        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        // Bind values for the insertion
+        insertQuery.addBindValue(fields[1]);  // username
+        insertQuery.addBindValue(fields[2]);  // password
+        insertQuery.addBindValue(fields[3]);  // personal_name
+        insertQuery.addBindValue(fields[4]);  // email
+        insertQuery.addBindValue(fields[5]);  // fav_animal
+        insertQuery.addBindValue(fields[6]);  // fav_color
+        insertQuery.addBindValue(fields[7]);  // fav_city
+
+        insertQuery.addBindValue("default_org");
+        insertQuery.addBindValue("default_teams");
+        insertQuery.addBindValue("default_projects");
+        insertQuery.addBindValue("default_tasks");
+
+        // Execute the insertion query
+        if (insertQuery.exec()) {
+            qDebug() << "User added successfully.";
+            // Sending feedback through socket that person added to the database
+        } else {
+            qDebug() << "Could not add user." <<insertQuery.lastError();
+        }
     }
 }
 
