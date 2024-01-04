@@ -328,7 +328,7 @@ QString myServer::get_user_info(QString& name_in_data_base)
 
 //----------------------------
 
-QString myServer::check_for_pass_word(QString &name_in_data_base, QString &input_password)
+bool myServer::check_for_pass_word(QString &name_in_data_base, QString &input_password)
 {
     QString user_name = name_in_data_base;
     QString user_pass = input_password;
@@ -341,17 +341,18 @@ QString myServer::check_for_pass_word(QString &name_in_data_base, QString &input
         if(password == user_pass){
             qDebug() << "correct\n";
             //sending feedbacks
-
+            return true;
 
         }
         else{
             qDebug() << "not correct\n";
             //sending feedbacks
-
+            return false;
         }
     }
     else{
         qDebug() << "person was not found\n";
+        return false;
         //sending feedbacks
     }
 }
@@ -717,7 +718,67 @@ void myServer::remove_task_from_person(QString& name_in_data_base,QString& task_
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
     }
+}
 
 
+//-----------------------------------
+QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
+{
+    //QString name_in_data_base = "";  // Set the actual username
 
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString teamsString = selectQuery.value("teams").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList teamsList = teamsString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> teamsVector = teamsList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<teamsVector.size();i++){
+            qDebug() <<teamsVector[i];
+        }
+
+        //qDebug() << "Teams Vector: " << teamsVector;
+        return teamsVector;
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//----------------------------
+
+QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
+{
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
+    selectQuery.bindValue(":user_in_data_base", name_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString organizationString = selectQuery.value("organizations").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList organizationList = organizationString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> organizationVector = organizationList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<organizationVector.size();i++){
+            qDebug() <<organizationVector[i];
+        }
+
+
+        qDebug() << "organization Vector: " << organizationVector;
+        return organizationVector;
+        //handeling
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
 }
