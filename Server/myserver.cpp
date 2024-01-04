@@ -567,11 +567,15 @@ void myServer::remove_organization_from_person(QString &name_in_data_base, QStri
             }
         } else {
             qDebug() << "Organization not found in the list.";
+            //should handle the feedback
+
+
         }
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        //should handle the feedback
+
     }
 
 }
 //-------------------------------------
-
