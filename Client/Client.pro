@@ -9,14 +9,20 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    forgotpass.cpp \
     main.cpp \
-    myclient.cpp
+    myclient.cpp \
+    signup.cpp
 
 HEADERS += \
-    myclient.h
+    forgotpass.h \
+    myclient.h \
+    signup.h
 
 FORMS += \
-    myclient.ui
+    forgotpass.ui \
+    myclient.ui \
+    signup.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
