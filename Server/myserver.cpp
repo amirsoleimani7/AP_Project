@@ -27,16 +27,42 @@ myServer::~myServer()
 
 void myServer::readSocket()
 {
+    QTcpSocket *socket =reinterpret_cast<QTcpSocket*>(sender());
+    QByteArray DataBuffer;
+    QDataStream socketstream(socket);
+    socketstream.setVersion(QDataStream::Qt_6_6);
+    socketstream.startTransaction();
+    socketstream >> DataBuffer;
+    if (socketstream.commitTransaction() == false)
+    {
+        return;
+    }
+    QString HeaderData = DataBuffer.mid(0, 128);
+
+    QString fileName = HeaderData.split(',')[0].split(':')[1];
+    QString fileSize = fileName.split(':')[1];
+    QString fileExt = HeaderData.split(',')[1].split(':')[1];
+
+    DataBuffer = DataBuffer.mid(128);
+
+    QString saveFilePath = QCoreApplication::applicationDirPath() + "/" + fileName;
+
+    QFile file(saveFilePath);
+    if (file.open(QIODevice::WriteOnly))
+    {
+        file.write(DataBuffer);
+        file.close();
+    }
 
 }
 
 void myServer::discardsocket()
 {
     QTcpSocket* socket = reinterpret_cast<QTcpSocket*>(sender());
-    int id = clientList.indexOf(socket);
-    if (id>-1)
+    int idx = clientList.indexOf(socket);
+    if (idx > (-1))
     {
-        clientList.removeAt(id);
+        clientList.removeAt(idx);
     }
     ui->clientListCombo->clear();
     foreach (QTcpSocket* sockettemp, clientList)
@@ -60,8 +86,8 @@ void myServer::addToSocketList(QTcpSocket *socket)
     clientList.append(socket);
     connect(socket,&QTcpSocket::readyRead,this, &myServer::readSocket);
     connect(socket,&QTcpSocket::disconnected,this,myServer::discardsocket);
-    ui->textEditMasages->append("Client is connected : socket : " + Qstring::number(socket->socketDescriptor()));
-    ui->clientListCombo->addItem(Qstring::number(socket->socketDescriptor()));
+    ui->textEditMasages->append("Client is connected : socket : " + QString::number(socket->socketDescriptor()));
+    ui->clientListCombo->addItem(QString::number(socket->socketDescriptor()));
 }
 
 void myServer::on_sendFileBTN_clicked()
@@ -93,15 +119,18 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
     {
         if(socket->isOpen())
         {
-            Qfile filedata(filename);
+            QFile filedata(fileName);
             if (filedata.open(QIODevice::ReadOnly))
             {
                 QFileInfo fileInfo(filedata);
-                QString fileNameWith(fileInfo.filename());
+                QString fileNameWith(fileInfo.fileName());
                 QDataStream socketstream(socket);
                 socketstream.setVersion(QDataStream::Qt_6_6);
+
                 QByteArray header;
-                header.prepend("filename: " + fileNameWith + ",filesize: "+QString::number(filedata.size()));
+                QString str("filename:" + fileNameWith + ",filesize:" + QString::number(filedata.size()));
+                QByteArray br = str.toUtf8();
+                header.prepend(br);
                 header.resize(128);
                 QByteArray ByteFileData = filedata.readAll();
                 ByteFileData.prepend(header);
@@ -109,17 +138,17 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
             }
             else
             {
-                qDebug<<"file not open";
+                qDebug()<<"file not open";
             }
         }
         else
         {
-            qDebug<<"clien socket not open";
+            qDebug()<<"clien socket not open";
         }
     }
     else
     {
-        qDebug<<"clien socket is invalid";
+        qDebug()<<"clien socket is invalid";
     }
 }
 

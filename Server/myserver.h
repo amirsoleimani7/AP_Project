@@ -6,6 +6,7 @@
 #include <QtGui>
 #include <QtCore>
 #include <QtWidgets>
+#include <QDebug>
 
 
 QT_BEGIN_NAMESPACE
@@ -35,7 +36,7 @@ private:
     Ui::myServer *ui;
 
     QTcpServer *tcpServe;
-    QList<QTcpSocket> clientList;
+    QList<QTcpSocket*> clientList;
 
 };
 #endif // MYSERVER_H
