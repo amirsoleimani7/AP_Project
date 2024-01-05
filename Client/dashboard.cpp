@@ -15,12 +15,12 @@ Dashboard::~Dashboard()
 
 void Dashboard::on_HamborBotton_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(ui->page_6);
+    ui->HomeSideStack->setCurrentWidget(ui->HomeOpenHamborPage);
 }
 
 
 void Dashboard::on_HamborBackBotton_clicked()
 {
-    ui->stackedWidget->setCurrentWidget(ui->page_5);
+    ui->HomeSideStack->setCurrentWidget(ui->HomeCloseHamborPage);
 }
 
