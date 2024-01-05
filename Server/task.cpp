@@ -66,6 +66,7 @@ bool Task::getIsDone() const
     return isDone;
 }
 
+
 QDateTime Task::getTaskDeadLine() const
 {
     return taskDeadLine;
@@ -74,6 +75,15 @@ QDateTime Task::getTaskDeadLine() const
 void Task::setTaskDeadLine(const QDateTime &newTaskDeadLine)
 {
     taskDeadLine = newTaskDeadLine;
+
+QVector<Person> Task::getPersons() const
+{
+    return persons;
+}
+
+void Task::setPersons(const QVector<Person> &newPersons)
+{
+    persons = newPersons;
 }
 
 Task::Task()

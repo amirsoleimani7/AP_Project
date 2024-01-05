@@ -14,6 +14,7 @@ private:
     QString taskText;
     Project taskProject;
     Person taskPerson;
+    QVector<Person> persons;
     bool isDone;
     QDateTime taskDeadLine;
     int priority;
@@ -37,6 +38,8 @@ public:
     bool operator ==(const Task& other);
     QDateTime getTaskDeadLine() const;
     void setTaskDeadLine(const QDateTime &newTaskDeadLine);
+    QVector<Person> getPersons() const;
+    void setPersons(const QVector<Person> &newPersons);
 };
 
 #endif // TASK_H
