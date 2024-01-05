@@ -20,6 +20,14 @@ private slots:
 
     void on_HamborBackBotton_clicked();
 
+    void on_HomeNewPProjectBotton_clicked();
+
+    void on_HomeNewOrgBotton_clicked();
+
+    void on_HomeNewPPBackBotton_clicked();
+
+    void on_HomeNewOrgBackBotton_clicked();
+
 private:
     Ui::Dashboard *ui;
 };
