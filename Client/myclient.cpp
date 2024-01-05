@@ -71,7 +71,7 @@ void myClient::Doing_senging_file()
     {
         if (tcpSocket->isOpen())
         {
-                QString filePath = QFileDialog::getOpenFileName(this,"Select File",QCoreApplication::applicationDirPath(),"File (*.txt *.db)");
+            QString filePath = QFileDialog::getOpenFileName(this,"Select File",QCoreApplication::applicationDirPath(),"File (*.txt *.db)");
             sendFile(tcpSocket,filePath);
         }
     }

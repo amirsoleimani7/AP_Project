@@ -34,7 +34,6 @@ private slots:
     void newConnection();
     void addToSocketList(QTcpSocket* socket);
     void on_sendFileBTN_clicked();
-
     //function for person ---------------- //sould work with id
     void change_user_personal_name(QString& name_in_data_base,QString &new_name_1);
     void add_person_to_data_base(QString &user_data);
@@ -103,13 +102,14 @@ private slots:
     void removing_person_from_task(QString& task_id,QString& person_id);
     QVector<QString> getting_persons_of_task(QString& task_id);
     //--------------------------
+    //comment functions
     void adding_comment_to_data_base(QString& comment_data);
     void changing_comment_value(QString& comment_id ,QString& new_comment_value);
     void changing_comment_reply(QString& comment_id,QString& new_comment_reply);
     void chnaing_comment_task(QString& comment_id,QString& new_comment_task);
     void chnaing_comment_person(QString& comment_id,QString& new_comment_person);
     QString getting_info_of_comment(QString& comment_id);
-
+    //-------------------------
 
 
 

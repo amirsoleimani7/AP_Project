@@ -2787,6 +2787,3 @@ QString myServer::getting_info_of_comment(QString &comment_id)
         qDebug() << "comment not found or an error occurred." << selectQuery.lastError();
     }
 }
-
-
-
