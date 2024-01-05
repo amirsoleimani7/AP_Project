@@ -48,6 +48,27 @@ myServer::myServer(QWidget *parent)
     else{
         qDebug() << ("team is open");
     }
+
+
+    mydb_project = QSqlDatabase::addDatabase("QSQLITE");
+    mydb_project.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/project_database.db");
+
+    if(!mydb_project.open()){
+        qDebug() << ("project is no open");
+    }
+    else{
+        qDebug() << ("project is open");
+    }
+
+    mydb_task= QSqlDatabase::addDatabase("QSQLITE");
+    mydb_task.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/task_database.db");
+
+    if(!mydb_task.open()){
+        qDebug() << ("task is no open");
+    }
+    else{
+        qDebug() << ("task is open");
+    }
 }
 
 myServer::~myServer()
@@ -2081,6 +2102,144 @@ QString myServer::getting_info_of_project(QString &project_id)
     else {
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
     }
+}
+
+//----------------------------------
+QVector<QString> myServer::getting_teams_of_project(QString &project_id)
+{
+    QString project_id_in_data_base = project_id;  // Set the actual username
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString teamsString = selectQuery.value("project_teams").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList teamList = teamsString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> teamsVector = teamList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<teamsVector.size();i++){
+            qDebug() <<teamsVector[i];
+        }
+
+        qDebug() << "teams  Vector: " << teamsVector;
+        return teamsVector;
+
+    } else {
+        qDebug() << "project not found or an error occurred." << selectQuery.lastError();
+    }
 
 }
+//--------------------
+QVector<QString> myServer::getting_tasks_of_project(QString &project_id)
+{
+
+    QString project_id_in_data_base = project_id;  // Set the actual username
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString tasksString = selectQuery.value("project_tasks").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList taskList = tasksString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> tasksVector = taskList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<tasksVector.size();i++){
+            qDebug() <<tasksVector[i];
+        }
+
+        qDebug() << "teams  Vector: " << tasksVector;
+        return tasksVector;
+
+    } else {
+        qDebug() << "project not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//------------------------
+//tasks functions
+void myServer::add_task_to_data_base(QString &task_data)
+{
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QString data_recieved_by_socket_to_add_to_task =  task_data;
+    QStringList fields = data_recieved_by_socket_to_add_to_task.split("*");
+    QString id_task_to_database = fields[1];
+
+    QSqlQuery checkQuery;
+
+    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :id_task_to_database");
+    checkQuery.bindValue(":id_task_to_database", id_task_to_database);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "task with the same id already exists in the database.";
+    }
+
+    else {
+
+        QSqlQuery insertQuery;
+
+        insertQuery.prepare("INSERT INTO tasks_info_database (tasks_id,task_text, task_project, task_person,tasks_persons,tasks_isdone,task_priority) VALUES (?, ?, ?, ?,?,?, ?)");
+
+        // Bind values for the insertion
+        insertQuery.addBindValue(fields[1]); //tasks_id
+        insertQuery.addBindValue(fields[2]); //task_text
+        insertQuery.addBindValue(fields[3]); //task_project
+        insertQuery.addBindValue(fields[4]); //task_person
+        insertQuery.addBindValue(fields[5]); //tasks_persons
+        insertQuery.addBindValue(fields[6]); //tasks_isdone
+        insertQuery.addBindValue(fields[7]); //task_priority
+
+
+        // Execute the insertion query
+        if (insertQuery.exec()) {
+            qDebug() << "task added successfully.";
+            // Sending feedback through socket that organization added to the database
+
+        }
+        else {
+            qDebug() << "Could not add task." <<insertQuery.lastError();
+        }
+    }
+}
+//--------------------------------
 

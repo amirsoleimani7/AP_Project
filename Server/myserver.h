@@ -89,6 +89,13 @@ private slots:
     void remove_team_from_project(QString& project_id,QString& team_id_to_remove);
     void remove_task_from_project(QString& project_id,QString& tasks_id_to_remove);
     QString getting_info_of_project(QString& project_id);
+    QVector<QString> getting_teams_of_project(QString& project_id);
+    QVector<QString> getting_tasks_of_project(QString& project_id);
+    //-------------------------
+    //tasks function
+    void add_task_to_data_base(QString& task_data);
+    void changing_text_of_base(QString& task_id,QString& new_text);
+
 
 
 private:
@@ -99,6 +106,9 @@ private:
     QSqlDatabase mydb_person;
     QSqlDatabase mydb_organization;
     QSqlDatabase mydb_team;
+    QSqlDatabase mydb_project;
+    QSqlDatabase mydb_task;
+
 
     QTcpServer *tcpServe;
     QList<QTcpSocket*> clientList;
