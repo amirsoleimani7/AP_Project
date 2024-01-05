@@ -154,16 +154,8 @@ void myServer::addToSocketList(QTcpSocket *socket)
 
 void myServer::on_sendFileBTN_clicked()
 {
-    QString filePath = QFileDialog::getOpenFileName(this,"Select File",QCoreApplication::applicationDirPath(),"File (*.txt *.db)");
-    if (ui->transferType->currentText() == "broadcast")
-    {
-        foreach (QTcpSocket* sockettemp, clientList)
-        {
-            sendFile(sockettemp,filePath);
-        }
-    }
-    else if(ui->transferType->currentText() == "reciver")
-    {
+    QString filePath = QCoreApplication::applicationDirPath() + '/' + "User.db";
+
         QString receiverId = ui->clientListCombo->currentText();
         foreach (QTcpSocket* sockettemp, clientList)
         {
@@ -172,7 +164,6 @@ void myServer::on_sendFileBTN_clicked()
             sendFile(sockettemp,filePath);
             }
         }
-    }
 }
 
 void myServer::change_user_personal_name(QString &name_in_data_base, QString &new_name_1)

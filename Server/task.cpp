@@ -66,6 +66,16 @@ bool Task::getIsDone() const
     return isDone;
 }
 
+
+QDateTime Task::getTaskDeadLine() const
+{
+    return taskDeadLine;
+}
+
+void Task::setTaskDeadLine(const QDateTime &newTaskDeadLine)
+{
+    taskDeadLine = newTaskDeadLine;
+
 QVector<Person> Task::getPersons() const
 {
     return persons;
@@ -81,7 +91,8 @@ Task::Task()
 
 }
 
-Task::Task(Project pro, QString TT,Person pers,int prio):taskId(taskIdGenerator+lastTaskId),taskProject(pro),taskText(TT),taskPerson(pers),priority(prio)
+Task::Task(Project pro, QString TT,Person pers,int prio, QDateTime dat):taskId(taskIdGenerator+lastTaskId),
+    taskProject(pro),taskText(TT),taskPerson(pers),priority(prio), taskDeadLine(dat)
 {
     taskIdGenerator++;
     isDone = false;
@@ -94,4 +105,5 @@ Task::Task(const Task &other)
     taskPerson = other.taskPerson;
     taskProject = other.taskProject;
     taskText = other.taskText;
+    taskDeadLine = other.taskDeadLine;
 }

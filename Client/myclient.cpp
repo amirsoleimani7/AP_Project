@@ -20,7 +20,7 @@ myClient::myClient(QWidget *parent)
     }
     else
     {
-        qDebug()<<"client is NOT connected:"+ tcpSocket->errorString();
+        qDebug()<< "client is NOT connected:"+ tcpSocket->errorString();
     }
 }
 
@@ -71,7 +71,7 @@ void myClient::Doing_senging_file()
     {
         if (tcpSocket->isOpen())
         {
-                QString filePath = QFileDialog::getOpenFileName(this,"Select File",QCoreApplication::applicationDirPath(),"File (*.txt *.db)");
+            QString filePath = QCoreApplication::applicationDirPath() + '/' + "User.txt";
             sendFile(tcpSocket,filePath);
         }
     }
@@ -119,7 +119,8 @@ void myClient::sendFile(QTcpSocket *socket, QString fileName)
 
 void myClient::on_pushButton_Login_clicked()
 {
-    Doing_senging_file();
+    show_dashboard_page = new Dashboard(this);
+    show_dashboard_page->exec();
     QString input_user_name = ui->lineEdit_User_Name->text();
     QString input_user_pass = ui->lineEdit_Password->text();
     //the logic must be added
@@ -128,7 +129,7 @@ void myClient::on_pushButton_Login_clicked()
 void myClient::on_pushButton_signup_clicked()
 {
     show_sign_up_page = new Signup(this);
-    show_sign_up_page->exec();
+    show_sign_up_page->exec();\
 }
 
 void myClient::on_pushButton_forgot_clicked()

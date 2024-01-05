@@ -8,6 +8,7 @@
 #include <QtWidgets>
 #include "signup.h"
 #include "forgotpass.h"
+#include "dashboard.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -39,6 +40,7 @@ private:
     Ui::myClient *ui;
     Signup *show_sign_up_page;
     ForgotPass *show_forgot_page;
+    Dashboard *show_dashboard_page;
     QTcpSocket * tcpSocket;
 };
 #endif // MYCLIENT_H
