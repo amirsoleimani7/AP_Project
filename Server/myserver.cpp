@@ -2686,7 +2686,107 @@ void myServer::changing_comment_reply(QString &comment_id, QString &new_comment_
         //feedback should be handled here
     }
 }
+
 //-------------------------
+void myServer::chnaing_comment_task(QString &comment_id, QString &new_comment_task)
+{
+    // CREATE TABLE "comment_info_database" (
+    //     "comment_id"	TEXT,
+    //     "comment_value"	TEXT,
+    //     "comment_reply"	TEXT,
+    //     "comment_task"	TEXT,
+    //     "comment_person"	TEXT
+    //     )
+
+    QString commment_id_in_data_base = comment_id;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE comment_info_database SET comment_task = :new_comment_task WHERE comment_id = :commment_id_in_data_base");
+    updateQuery.bindValue(":new_comment_task", new_comment_task);
+    updateQuery.bindValue(":commment_id_in_data_base", commment_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "comment task updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  comment task." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+
+}
+//-----------------------------
+void myServer::chnaing_comment_person(QString &comment_id, QString &new_comment_person)
+{
+    // CREATE TABLE "comment_info_database" (
+    //     "comment_id"	TEXT,
+    //     "comment_value"	TEXT,
+    //     "comment_reply"	TEXT,
+    //     "comment_task"	TEXT,
+    //     "comment_person"	TEXT
+    //     )
+
+    QString commment_id_in_data_base = comment_id;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE comment_info_database SET comment_person = :new_comment_person WHERE comment_id = :commment_id_in_data_base");
+    updateQuery.bindValue(":new_comment_person", new_comment_person);
+    updateQuery.bindValue(":commment_id_in_data_base", commment_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "comment person updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  comment person." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+
+//-------------------------------------
+QString myServer::getting_info_of_comment(QString &comment_id)
+{
+    // CREATE TABLE "comment_info_database" (
+    //     "comment_id"	TEXT,
+    //     "comment_value"	TEXT,
+    //     "comment_reply"	TEXT,
+    //     "comment_task"	TEXT,
+    //     "comment_person"	TEXT
+    //     )
+
+    QString comment_id_in_data_base = comment_id;
+    QString comment_info;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM comment_info_database WHERE comment_id = :comment_id_in_data_base");
+    selectQuery.bindValue(":comment_id_in_data_base", comment_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        // Retrieve values from the query result
+
+        QString id = selectQuery.value("comment_id").toString();
+        QString value = selectQuery.value("comment_value").toString();
+        QString reply = selectQuery.value("comment_reply").toString();
+        QString task = selectQuery.value("comment_task").toString();
+        QString person = selectQuery.value("comment_person").toString();
+
+        // Construct user_info string in the desired format
+        comment_info = QString("%1*%2*%3*%4*%5")
+                           .arg(id, value, reply, task, person);
+
+        qDebug() << comment_info;
+        return comment_info;
+        //return team_info;
+        //socket_handle
+    }
+    else {
+        qDebug() << "comment not found or an error occurred." << selectQuery.lastError();
+    }
+}
 
 
 

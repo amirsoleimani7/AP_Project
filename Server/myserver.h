@@ -105,7 +105,10 @@ private slots:
     //--------------------------
     void adding_comment_to_data_base(QString& comment_data);
     void changing_comment_value(QString& comment_id ,QString& new_comment_value);
-    void changing_comment_reply(QString& comment_id,QString& new_comment_reply)
+    void changing_comment_reply(QString& comment_id,QString& new_comment_reply);
+    void chnaing_comment_task(QString& comment_id,QString& new_comment_task);
+    void chnaing_comment_person(QString& comment_id,QString& new_comment_person);
+    QString getting_info_of_comment(QString& comment_id);
 
 
 
