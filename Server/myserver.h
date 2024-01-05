@@ -95,6 +95,7 @@ private slots:
     //tasks function
     void add_task_to_data_base(QString& task_data);
     void changing_text_of_base(QString& task_id,QString& new_text);
+    void changing_project_of_task()
 
 
 

@@ -2241,5 +2241,39 @@ void myServer::add_task_to_data_base(QString &task_data)
         }
     }
 }
+
 //--------------------------------
+void myServer::changing_text_of_base(QString &task_id, QString &new_text)
+{
+    QString task_id_in_data_base = task_id;
+    QString new_task_text  = new_text;
+
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE tasks_info_database SET task_text = :new_task_text WHERE tasks_id = :task_id_in_data_base");
+    updateQuery.bindValue(":new_task_text", new_task_text);
+    updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "tasks text updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  task text." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+//----------------------------------
+
 
