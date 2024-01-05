@@ -1669,4 +1669,418 @@ QString myServer::getting_info_of_team(QString team_id)
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
     }
 }
-//-----------------------------
+
+//-------------------------------
+
+//project functions
+
+void myServer::add_project_to_data_base(QString &project_data)
+{
+    QString data_recieved_by_socket_to_add_to_project = project_data;
+    QStringList fields = data_recieved_by_socket_to_add_to_project.split("*");
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QString id_project_to_database = fields[1];
+
+    QSqlQuery checkQuery;
+
+    checkQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :id_project_to_database");
+    checkQuery.bindValue(":id_project_to_database", id_project_to_database);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "project with the same id already exists in the database.";
+        //handeling the
+
+    }
+    else {
+
+        QSqlQuery insertQuery;
+
+        insertQuery.prepare("INSERT INTO project_info_database (project_id,project_name,project_type,project_person,project_teams,project_tasks) VALUES (?,?,?,?,?,?)");
+
+        // Bind values for the insertion
+        insertQuery.addBindValue(fields[1]); // project_id
+        insertQuery.addBindValue(fields[2]); // project_name
+        insertQuery.addBindValue(fields[3]); // project_type
+        insertQuery.addBindValue(fields[4]); // project_person
+        insertQuery.addBindValue(fields[5]); // project_teams
+        insertQuery.addBindValue(fields[6]); // project_tasks
+
+        // Execute the insertion query
+
+        if (insertQuery.exec()) {
+            qDebug() << "project added successfully.";
+            // Sending feedback through socket that organization added to the database
+
+        } else {
+            qDebug() << "Could not add project." << insertQuery.lastError();
+        }
+    }
+}
+
+//------------------------
+void myServer::changing_name_of_project(QString &project_id, QString &new_project_name)
+{
+    QString project_id_in_data_base = project_id;
+    QString new_project_name_in_data  = new_project_name;
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE project_info_database SET project_name = :new_project_name_in_data WHERE project_id = :project_id_in_data_base");
+    updateQuery.bindValue(":new_project_name_in_data", new_project_name_in_data);
+    updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "Project name updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update personal name." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+
+//---------------------------
+void myServer::changing_type_of_project(QString &project_id, QString &new_project_type)
+{
+    QString project_id_in_data_base = project_id;
+    QString new_project_type_in_data  = new_project_type;
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE project_info_database SET project_type = :new_project_type_in_data WHERE project_id = :project_id_in_data_base");
+    updateQuery.bindValue(":new_project_type_in_data", new_project_type_in_data);
+    updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "Project type updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update personal type." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+
+//--------------------
+void myServer::changing_person_of_project(QString &project_id, QString &id_of_person)
+{
+    QString project_id_in_data_base = project_id;
+    QString new_project_person_in_data  = id_of_person;
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE project_info_database SET project_person = :new_project_person_in_data WHERE project_id = :project_id_in_data_base");
+    updateQuery.bindValue(":new_project_person_in_data", new_project_person_in_data);
+    updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "Project person updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update personal person." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+
+//----------------------------------
+void myServer::add_team_to_project(QString &project_id, QString &new_team_to_add)
+{
+    QString project_id_in_data_base = project_id;  // Set the actual username
+    QString team_to_add = new_team_to_add;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString list_of_team = selectQuery.value("project_teams").toString();
+
+        QStringList existingteam = list_of_team.split(",");
+
+        if (!existingteam.contains(team_to_add)) {
+            list_of_team += "," + team_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE project_info_database SET project_teams = :new_teams_in_project WHERE project_id = :project_id_in_data_base");
+            updateQuery.bindValue(":new_teams_in_project", list_of_team);
+            updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "team already exists in the list.";
+        }
+
+    } else {
+        qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//------------------------------
+
+void myServer::add_task_to_project(QString &project_id, QString &new_task_to_add)
+{
+    QString project_id_in_data_base = project_id;  // Set the actual username
+    QString task_to_add = new_task_to_add;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString list_of_tasks = selectQuery.value("project_tasks").toString();
+
+        QStringList existingtasks = list_of_tasks.split(",");
+
+        if (!existingtasks.contains(task_to_add)) {
+            list_of_tasks += "," + task_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE project_info_database SET project_tasks = :new_task_in_project WHERE project_id = :project_id_in_data_base");
+            updateQuery.bindValue(":new_task_in_project", list_of_tasks);
+            updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+                //feedback
+
+
+
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+                //feedback
+
+
+            }
+        } else {
+            qDebug() << "tasks already exists in the list.";
+            //feedback
+
+        }
+
+    } else {
+        qDebug() << "team not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+//------------------------
+void myServer::remove_team_from_project(QString &project_id, QString &team_id_to_remove)
+{
+    QString project_id_in_data_base = project_id;  // Set the actual username
+    QString remove_team_from_project = team_id_to_remove;
+
+    // CREATE TABLE "project_info_database" (
+
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_teams = selectQuery.value("project_teams").toString();
+
+        // Split the existing organizations
+        QStringList existingteam = list_of_teams.split(",");
+
+        // Check if the organization to remove exists
+        if (existingteam.contains(remove_team_from_project)) {
+            // Remove the organization
+            existingteam.removeAll(remove_team_from_project);
+
+            // Join the organizations back into a string
+            QString newListOfteam = existingteam.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE project_info_database SET project_teams = :new_team_project WHERE project_id = :project_id_in_data_base");
+            updateQuery.bindValue(":new_team_project", newListOfteam);
+            updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "team removed successfully.";
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "team not found in the list.";
+        }
+    } else {
+        qDebug() << "project not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//--------------------------
+
+void myServer::remove_task_from_project(QString &project_id, QString &tasks_id_to_remove)
+{
+    QString project_id_in_data_base = "3";  // Set the actual username
+    QString remove_tasks_from_project = "project_tasks";
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QSqlQuery selectQuery;
+
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_tasks = selectQuery.value("project_tasks").toString();
+
+        // Split the existing organizations
+        QStringList existingtasks = list_of_tasks.split(",");
+
+        // Check if the organization to remove exists
+        if (existingtasks.contains(remove_tasks_from_project)) {
+            // Remove the organization
+            existingtasks.removeAll(remove_tasks_from_project);
+
+            // Join the organizations back into a string
+            QString newListOftasks = existingtasks.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE project_info_database SET project_tasks = :new_tasks_project WHERE project_id = :project_id_in_data_base");
+            updateQuery.bindValue(":new_tasks_project", newListOftasks);
+            updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+            if (updateQuery.exec()) {
+                qDebug() << "task removed successfully.";
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "task not found in the list.";
+        }
+    } else {
+        qDebug() << "project not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+
+//------------------------------
+QString myServer::getting_info_of_project(QString &project_id)
+{
+
+    // CREATE TABLE "project_info_database" (
+    //     "project_id"	TEXT,
+    //     "project_name"	TEXT,
+    //     "project_type"	TEXT,
+    //     "project_person"	TEXT,
+    //     "project_teams"	TEXT,
+    //     "project_tasks"	TEXT
+    // )
+
+    QString project_id_in_data_base = project_id;
+    QString project_info;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        // Retrieve values from the query result
+
+        QString id = selectQuery.value("project_id").toString();
+        QString name = selectQuery.value("project_name").toString();
+        QString type = selectQuery.value("project_type").toString();
+        QString person = selectQuery.value("project_person").toString();
+        QString teams = selectQuery.value("project_teams").toString();
+        QString tasks = selectQuery.value("project_tasks").toString();
+
+        // Construct user_info string in the desired format
+        project_info = QString("%1*%2*%3*%4*%5*%6")
+                           .arg(id, name, type, person, teams,tasks);
+
+        qDebug() << project_info;
+        return project_info;
+        //return team_info;
+        //socket_handle
+    }
+    else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+
+}
+

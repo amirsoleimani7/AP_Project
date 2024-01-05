@@ -78,6 +78,17 @@ private slots:
     QVector<QString> getting_persons_of_team(QString team_id);
     QVector<QString> getting_projects_of_team(QString team_id);
     QString getting_info_of_team(QString team_id);
+    //--------------------------
+    //project functions
+    void add_project_to_data_base(QString& project_data);
+    void changing_name_of_project(QString& project_id ,QString& new_project_name);
+    void changing_type_of_project(QString& project_id ,QString& new_project_type);
+    void changing_person_of_project(QString& project_id ,QString& id_of_person);
+    void add_team_to_project(QString& project_id,QString& new_team_to_add);
+    void add_task_to_project(QString& project_id,QString& new_task_to_add);
+    void remove_team_from_project(QString& project_id,QString& team_id_to_remove);
+    void remove_task_from_project(QString& project_id,QString& tasks_id_to_remove);
+    QString getting_info_of_project(QString& project_id);
 
 
 private:
