@@ -13,6 +13,7 @@ private:
     QString taskText;
     Project taskProject;
     Person taskPerson;
+    QVector<Person> persons;
     bool isDone;
     //date
     int priority;
@@ -34,6 +35,8 @@ public:
     void Done();
     void UnDone();
     bool operator ==(const Task& other);
+    QVector<Person> getPersons() const;
+    void setPersons(const QVector<Person> &newPersons);
 };
 
 #endif // TASK_H

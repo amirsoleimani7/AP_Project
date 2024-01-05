@@ -66,6 +66,16 @@ bool Task::getIsDone() const
     return isDone;
 }
 
+QVector<Person> Task::getPersons() const
+{
+    return persons;
+}
+
+void Task::setPersons(const QVector<Person> &newPersons)
+{
+    persons = newPersons;
+}
+
 Task::Task()
 {
 

@@ -15,6 +15,7 @@ private:
     Person admin;
     QVector<Person> teamMembers;
     QVector<Project> teamProjects;
+
 public:
     Team(QString TN);
     Team(const Team& other);
