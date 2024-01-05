@@ -2356,7 +2356,78 @@ void myServer::adding_person_to_task(QString &task_id, QString &person_to_add)
         qDebug() << "task not found or an error occurred." << selectQuery.lastError();
     }
 }
+
 //-------------------------------
+void myServer::changing_is_done_of_task(QString &task_id, QString &new_id_done)
+{
+
+    QString task_id_in_data_base = task_id;
+    QString new_is_done  = new_id_done;
+
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE tasks_info_database SET tasks_isdone = :new_is_done WHERE tasks_id = :task_id_in_data_base");
+    updateQuery.bindValue(":new_is_done", new_is_done);
+    updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "tasks isdone updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  task isdone." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+
+
+
+}
+//-------------------
+
+
+void myServer::changing_priority_of_task(QString &task_id, QString &new_priority)
+{
+    QString task_id_in_data_base =task_id;
+    QString new_task_priority  = new_priority;
+
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE tasks_info_database SET task_priority = :new_task_priority WHERE tasks_id = :task_id_in_data_base");
+    updateQuery.bindValue(":new_task_priority", new_task_priority);
+    updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "tasks priority updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  task priority." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+
 
 
 

@@ -97,7 +97,8 @@ private slots:
     void changing_text_of_task(QString& task_id,QString& new_text);
     void changing_project_of_task(QString& task_id ,QString& new_project);
     void adding_person_to_task(QString& task_id,QString& person_to_add);
-
+    void changing_is_done_of_task(QString& task_id,QString& new_id_done);
+    void changing_priority_of_task(QString& task_id,QString& new_priority);
 
 
 private:
