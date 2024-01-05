@@ -103,7 +103,9 @@ private slots:
     void removing_person_from_task(QString& task_id,QString& person_id);
     QVector<QString> getting_persons_of_task(QString& task_id);
     //--------------------------
-
+    void adding_comment_to_data_base(QString& comment_data);
+    void changing_comment_value(QString& comment_id ,QString& new_comment_value);
+    void changing_comment_reply(QString& comment_id,QString& new_comment_reply)
 
 
 

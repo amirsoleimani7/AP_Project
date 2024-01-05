@@ -69,6 +69,16 @@ myServer::myServer(QWidget *parent)
     else{
         qDebug() << ("task is open");
     }
+
+    mydb_comment= QSqlDatabase::addDatabase("QSQLITE");
+    mydb_comment.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/comment_database.db");
+
+    if(!mydb_comment.open()){
+        qDebug() << ("comment is no open");
+    }
+    else{
+        qDebug() << ("comment is open");
+    }
 }
 
 myServer::~myServer()
@@ -2566,7 +2576,117 @@ QVector<QString> myServer::getting_persons_of_task(QString &task_id)
         qDebug() << "task not found or an error occurred." << selectQuery.lastError();
     }
 }
+
 //----------------------------
+void myServer::adding_comment_to_data_base(QString &comment_data)
+{
+    // CREATE TABLE "comment_info_database" (
+    //     "comment_id"	TEXT,
+    //     "comment_value"	TEXT,
+    //     "comment_reply"	TEXT,
+    //     "comment_task"	TEXT,
+    //     "comment_person"	TEXT
+    //     )
+
+    QString data_recieved_by_socket_to_add_to_comment = comment_data;
+    QStringList fields = data_recieved_by_socket_to_add_to_comment.split("*");
+    QString id_comment_to_database = fields[1];
+
+    QSqlQuery checkQuery;
+
+    checkQuery.prepare("SELECT * FROM comment_info_database WHERE comment_id = :id_comment_to_database");
+    checkQuery.bindValue(":id_comment_to_database", id_comment_to_database);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "comment with the same id already exists in the database.";
+    }
+
+    else {
+
+        QSqlQuery insertQuery;
+
+        insertQuery.prepare("INSERT INTO comment_info_database (comment_id,comment_value, comment_reply, comment_task,comment_person) VALUES (?, ?, ?, ? , ?)");
+
+        // Bind values for the insertion
+        insertQuery.addBindValue(fields[1]); //comment_id
+        insertQuery.addBindValue(fields[2]); //comment_value
+        insertQuery.addBindValue(fields[3]); //comment_reply
+        insertQuery.addBindValue(fields[4]); //comment_task
+        insertQuery.addBindValue(fields[5]); //comment_person
+
+        // Execute the insertion query
+        if (insertQuery.exec()) {
+            qDebug() << "comment added successfully.";
+            // Sending feedback through socket that organization added to the database
+        }
+        else {
+            qDebug() << "Could not add comment." <<insertQuery.lastError();
+        }
+    }
+}
+
+//---------------------
+void myServer::changing_comment_value(QString &comment_id, QString &new_comment_value)
+{
+    // CREATE TABLE "comment_info_database" (
+    //     "comment_id"	TEXT,
+    //     "comment_value"	TEXT,
+    //     "comment_reply"	TEXT,
+    //     "comment_task"	TEXT,
+    //     "comment_person"	TEXT
+    //     )
+
+    QString commment_id_in_data_base = comment_id;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE comment_info_database SET comment_value = :new_comment_value WHERE comment_id = :commment_id_in_data_base");
+    updateQuery.bindValue(":new_comment_value", new_comment_value);
+    updateQuery.bindValue(":commment_id_in_data_base", commment_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "comment value updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  comment value." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+
+}
+
+//-------------------------
+
+void myServer::changing_comment_reply(QString &comment_id, QString &new_comment_reply)
+{
+    // CREATE TABLE "comment_info_database" (
+    //     "comment_id"	TEXT,
+    //     "comment_value"	TEXT,
+    //     "comment_reply"	TEXT,
+    //     "comment_task"	TEXT,
+    //     "comment_person"	TEXT
+    //     )
+
+    QString commment_id_in_data_base = comment_id;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE comment_info_database SET comment_reply = :new_comment_reply WHERE comment_id = :commment_id_in_data_base");
+    updateQuery.bindValue(":new_comment_reply", new_comment_reply);
+    updateQuery.bindValue(":commment_id_in_data_base", commment_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "comment reply updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  comment reply." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+}
+//-------------------------
 
 
 
