@@ -2428,6 +2428,105 @@ void myServer::changing_priority_of_task(QString &task_id, QString &new_priority
     }
 }
 
+//-----------------------------
+QString myServer::getting_info_of_tasks(QString &task_id)
+{
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QString task_id_in_data_base = task_id;
+    QString task_info;
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :task_id_in_data_base");
+    selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        // Retrieve values from the query result
+
+        QString id = selectQuery.value("tasks_id").toString();
+        QString text = selectQuery.value("task_text").toString();
+        QString project = selectQuery.value("task_project").toString();
+        QString person = selectQuery.value("task_person").toString();
+        QString persons = selectQuery.value("tasks_persons").toString();
+        QString is_done = selectQuery.value("tasks_isdone").toString();
+        QString priority = selectQuery.value("task_priority").toString();
+
+        // Construct user_info string in the desired format
+        task_info = QString("%1*%2*%3*%4*%5*%6*%7")
+                        .arg(id, text, project, person, persons,is_done,priority);
+
+        qDebug() << task_info;
+        return task_info;
+        //socket_handle
+    }
+    else {
+        qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//----------------------------
+
+void myServer::removing_person_from_task(QString &task_id, QString &person_id)
+{
+
+    QString task_id_in_data_base_1 = task_id;  // Set the actual username
+    QString remove_person_from_task = person_id;
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+
+    QSqlQuery selectQuery;
+
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :task_id_in_data_base");
+    selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base_1);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_persons = selectQuery.value("tasks_persons").toString();
+
+        // Split the existing organizations
+        QStringList existingpersons = list_of_persons.split(",");
+
+        // Check if the organization to remove exists
+        if (existingpersons.contains(remove_person_from_task)) {
+            // Remove the organization
+            existingpersons.removeAll(remove_person_from_task);
+
+            // Join the organizations back into a string
+            QString newListOfperson = existingpersons.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE tasks_info_database SET tasks_persons = :new_tasks_persons WHERE tasks_id = :task_id_in_data_base_1");
+            updateQuery.bindValue(":new_tasks_persons", newListOfperson);
+            updateQuery.bindValue(":task_id_in_data_base_1", task_id_in_data_base_1);
+
+            if (updateQuery.exec()) {
+                qDebug() << "person removed successfully.";
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "person not found in the list.";
+        }
+    } else {
+        qDebug() << "task not found or an error occurred." << selectQuery.lastError();
+    }
+
+}
+
 
 
 

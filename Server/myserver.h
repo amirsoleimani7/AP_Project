@@ -99,6 +99,9 @@ private slots:
     void adding_person_to_task(QString& task_id,QString& person_to_add);
     void changing_is_done_of_task(QString& task_id,QString& new_id_done);
     void changing_priority_of_task(QString& task_id,QString& new_priority);
+    QString getting_info_of_tasks(QString& task_id);
+    void removing_person_from_task(QString& task_id,QString& person_id);
+
 
 
 private:
