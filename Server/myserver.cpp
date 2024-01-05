@@ -2189,7 +2189,7 @@ QVector<QString> myServer::getting_tasks_of_project(QString &project_id)
 
 //------------------------
 //tasks functions
-void myServer::add_task_to_data_base(QString &task_data)
+void myServer::add_task_to_data_task(QString &task_data)
 {
 
     // CREATE TABLE "tasks_info_database" (
@@ -2243,7 +2243,7 @@ void myServer::add_task_to_data_base(QString &task_data)
 }
 
 //--------------------------------
-void myServer::changing_text_of_base(QString &task_id, QString &new_text)
+void myServer::changing_text_of_task(QString &task_id, QString &new_text)
 {
     QString task_id_in_data_base = task_id;
     QString new_task_text  = new_text;
@@ -2274,6 +2274,89 @@ void myServer::changing_text_of_base(QString &task_id, QString &new_text)
         //feedback should be handled here
     }
 }
+
+void myServer::changing_project_of_task(QString &task_id, QString &new_project)
+{
+    QString task_id_in_data_base = task_id;
+    QString new_project_id  = new_project;
+
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE tasks_info_database SET task_project = :new_task_project WHERE tasks_id = :task_id_in_data_base");
+    updateQuery.bindValue(":new_task_project", new_project_id);
+    updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "tasks project updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  task project." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+
+}
 //----------------------------------
+
+void myServer::adding_person_to_task(QString &task_id, QString &person_to_add)
+{
+    QString task_id_in_data_base =task_id ;  // Set the actual username
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :task_id_in_data_base");
+    selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString list_of_persons = selectQuery.value("tasks_persons").toString();
+
+        QStringList existingperson = list_of_persons.split(",");
+
+        if (!existingperson.contains(person_to_add)) {
+            list_of_persons += "," + person_to_add;
+
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE tasks_info_database SET tasks_persons = :new_tasks_persons WHERE tasks_id = :task_id_in_data_base");
+            updateQuery.bindValue(":new_tasks_persons", list_of_persons);
+            updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+            if (updateQuery.exec())
+            {
+                qDebug() << "Row updated successfully.";
+            }
+            else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "person already exists in the list.";
+        }
+
+    } else {
+        qDebug() << "task not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//-------------------------------
+
 
 

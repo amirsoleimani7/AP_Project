@@ -93,9 +93,10 @@ private slots:
     QVector<QString> getting_tasks_of_project(QString& project_id);
     //-------------------------
     //tasks function
-    void add_task_to_data_base(QString& task_data);
-    void changing_text_of_base(QString& task_id,QString& new_text);
-    void changing_project_of_task()
+    void add_task_to_data_task(QString& task_data);
+    void changing_text_of_task(QString& task_id,QString& new_text);
+    void changing_project_of_task(QString& task_id ,QString& new_project);
+    void adding_person_to_task(QString& task_id,QString& person_to_add);
 
 
 
