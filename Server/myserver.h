@@ -101,6 +101,10 @@ private slots:
     void changing_priority_of_task(QString& task_id,QString& new_priority);
     QString getting_info_of_tasks(QString& task_id);
     void removing_person_from_task(QString& task_id,QString& person_id);
+    QVector<QString> getting_persons_of_task(QString& task_id);
+    //--------------------------
+
+
 
 
 
@@ -114,6 +118,7 @@ private:
     QSqlDatabase mydb_team;
     QSqlDatabase mydb_project;
     QSqlDatabase mydb_task;
+    QSqlDatabase mydb_comment;
 
 
     QTcpServer *tcpServe;

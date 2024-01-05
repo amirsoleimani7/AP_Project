@@ -2526,7 +2526,47 @@ void myServer::removing_person_from_task(QString &task_id, QString &person_id)
     }
 
 }
+//---------------------------
+QVector<QString> myServer::getting_persons_of_task(QString &task_id)
+{
+    QString tasks_id_in_data_base = task_id;  // Set the actual username
 
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :tasks_id_in_data_base");
+    selectQuery.bindValue(":tasks_id_in_data_base", tasks_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString personString = selectQuery.value("tasks_persons").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList personList = personString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> personVector = personList.toVector();
+
+        // Use teamsVector as needed
+        for(int i = 0;i<personVector.size();i++){
+            qDebug() <<personVector[i];
+        }
+
+        qDebug() << "persons  Vector: " << personVector;
+        return personVector;
+
+    } else {
+        qDebug() << "task not found or an error occurred." << selectQuery.lastError();
+    }
+}
+//----------------------------
 
 
 
