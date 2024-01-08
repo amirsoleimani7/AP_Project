@@ -14,10 +14,10 @@
    <string>myClient</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>250</x>
       <y>200</y>
       <width>331</width>
       <height>221</height>
@@ -65,10 +65,10 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>240</x>
       <y>460</y>
       <width>155</width>
       <height>31</height>
@@ -91,10 +91,10 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>430</x>
       <y>460</y>
       <width>155</width>
       <height>31</height>

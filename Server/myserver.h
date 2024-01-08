@@ -13,6 +13,8 @@
 #include <QVector>
 #include <QString>
 #include <QStringList>
+#include <QFile>
+
 
 
 QT_BEGIN_NAMESPACE
@@ -26,17 +28,24 @@ class myServer : public QMainWindow
     Q_OBJECT
 
 public:
+
     myServer(QWidget *parent = nullptr);
     ~myServer();
+    void add_person_to_data_base(QString &user_data);
+
 private slots:
+    // void read_instruction();
     void readSocket();
     void discardsocket();
     void newConnection();
     void addToSocketList(QTcpSocket* socket);
     void on_sendFileBTN_clicked();
+    void writing_feed_back(QString& feed_back);
+    void reading_instructions_from_sokcet(QString& instruction_on_socket);
+
     //function for person ---------------- //sould work with id
-    void change_user_personal_name(QString& name_in_data_base,QString &new_name_1);
-    void add_person_to_data_base(QString &user_data);
+
+    void change_user_personal_name_1(QString& name_in_data_base,QString& new_name);
     void change_user_email(QString& name_in_data_base,QString &new_email_1);
     void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
     QString get_user_info(QString& name_in_data_base);
@@ -53,6 +62,7 @@ private slots:
     QVector<QString> teams_of_person(QString& name_in_data_base);
     QVector<QString> task_of_person(QString& name_in_data_base);
     QVector<QString> projects_of_person(QString& name_in_data_base);
+
     //-------------------------
     //functions for organization
     void add_organization_to_data_base(QString& organization_data);
@@ -65,6 +75,7 @@ private slots:
     QString getting_info_of_organizatios(QString& organization_id);
     QVector<QString> get_team_of_organization(QString& organization_id);
     QVector<QString> get_person_of_organization(QString& organization_id);
+
     //--------------------------
     //team functions
     void add_team_to_data_base(QString& team_data);
@@ -77,6 +88,7 @@ private slots:
     QVector<QString> getting_persons_of_team(QString team_id);
     QVector<QString> getting_projects_of_team(QString team_id);
     QString getting_info_of_team(QString team_id);
+
     //--------------------------
     //project functions
     void add_project_to_data_base(QString& project_data);
@@ -90,6 +102,7 @@ private slots:
     QString getting_info_of_project(QString& project_id);
     QVector<QString> getting_teams_of_project(QString& project_id);
     QVector<QString> getting_tasks_of_project(QString& project_id);
+
     //-------------------------
     //tasks function
     void add_task_to_data_task(QString& task_data);
@@ -101,6 +114,7 @@ private slots:
     QString getting_info_of_tasks(QString& task_id);
     void removing_person_from_task(QString& task_id,QString& person_id);
     QVector<QString> getting_persons_of_task(QString& task_id);
+
     //--------------------------
     //comment functions
     void adding_comment_to_data_base(QString& comment_data);
@@ -118,6 +132,7 @@ private:
 
 private:
     Ui::myServer *ui;
+
     QSqlDatabase mydb_person;
     QSqlDatabase mydb_organization;
     QSqlDatabase mydb_team;

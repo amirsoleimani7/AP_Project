@@ -41,9 +41,8 @@ void ForgotPass::on_pushButton_clicked()
             ui->label_pass_status->setText("you can't change your pass");
         }
     }
+
 }
-
-
 void ForgotPass::on_pushButton_change_pass_word_clicked()
 {
     if(ui->lineEdit_new_pass_1->text().isEmpty() || ui->lineEdit_new_pass_2->text().isEmpty()){
