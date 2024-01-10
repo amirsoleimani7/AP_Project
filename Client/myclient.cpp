@@ -1,4 +1,3 @@
-
 #include "myclient.h"
 #include "ui_myclient.h"
 
@@ -107,6 +106,9 @@ void  myClient::readSocket()
     QString fileExt = HeaderData.split(',')[1].split(':')[1];
 
     DataBuffer = DataBuffer.mid(128);
+    if(DataBuffer == "it_isdone"){
+        QMessageBox::information(this,"this","done");
+    }
 
     QString saveFilePath = QCoreApplication::applicationDirPath() + "/" + fileName;
 

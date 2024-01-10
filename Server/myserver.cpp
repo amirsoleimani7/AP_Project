@@ -18,66 +18,79 @@ myServer::myServer(QWidget *parent)
         QMessageBox::information(this, "tcp error ",tcpServe->errorString());
     }
 
+
+
+    //for database person
+    QFile::copy(":/data/person_database.db", "person_database.db");
+
     mydb_person= QSqlDatabase::addDatabase("QSQLITE","person_info_database");
-    mydb_person.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/person_database.db");
+    mydb_person.setDatabaseName("person_database.db");
 
     if(!mydb_person.open()){
-        qDebug() << ("data is no open");
+        qDebug() << "Error opening person database:" << mydb_person.lastError().text();
     }
     else{
-        qDebug() << ("data is open");
+        qDebug() << "Person database is open";
     }
 
-    mydb_organization= QSqlDatabase::addDatabase("QSQLITE","organization_info_database");
-    mydb_organization.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/organization_database.db");
+    //for database organization
+    QFile::copy(":/data/organization_database.db", "organization_database.db");
+    mydb_organization = QSqlDatabase::addDatabase("QSQLITE", "organization_info_database");
+    mydb_organization.setDatabaseName("organization_database.db");
 
-    if(!mydb_organization.open()){
-        qDebug() << ("organization is no open");
-    }
-    else{
-        qDebug() << ("organization is open");
-    }
-
-
-    mydb_team = QSqlDatabase::addDatabase("QSQLITE","team_info_database");
-    mydb_team.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/team_database.db");
-
-    if(!mydb_team.open()){
-        qDebug() << ("team is no open");
-    }
-    else{
-        qDebug() << ("team is open");
+    if (!mydb_organization.open()) {
+        qDebug() << "Error opening organization database:" << mydb_organization.lastError().text();
+    } else {
+        qDebug() << "Organization database is open";
     }
 
-    mydb_project = QSqlDatabase::addDatabase("QSQLITE","projet_info_databse");
-    mydb_project.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/project_database.db");
+    //for database team
+    QFile::copy(":/data/team_database.db", "team_database.db");
+    mydb_team = QSqlDatabase::addDatabase("QSQLITE", "team_info_database");
+    mydb_team.setDatabaseName("team_database.db");
 
-    if(!mydb_project.open()){
-        qDebug() << ("project is no open");
-    }
-    else{
-        qDebug() << ("project is open");
-    }
-
-    mydb_task= QSqlDatabase::addDatabase("QSQLITE","task_info_database");
-    mydb_task.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/task_database.db");
-
-    if(!mydb_task.open()){
-        qDebug() << ("task is no open");
-    }
-    else{
-        qDebug() << ("task is open");
+    if (!mydb_team.open()) {
+        qDebug() << "Error opening team database:" << mydb_team.lastError().text();
+    } else {
+        qDebug() << "Team database is open";
     }
 
-    mydb_comment= QSqlDatabase::addDatabase("QSQLITE","comment_info_database");
-    mydb_comment.setDatabaseName("C:/Users/amir_1/Desktop/DataBase/comment_database.db");
 
-    if(!mydb_comment.open()){
-        qDebug() << ("comment is no open");
+    //for database project
+    QFile::copy(":/data/project_database.db", "project_database.db");
+    mydb_project = QSqlDatabase::addDatabase("QSQLITE", "projet_info_databse");
+    mydb_project.setDatabaseName("project_database.db");
+
+    if (!mydb_project.open()) {
+        qDebug() << "Error opening project database:" << mydb_project.lastError().text();
+    } else {
+        qDebug() << "Project database is open";
     }
-    else{
-        qDebug() << ("comment is open");
+
+    //for database task
+    QFile::copy(":/data/task_database.db", "task_database.db");
+    mydb_task = QSqlDatabase::addDatabase("QSQLITE", "task_info_database");
+    mydb_task.setDatabaseName("task_database.db");
+
+    if (!mydb_task.open()) {
+        qDebug() << "Error opening task database:" << mydb_task.lastError().text();
+    } else {
+        qDebug() << "Task database is open";
     }
+
+
+    //for database comment
+    QFile::copy(":/data/comment_database.db", "comment_database.db");
+
+    mydb_comment = QSqlDatabase::addDatabase("QSQLITE", "comment_info_database");
+    mydb_comment.setDatabaseName("comment_database.db");
+
+    if (!mydb_comment.open()) {
+        qDebug() << "Error opening comment database:" << mydb_comment.lastError().text();
+    } else {
+        qDebug() << "Comment database is open";
+    }
+
 }
 
 myServer::~myServer()
@@ -109,6 +122,8 @@ void myServer::readSocket()
     QString fileExt = HeaderData.split(',')[1].split(':')[1];
 
     DataBuffer = DataBuffer.mid(128);
+
+    qDebug() <<"data buffer is : " <<DataBuffer;
 
     QString saveFilePath = QCoreApplication::applicationDirPath() + "/" + fileName;
 
@@ -224,6 +239,7 @@ void myServer::writing_feed_back(QString &feed_back)
 void myServer::reading_instructions_from_sokcet(QString& instruction_on_socket)
 {
     QStringList fields= instruction_on_socket.split("*");
+    qDebug() << instruction_on_socket;
     QString main_instruction = fields[0];
     if(main_instruction == "cheack_pass")
     {
@@ -2858,7 +2874,7 @@ QString myServer::getting_info_of_comment(QString &comment_id)
     QString comment_id_in_data_base = comment_id;
     QString comment_info;
 
-    QSqlQuery selectQuery(mydb_person);
+    QSqlQuery selectQuery(mydb_comment);
     selectQuery.prepare("SELECT * FROM comment_info_database WHERE comment_id = :comment_id_in_data_base");
     selectQuery.bindValue(":comment_id_in_data_base", comment_id_in_data_base);
 

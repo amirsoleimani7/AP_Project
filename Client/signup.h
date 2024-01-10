@@ -12,7 +12,7 @@ namespace Ui {
 class Signup;
 }
 
-class Signup : public QDialog , public myClient
+class Signup : public QDialog
 {
     Q_OBJECT
 

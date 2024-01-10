@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/data">
+        <file>comment_database.db</file>
+        <file>organization_database.db</file>
+        <file>person_database.db</file>
+        <file>project_database.db</file>
+        <file>task_database.db</file>
+        <file>team_database.db</file>
+    </qresource>
+</RCC>
