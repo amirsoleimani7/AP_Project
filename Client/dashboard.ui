@@ -17,7 +17,7 @@
    <item>
     <widget class="QStackedWidget" name="MainStack">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_3">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -162,7 +162,7 @@
              <item row="1" column="2">
               <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Teams</string>
+                <string>One Team</string>
                </property>
               </widget>
              </item>
@@ -550,7 +550,7 @@
              <item row="1" column="2">
               <widget class="QLabel" name="label_6">
                <property name="text">
-                <string>Projects</string>
+                <string>One Project</string>
                </property>
               </widget>
              </item>
