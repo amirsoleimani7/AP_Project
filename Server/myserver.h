@@ -35,6 +35,7 @@ public:
 
 private slots:
     // void read_instruction();
+    void choose_funtion(QString& instruction_from_socket);
     void readSocket();
     void discardsocket();
     void newConnection();

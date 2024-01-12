@@ -93,6 +93,30 @@ myServer::myServer(QWidget *parent)
 
 }
 
+void myServer::choose_funtion(QString &instruction_from_socket)
+{
+    QStringList fields= instruction_from_socket.split("*");
+
+    qDebug() << instruction_from_socket;
+
+    QString main_instruction = fields[0];
+
+    if(main_instruction == "cheack_pass")
+    {
+        check_for_pass_word(fields[1],fields[2]);
+        //feedback should be handled in the actual function
+    }
+
+    if(main_instruction == "add_this_guy"){
+        //should be handled acordingly
+    }
+
+}
+
+
+
+
+
 myServer::~myServer()
 
 {
@@ -238,13 +262,8 @@ void myServer::writing_feed_back(QString &feed_back)
 
 void myServer::reading_instructions_from_sokcet(QString& instruction_on_socket)
 {
-    QStringList fields= instruction_on_socket.split("*");
-    qDebug() << instruction_on_socket;
-    QString main_instruction = fields[0];
-    if(main_instruction == "cheack_pass")
-    {
-        check_for_pass_word(fields[1],fields[2]);
-    }
+    //QStringList fields= instruction_on_socket.split("*");
+    choose_funtion(instruction_on_socket);
 }
 
 //----------------------------
@@ -362,6 +381,7 @@ void myServer::add_person_to_data_base(QString &user_data)
         }
     }
 }
+
 
 //----------------------
 
