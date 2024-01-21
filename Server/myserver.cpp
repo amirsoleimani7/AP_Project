@@ -21,10 +21,28 @@ myServer::myServer(QWidget *parent)
 
 
     //for database person
-    QFile::copy(":/data/person_database.db", "person_database.db");
+    // For person database
 
+
+
+    // QFile::copy(":/data/person_info_database.db", "person_info_database.db");
+    // mydb_person = QSqlDatabase::addDatabase("QSQLITE", "person_info_database");
+    // QString personDbPath = QCoreApplication::applicationDirPath() + "/person_database.db";
+    // mydb_person.setDatabaseName(personDbPath);
+    // mydb_person.setConnectOptions("QSQLITE_OPEN_READWRITE");
+
+    // if (!mydb_person.open()) {
+    //     qDebug() << "Error opening person database:" << mydb_person.lastError().text();
+    // } else {
+    //     qDebug() << "Person database is open";
+    // }
+
+    // Repeat similar changes for other databases
+
+    QFile::copy(":/data/person_database.db", "person_database.db");
     mydb_person= QSqlDatabase::addDatabase("QSQLITE","person_info_database");
-    mydb_person.setDatabaseName("person_database.db");
+    mydb_person.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/person_database.db");
+    mydb_person.setConnectOptions("QSQLITE_OPEN_READWRITE");
 
     if(!mydb_person.open()){
         qDebug() << "Error opening person database:" << mydb_person.lastError().text();
@@ -36,7 +54,7 @@ myServer::myServer(QWidget *parent)
     //for database organization
     QFile::copy(":/data/organization_database.db", "organization_database.db");
     mydb_organization = QSqlDatabase::addDatabase("QSQLITE", "organization_info_database");
-    mydb_organization.setDatabaseName("organization_database.db");
+    mydb_organization.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/organization_database.db");
 
     if (!mydb_organization.open()) {
         qDebug() << "Error opening organization database:" << mydb_organization.lastError().text();
@@ -47,7 +65,7 @@ myServer::myServer(QWidget *parent)
     //for database team
     QFile::copy(":/data/team_database.db", "team_database.db");
     mydb_team = QSqlDatabase::addDatabase("QSQLITE", "team_info_database");
-    mydb_team.setDatabaseName("team_database.db");
+    mydb_team.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/team_database.db");
 
     if (!mydb_team.open()) {
         qDebug() << "Error opening team database:" << mydb_team.lastError().text();
@@ -55,11 +73,10 @@ myServer::myServer(QWidget *parent)
         qDebug() << "Team database is open";
     }
 
-
     //for database project
     QFile::copy(":/data/project_database.db", "project_database.db");
     mydb_project = QSqlDatabase::addDatabase("QSQLITE", "projet_info_databse");
-    mydb_project.setDatabaseName("project_database.db");
+    mydb_project.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/project_database.db");
 
     if (!mydb_project.open()) {
         qDebug() << "Error opening project database:" << mydb_project.lastError().text();
@@ -70,7 +87,7 @@ myServer::myServer(QWidget *parent)
     //for database task
     QFile::copy(":/data/task_database.db", "task_database.db");
     mydb_task = QSqlDatabase::addDatabase("QSQLITE", "task_info_database");
-    mydb_task.setDatabaseName("task_database.db");
+    mydb_task.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/task_database.db");
 
     if (!mydb_task.open()) {
         qDebug() << "Error opening task database:" << mydb_task.lastError().text();
@@ -83,21 +100,21 @@ myServer::myServer(QWidget *parent)
     QFile::copy(":/data/comment_database.db", "comment_database.db");
 
     mydb_comment = QSqlDatabase::addDatabase("QSQLITE", "comment_info_database");
-    mydb_comment.setDatabaseName("comment_database.db");
+    mydb_comment.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/comment_database.db");
 
     if (!mydb_comment.open()) {
         qDebug() << "Error opening comment database:" << mydb_comment.lastError().text();
     } else {
         qDebug() << "Comment database is open";
     }
-
 }
+
 
 void myServer::choose_funtion(QString &instruction_from_socket)
 {
     QStringList fields= instruction_from_socket.split("*");
 
-    qDebug() << instruction_from_socket;
+    qDebug() << "instruction is : "<<instruction_from_socket;
 
     QString main_instruction = fields[0];
 
@@ -107,15 +124,21 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         //feedback should be handled in the actual function
     }
 
-    if(main_instruction == "add_this_guy"){
+    if(main_instruction == "add_person"){
+        add_person_to_data_base(instruction_from_socket);
+
         //should be handled acordingly
     }
 
+    if(main_instruction == "get_user_inf"){
+        get_user_info(fields[1]);
+    }
+
+    if(main_instruction == "change_user_pass"){
+        chnage_user_pass(fields[1],fields[2]);
+    }
+
 }
-
-
-
-
 
 myServer::~myServer()
 
@@ -182,8 +205,6 @@ void myServer::readSocket()
     qDebug() << instructon;
     reading_instructions_from_sokcet(instructon);
 }
-
-
 
 void myServer::discardsocket()
 {
@@ -257,6 +278,7 @@ void myServer::writing_feed_back(QString &feed_back)
         // Handle the case where the file cannot be opened
         qDebug() << "error opening the file for writing.";
     }
+    on_sendFileBTN_clicked();
 
 }
 
@@ -282,7 +304,6 @@ void myServer::change_user_personal_name_1(QString &name_in_data_base, QString &
     if (updateQuery.exec()) {
         qDebug() << "Personal name updated successfully.";
         //feed back should be handled here
-
 
     } else {
         qDebug() << "Could not update personal name." << updateQuery.lastError();
@@ -330,14 +351,13 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
     }
 }
 
-
-
 //adding functions
 //---------------
 //adding person to function
 void myServer::add_person_to_data_base(QString &user_data)
 {
 
+    qDebug() << "instruction in the add_person_to_data_base is: " <<user_data;
     QString data_recieved_by_socket_to_add = user_data;
     QStringList fields = data_recieved_by_socket_to_add.split("*");
     QString user_name_to_database = fields[2];
@@ -347,8 +367,12 @@ void myServer::add_person_to_data_base(QString &user_data)
     checkQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_name_given");
     checkQuery.bindValue(":user_name_given", user_name_to_database);
 
+    qDebug() << "Number of elements in fields: " << fields.size();
+
     if (checkQuery.exec() && checkQuery.next()) {
         qDebug() << "User with the same username already exists in the database.";
+        QString feed_b = "there is another person with the same username";
+        writing_feed_back(feed_b);
     } else
     {
         // User doesn't exist, add them to the database
@@ -356,28 +380,41 @@ void myServer::add_person_to_data_base(QString &user_data)
 
         insertQuery.prepare("INSERT INTO person_info_database (person_id,username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
 
+        for (int i = 1; i <= 12; ++i) {
+            qDebug() << "Bind Value " << i << ": " << fields.value(i);
+        }
+
         // Bind values for the insertion
         insertQuery.addBindValue(fields[1]); //person_id
         insertQuery.addBindValue(fields[2]); //user_name
-        insertQuery.addBindValue(fields[3]); //
-        insertQuery.addBindValue(fields[4]);
-        insertQuery.addBindValue(fields[5]);
-        insertQuery.addBindValue(fields[6]);
-        insertQuery.addBindValue(fields[7]);
-        insertQuery.addBindValue(fields[8]);
+        insertQuery.addBindValue(fields[3]); //pass
+        insertQuery.addBindValue(fields[4]); //personal name
+        insertQuery.addBindValue(fields[5]); //email
+        insertQuery.addBindValue(fields[6]); //fav anmimal
+        insertQuery.addBindValue(fields[7]);  //fav color
+        insertQuery.addBindValue(fields[8]);  //fav city
+        insertQuery.addBindValue(fields[9]);  //fav city
+        insertQuery.addBindValue(fields[10]);  //fav city
+        insertQuery.addBindValue(fields[11]);  //fav city
+        insertQuery.addBindValue(fields[12]);  //fav city
 
 
-        insertQuery.addBindValue("default_org");
-        insertQuery.addBindValue("default_teams");
-        insertQuery.addBindValue("default_projects");
-        insertQuery.addBindValue("default_tasks");
+        // insertQuery.addBindValue("default_org");
+        // insertQuery.addBindValue("default_teams");
+        // insertQuery.addBindValue("default_projects");
+        // insertQuery.addBindValue("default_tasks");
 
         // Execute the insertion query
         if (insertQuery.exec()) {
-            qDebug() << "Uxser added successfully.";
+            qDebug() << "User added successfully.";
+            QString feed_b = "true_person_add";
+            writing_feed_back(feed_b);
             // Sending feedback through socket that person added to the database
         } else {
             qDebug() << "Could not add user." <<insertQuery.lastError();
+
+            QString feed_b = "could not add person";
+            writing_feed_back(feed_b);
         }
     }
 }
@@ -424,6 +461,7 @@ void myServer::change_user_email(QString &name_in_data_base, QString &new_email_
 //-------------------------------
 void myServer::chnage_user_pass(QString &name_in_data_base, QString &new_pass_1)
 {
+
     QString user_name_in_data_base = name_in_data_base;
     QString new_pass = new_pass_1;
 
@@ -434,10 +472,14 @@ void myServer::chnage_user_pass(QString &name_in_data_base, QString &new_pass_1)
 
     if (updateQuery.exec()) {
         qDebug() << "pass updated successfully.";
+        QString x ="true";
+        writing_feed_back(x);
         // Feedback should be handled here
     } else {
         qDebug() << "Could not update pass." << updateQuery.lastError();
         // Feedback should be handled here
+        QString x ="coudn't update pass";
+        writing_feed_back(x);
     }
 }
 //----------------------------------
@@ -446,7 +488,7 @@ QString myServer::get_user_info(QString& name_in_data_base)
     QString user_in_data_base = name_in_data_base;
     QString user_info;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", user_in_data_base);
 
@@ -465,10 +507,13 @@ QString myServer::get_user_info(QString& name_in_data_base)
                         .arg(id, user_name, password, personal_name, email, fav_animal, fav_color, fav_city);
 
         qDebug() << user_info;
+        writing_feed_back(user_info);
         return user_info;
 
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        QString x = "false_user_info";
+        writing_feed_back(x);
     }
 }
 
@@ -514,7 +559,7 @@ bool myServer::check_for_pass_word(QString &name_in_data_base,QString &input_pas
         if (password == input_password) {
             qDebug() << "Correct password for user: " << name_in_data_base;
 
-            QString feed_back = "true";
+            QString feed_back = "Correct_pass";
             writing_feed_back(feed_back);
             on_sendFileBTN_clicked();
 

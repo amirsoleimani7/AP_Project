@@ -6,6 +6,7 @@ ForgotPass::ForgotPass(QWidget *parent)
     , ui(new Ui::ForgotPass)
 {
     ui->setupUi(this);
+    socket = new socket_connection(this);
 }
 
 ForgotPass::~ForgotPass()
@@ -26,7 +27,21 @@ void ForgotPass::on_pushButton_clicked()
         QString user_name_input = ui->lineEdit_get_user_name->text();
         QString user_animal_input = ui->lineEdit_get_fav_animal->text();
         QString user_city_input = ui->lineEdit_get_fav_city->text();
-        QString user_color_input = ui->lineEdit_get_fav_color->text();
+        QString cuser_color_input = ui->lineEdit_get_fav_color->text();
+        QString get_user = "get_user_inf*" + user_name_input;
+        socket->witing_instructions(get_user);
+        socket->delay();
+        QString data_recieved_from_server = socket->reading_feed_back();
+        QStringList x  = data_recieved_from_server.split("*");
+        QString fav_animal_from_data_base = x[5];
+        QString fav_color_from_data_base = x[6];
+        QString fav_city_from_data_base = x[7];
+        qDebug() << fav_animal_from_data_base << fav_color_from_data_base << fav_city_from_data_base;
+
+        if(user_animal_input ==fav_animal_from_data_base && user_city_input == fav_city_from_data_base && cuser_color_input == fav_color_from_data_base){
+            flag_can_change = true;
+        }
+
         //we should check with the data base here
         //
         //
@@ -66,15 +81,20 @@ void ForgotPass::on_pushButton_change_pass_word_clicked()
                     if(user_new_pass_1[i].isLower()){
                         flag_is_lower = true;
                     }
-
                 }
-
                 if(flag_is_lower && flag_is_uppper){
-                    QMessageBox::information(this,"this","name chnaged");
-                    //here we should edit the data base
-                    //
-                    //
-                    //
+                    QString user_name_input = ui->lineEdit_get_user_name->text();
+                    QString instru = "change_user_pass*"+user_name_input+"*"+user_new_pass_1;
+                    socket->witing_instructions(instru);
+                    socket->delay();
+                    QString x_recieved = socket->reading_feed_back();
+                    qDebug() << "feed back for changing pass: "<<x_recieved;
+                    if(x_recieved == "true"){
+                        QMessageBox::information(this,"this","pass chnaged");
+                    }
+                    else{
+                        QMessageBox::information(this,"this",x_recieved);
+                    }
                 }
                 else{
                     QMessageBox::information(this,"this","trying again");

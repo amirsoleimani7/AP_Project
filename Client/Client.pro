@@ -13,13 +13,15 @@ SOURCES += \
     forgotpass.cpp \
     main.cpp \
     myclient.cpp \
-    signup.cpp
+    signup.cpp \
+    socket_connection.cpp
 
 HEADERS += \
     dashboard.h \
     forgotpass.h \
     myclient.h \
-    signup.h
+    signup.h \
+    socket_connection.h
 
 FORMS += \
     dashboard.ui \
