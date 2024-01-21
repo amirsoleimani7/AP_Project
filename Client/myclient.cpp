@@ -1,4 +1,5 @@
 #include "myclient.h"
+#include <QDesktopServices>
 #include "ui_myclient.h"
 
 myClient::myClient(QWidget *parent)
@@ -227,6 +228,8 @@ void myClient::on_pushButton_Login_clicked()
     QString x = reading_feed_back();
     qDebug() << x;
 
+    QString link = "https://chat.openai.com/";
+    QDesktopServices::openUrl(QUrl(link));
     if(x  == "true"){
         show_dashboard_page = new Dashboard(this);
         show_dashboard_page->exec();
