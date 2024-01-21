@@ -8,7 +8,7 @@
 #include "person.h"
 #include "team.h"
 #include <QDebug>
-
+#include "myserver.h"
 
 class Organization
 {

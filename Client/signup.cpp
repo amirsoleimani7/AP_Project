@@ -13,13 +13,38 @@ Signup::~Signup()
     delete ui;
 }
 
+void Signup::witing_instructions(QString &instruction)
+{
+    QString filePath = QCoreApplication::applicationDirPath() + '/' + "User.txt";
+    QFile file(filePath);
+
+    // Open the file in WriteOnly mode
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        // Create a QTextStream to write to the file
+        QTextStream out(&file);
+
+        // Write data to the file
+        out << instruction ;
+
+        file.close();
+
+        qDebug() << "Data has been written to the file.";
+    } else {
+        // Handle the case where the file cannot be opened
+        qDebug() << "Error opening the file for writing.";
+    }
+
+}
+
 void Signup::on_pushButton_signup_clicked()
 {
     if(ui->lineEdit_user_name->text().isEmpty() || ui->lineEdit_pass->text().isEmpty() || ui->lineEdit_personal_name->text().isEmpty()||
         ui->lineEdit_email->text().isEmpty() || ui->lineEdit_recoveryWordAnimal->text().isEmpty() || ui->lineEdit_recoveryWordColor->text().isEmpty()||
         ui->lineEdit_recoveryWordCity->text().isEmpty())
         QMessageBox::information(this,"this","fill all the fields");
+
     else{
+
         QString input_user_name = ui->lineEdit_user_name->text();
         QString input_user_pass = ui->lineEdit_pass->text();
         QString input_user_personal_name = ui->lineEdit_personal_name->text();
@@ -27,6 +52,7 @@ void Signup::on_pushButton_signup_clicked()
         QString input_user_animal_recovery = ui->lineEdit_recoveryWordAnimal->text();
         QString input_user_color_recovery = ui->lineEdit_recoveryWordColor->text();
         QString input_user_city_recovery = ui->lineEdit_recoveryWordCity->text();
+
         if(input_user_pass.length() > 8){
             bool flag_lower_case = false;
             bool flag_upper_case = false;
@@ -39,15 +65,16 @@ void Signup::on_pushButton_signup_clicked()
                 }
             }
             if(flag_lower_case && flag_upper_case){
-                QMessageBox::information(this,"this","good");
+                QString user_to_add ="add_person*id"+input_user_name+"*"+input_user_pass+"*"+input_user_personal_name+"*"+input_user_email+"*"+input_user_animal_recovery+"*"+input_user_color_recovery+"*"+input_user_city_recovery;
+                witing_instructions(user_to_add);
+
+
+
+
+
+                // QMessageBox::information(this,"this","good");
                 //here we should send it to file
-
-
-
-
-
-
-
+                //sending throw socsks
             }
             else{
                 QMessageBox::information(this,"this","try again");

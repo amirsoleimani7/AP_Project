@@ -4,10 +4,10 @@
 #include <QDialog>
 #include <QMessageBox>
 namespace Ui {
-class ForgotPass;
+class ForgotPass ;
 }
 
-class ForgotPass : public QDialog
+class ForgotPass : public QDialog , public myClient
 {
     Q_OBJECT
 
