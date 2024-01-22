@@ -1677,6 +1677,48 @@ QVector<QString> myServer::get_person_of_organization(QString &organization_id)
     }
 }
 
+void myServer::change_project_name_in_all_teams(QString &old_project_name, QString &new_project_name)
+{
+    QSqlQuery selectQuery(mydb_team);
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_projects LIKE :old_project");
+    selectQuery.bindValue(":old_project", "%" + old_project_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_projects = selectQuery.value("team_projects").toString();
+            QStringList existingProjects = list_of_projects.split(",");
+
+            if (existingProjects.contains(old_project_name)) {
+                // Replace old project name with new one
+                for (int i = 0; i < existingProjects.size(); ++i) {
+                    if (existingProjects.at(i) == old_project_name) {
+                        existingProjects.replace(i, new_project_name);
+                        break;
+                    }
+                }
+
+                QString updated_projects = existingProjects.join(",");
+                QSqlQuery updateQuery(mydb_team);
+                updateQuery.prepare("UPDATE team_info_database SET team_projects = :new_projects WHERE team_id = :team_id");
+                updateQuery.bindValue(":new_projects", updated_projects);
+                updateQuery.bindValue(":team_id", selectQuery.value("team_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for team_id:" << selectQuery.value("team_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for team_id:" << selectQuery.value("team_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
+
+
 //-------------------------------
 //team function
 

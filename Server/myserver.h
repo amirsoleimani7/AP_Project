@@ -89,6 +89,7 @@ private slots:
 
     //--------------------------
     //team functions
+    void change_project_name_in_all_teams(QString& old_project_name,QString& new_project_name);
 
 
     void add_team_to_data_base(QString& team_data);
