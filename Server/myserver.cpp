@@ -1129,7 +1129,7 @@ void myServer::chnage_name_of_organization(QString &organization_id, QString &ne
     QSqlQuery checkQuery;
 
     checkQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
-    checkQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+    checkQuery.bindValue(":organization_id_in_data_base", new_name_for_organization);
 
     if (checkQuery.exec() && checkQuery.next()) {
         qDebug() << "organization with the same id already exists in the database.";
@@ -1137,7 +1137,7 @@ void myServer::chnage_name_of_organization(QString &organization_id, QString &ne
     }
     else{
         QSqlQuery updateQuery(mydb_organization);
-        updateQuery.prepare("UPDATE organization_info_database SET organization_name = :new_organization_name WHERE organization_id = :organization_id_in_data_base");
+        updateQuery.prepare("UPDATE organization_info_database SET organization_name = :new_organization_name WHERE organization_name = :organization_id_in_data_base");
         updateQuery.bindValue(":new_organization_name", new_name);
         updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
@@ -1518,24 +1518,45 @@ void myServer::add_team_to_data_base(QString &team_data)
 
 void myServer::change_name_of_team(QString &team_id, QString new_name)
 {
-    QString team_id_in_data_base = team_id;
+    QString team_id_in_data_base = team_id; //it is the old name not the id
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE team_info_database SET team_name = :new_team_name WHERE team_id = :team_id_in_data_base");
-    updateQuery.bindValue(":new_team_name", new_name);
-    updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+    QSqlQuery checkQuery(mydb_team);
 
-    if (updateQuery.exec()) {
-        qDebug() << "team name updated successfully.";
+    // CREATE TABLE "team_info_database" (
+    //     "team_id"	TEXT,
+    //     "team_name"	TEXT,
+    //     "team_admin"	TEXT,
+    //     "team_persons"	TEXT,
+    //     "team_projects"	TEXT
+    //     )
 
-        // You can add additional logic or feedback here
-        //feed back should be handled here
+    checkQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
+    checkQuery.bindValue(":team_id_in_data_base", new_name);
 
-    } else {
-        qDebug() << "Could not update team name." << updateQuery.lastError();
-        // You can handle the error or provide feedback here
-        //feedback should be handled here
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "team with the same id already exists in the database.";
+        //should be handled through socket!!
+
     }
+    else{
+        QSqlQuery updateQuery(mydb_team);
+        updateQuery.prepare("UPDATE team_info_database SET team_name = :new_team_name WHERE team_name = :team_id_in_data_base");
+        updateQuery.bindValue(":new_team_name", new_name);
+        updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
+
+        if (updateQuery.exec()) {
+            qDebug() << "team name updated successfully.";
+
+            // You can add additional logic or feedback here
+            //feed back should be handled here
+
+        } else {
+            qDebug() << "Could not update team name." << updateQuery.lastError();
+            // You can handle the error or provide feedback here
+            //feedback should be handled here
+        }
+    }
+
 }
 
 
@@ -1937,7 +1958,7 @@ void myServer::add_project_to_data_base(QString &project_data)
 //------------------------
 void myServer::changing_name_of_project(QString &project_id, QString &new_project_name)
 {
-    QString project_id_in_data_base = project_id;
+    QString project_id_in_data_base = project_id; //it is essentialy the old name
     QString new_project_name_in_data  = new_project_name;
 
     // CREATE TABLE "project_info_database" (
@@ -1949,20 +1970,33 @@ void myServer::changing_name_of_project(QString &project_id, QString &new_projec
     //     "project_tasks"	TEXT
     // )
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE project_info_database SET project_name = :new_project_name_in_data WHERE project_id = :project_id_in_data_base");
-    updateQuery.bindValue(":new_project_name_in_data", new_project_name_in_data);
-    updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+    QSqlQuery checkQuery(mydb_project);
 
-    if (updateQuery.exec()) {
-        qDebug() << "Project name updated successfully.";
-        // You can add additional logic or feedback here
-        //feed back should be handled here
+    checkQuery.prepare("SELECT * FROM project_info_database WHERE project_name = :id_project_to_database");
+    checkQuery.bindValue(":id_project_to_database", new_project_name);
 
-    } else {
-        qDebug() << "Could not update personal name." << updateQuery.lastError();
-        // You can handle the error or provide feedback here
-        //feedback should be handled here
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "project with the same id already exists in the database.";
+        //handeling the socket
+
+    }
+    else{
+
+        QSqlQuery updateQuery(mydb_project);
+        updateQuery.prepare("UPDATE project_info_database SET project_name = :new_project_name_in_data WHERE project_name = :project_id_in_data_base");
+        updateQuery.bindValue(":new_project_name_in_data", new_project_name_in_data);
+        updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
+
+        if (updateQuery.exec()) {
+            qDebug() << "Project name updated successfully.";
+            // You can add additional logic or feedback here
+            //feed back should be handled here
+
+        } else {
+            qDebug() << "Could not update personal name." << updateQuery.lastError();
+            // You can handle the error or provide feedback here
+            //feedback should be handled here
+        }
     }
 }
 
@@ -2429,6 +2463,54 @@ void myServer::add_task_to_data_task(QString &task_data)
     }
 }
 
+void myServer::changing_task_id(QString &task_id, QString &task_new_id)
+{
+
+    QString task_id_in_data_base = task_id;
+
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     "task_priority"	INTEGER,
+    //     "task_date"	TEXT)
+
+    QSqlQuery checkQuery(mydb_task);
+
+    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :id_task_to_database");
+    checkQuery.bindValue(":id_task_to_database", task_new_id);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "task with the same id already exists in the database.";
+    }
+
+
+    else{
+
+        QSqlQuery updateQuery(mydb_task);
+        updateQuery.prepare("UPDATE tasks_info_database SET task_id = :new_task_text WHERE tasks_id = :task_id_in_data_base");
+        updateQuery.bindValue(":new_task_text", task_new_id);
+        updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+        if (updateQuery.exec()) {
+            qDebug() << "tasks text updated successfully.";
+            // You can add additional logic or feedback here
+            //feed back should be handled here
+
+        } else {
+            qDebug() << "Could not update  task text." << updateQuery.lastError();
+            // You can handle the error or provide feedback here
+            //feedback should be handled here
+        }
+
+    }
+
+}
+
 //--------------------------------
 void myServer::changing_text_of_task(QString &task_id, QString &new_text)
 {
@@ -2446,21 +2528,34 @@ void myServer::changing_text_of_task(QString &task_id, QString &new_text)
     //     "task_priority"	INTEGER,
     //     "task_date"	TEXT)
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE tasks_info_database SET task_text = :new_task_text WHERE tasks_id = :task_id_in_data_base");
-    updateQuery.bindValue(":new_task_text", new_task_text);
-    updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+    QSqlQuery checkQuery(mydb_task);
 
-    if (updateQuery.exec()) {
-        qDebug() << "tasks text updated successfully.";
-        // You can add additional logic or feedback here
-        //feed back should be handled here
+    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :id_task_to_database");
+    checkQuery.bindValue(":id_task_to_database", new_text);
 
-    } else {
-        qDebug() << "Could not update  task text." << updateQuery.lastError();
-        // You can handle the error or provide feedback here
-        //feedback should be handled here
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "task with the same id already exists in the database.";
     }
+    else{
+
+        QSqlQuery updateQuery;
+        updateQuery.prepare("UPDATE tasks_info_database SET task_text = :new_task_text WHERE tasks_id = :task_id_in_data_base");
+        updateQuery.bindValue(":new_task_text", new_task_text);
+        updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+        if (updateQuery.exec()) {
+            qDebug() << "tasks text updated successfully.";
+            // You can add additional logic or feedback here
+            //feed back should be handled here
+
+        } else {
+            qDebug() << "Could not update  task text." << updateQuery.lastError();
+            // You can handle the error or provide feedback here
+            //feedback should be handled here
+        }
+
+    }
+
 }
 
 void myServer::changing_project_of_task(QString &task_id, QString &new_project)
@@ -2834,6 +2929,51 @@ void myServer::adding_comment_to_data_base(QString &comment_data)
             qDebug() << "Could not add comment." <<insertQuery.lastError();
         }
     }
+}
+
+void myServer::chnaging_comment_id(QString &comment_id, QString &new_comment_id)
+{
+
+
+    //     "comment_id"	TEXT,
+    //     "comment_value"	TEXT,
+    //     "comment_reply"	TEXT,
+    //     "comment_task"	TEXT,
+    //     "comment_person"	TEXT
+    //     )
+
+    QSqlQuery checkQuery(mydb_comment);
+
+    checkQuery.prepare("SELECT * FROM comment_info_database WHERE comment_id = :id_comment_to_database");
+    checkQuery.bindValue(":id_comment_to_database", new_comment_id);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "comment with the same id already exists in the database.";
+        //feed back ....
+
+    }
+
+
+    else{
+
+        QSqlQuery updateQuery;
+        updateQuery.prepare("UPDATE comment_info_database SET comment_id = :new_comment_id WHERE comment_id = :commment_id_in_data_base");
+        updateQuery.bindValue(":new_comment_id", new_comment_id);
+        updateQuery.bindValue(":commment_id_in_data_base", comment_id);
+
+        if (updateQuery.exec()) {
+            qDebug() << "comment value updated successfully.";
+            // You can add additional logic or feedback here
+            //feed back should be handled here
+
+        } else {
+            qDebug() << "Could not update  comment value." << updateQuery.lastError();
+            // You can handle the error or provide feedback here
+            //feedback should be handled here
+        }
+    }
+
+
 }
 
 //---------------------

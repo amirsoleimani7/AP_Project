@@ -48,6 +48,7 @@ private slots:
 
     //function for person ---------------- //sould work with id
 
+
     void change_user_personal_name_1(QString& name_in_data_base,QString& new_name);
     void change_user_email(QString& name_in_data_base,QString &new_email_1);
     void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
@@ -107,9 +108,10 @@ private slots:
     QVector<QString> getting_tasks_of_project(QString& project_id);
 
     //-------------------------
-    //tasks function
 
+    //tasks function
     void add_task_to_data_task(QString& task_data);
+    void changing_task_id(QString& task_id ,QString& task_new_id);
     void changing_text_of_task(QString& task_id,QString& new_text);
     void changing_project_of_task(QString& task_id ,QString& new_project);
     void adding_person_to_task(QString& task_id,QString& person_to_add);
@@ -124,16 +126,14 @@ private slots:
     //comment functions
 
     void adding_comment_to_data_base(QString& comment_data);
+    void chnaging_comment_id(QString& comment_id,QString& new_comment_id);
     void changing_comment_value(QString& comment_id ,QString& new_comment_value);
     void changing_comment_reply(QString& comment_id,QString& new_comment_reply);
     void chnaing_comment_task(QString& comment_id,QString& new_comment_task);
     void chnaing_comment_person(QString& comment_id,QString& new_comment_person);
     QString getting_info_of_comment(QString& comment_id);
 
-
     //-------------------------
-
-
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
