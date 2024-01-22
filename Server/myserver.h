@@ -34,7 +34,9 @@ public:
     void add_person_to_data_base(QString &user_data);
 
 private slots:
+
     // void read_instruction();
+
     void choose_funtion(QString& instruction_from_socket);
     void readSocket();
     void discardsocket();
@@ -106,24 +108,29 @@ private slots:
 
     //-------------------------
     //tasks function
+
     void add_task_to_data_task(QString& task_data);
     void changing_text_of_task(QString& task_id,QString& new_text);
     void changing_project_of_task(QString& task_id ,QString& new_project);
     void adding_person_to_task(QString& task_id,QString& person_to_add);
     void changing_is_done_of_task(QString& task_id,QString& new_id_done);
     void changing_priority_of_task(QString& task_id,QString& new_priority);
+    void chaning_date_of_task(QString& task_name,QString& new_task_date);
     QString getting_info_of_tasks(QString& task_id);
     void removing_person_from_task(QString& task_id,QString& person_id);
     QVector<QString> getting_persons_of_task(QString& task_id);
 
     //--------------------------
     //comment functions
+
     void adding_comment_to_data_base(QString& comment_data);
     void changing_comment_value(QString& comment_id ,QString& new_comment_value);
     void changing_comment_reply(QString& comment_id,QString& new_comment_reply);
     void chnaing_comment_task(QString& comment_id,QString& new_comment_task);
     void chnaing_comment_person(QString& comment_id,QString& new_comment_person);
     QString getting_info_of_comment(QString& comment_id);
+
+
     //-------------------------
 
 

@@ -2388,7 +2388,8 @@ void myServer::add_task_to_data_task(QString &task_data)
     //     "task_person"	TEXT,
     //     "tasks_persons"	TEXT,
     //     "tasks_isdone"	TEXT
-    //     , "task_priority"	INTEGER)
+    //     "task_priority"	INTEGER,
+    //     "task_date"	TEXT)
 
     QString data_recieved_by_socket_to_add_to_task =  task_data;
     QStringList fields = data_recieved_by_socket_to_add_to_task.split("*");
@@ -2402,12 +2403,11 @@ void myServer::add_task_to_data_task(QString &task_data)
     if (checkQuery.exec() && checkQuery.next()) {
         qDebug() << "task with the same id already exists in the database.";
     }
-
     else {
 
         QSqlQuery insertQuery;
 
-        insertQuery.prepare("INSERT INTO tasks_info_database (tasks_id,task_text, task_project, task_person,tasks_persons,tasks_isdone,task_priority) VALUES (?, ?, ?, ?,?,?, ?)");
+        insertQuery.prepare("INSERT INTO tasks_info_database (tasks_id,task_text, task_project, task_person,tasks_persons,tasks_isdone,task_priority,task_date) VALUES (?, ?, ?, ?,?,?, ?,?)");
 
         // Bind values for the insertion
         insertQuery.addBindValue(fields[1]); //tasks_id
@@ -2417,7 +2417,7 @@ void myServer::add_task_to_data_task(QString &task_data)
         insertQuery.addBindValue(fields[5]); //tasks_persons
         insertQuery.addBindValue(fields[6]); //tasks_isdone
         insertQuery.addBindValue(fields[7]); //task_priority
-
+        insertQuery.addBindValue(fields[8]); //task_priority
 
         // Execute the insertion query
         if (insertQuery.exec()) {
@@ -2445,7 +2445,8 @@ void myServer::changing_text_of_task(QString &task_id, QString &new_text)
     //     "task_person"	TEXT,
     //     "tasks_persons"	TEXT,
     //     "tasks_isdone"	TEXT
-    //     , "task_priority"	INTEGER)
+    //     "task_priority"	INTEGER,
+    //     "task_date"	TEXT)
 
     QSqlQuery updateQuery;
     updateQuery.prepare("UPDATE tasks_info_database SET task_text = :new_task_text WHERE tasks_id = :task_id_in_data_base");
@@ -2616,6 +2617,39 @@ void myServer::changing_priority_of_task(QString &task_id, QString &new_priority
     }
 }
 
+
+void myServer::chaning_date_of_task(QString& task_name,QString &new_task_date)
+{
+    QString task_id_in_data_base = task_name;
+
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE tasks_info_database SET task_date = :new_task_date WHERE tasks_id = :task_id_in_data_base");
+    updateQuery.bindValue(":new_task_date", new_task_date);
+    updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    if (updateQuery.exec()) {
+        qDebug() << "tasks date updated successfully.";
+        // You can add additional logic or feedback here
+        //feed back should be handled here
+
+    } else {
+        qDebug() << "Could not update  task date." << updateQuery.lastError();
+        // You can handle the error or provide feedback here
+        //feedback should be handled here
+    }
+
+}
+
 //-----------------------------
 QString myServer::getting_info_of_tasks(QString &task_id)
 {
@@ -2645,10 +2679,11 @@ QString myServer::getting_info_of_tasks(QString &task_id)
         QString persons = selectQuery.value("tasks_persons").toString();
         QString is_done = selectQuery.value("tasks_isdone").toString();
         QString priority = selectQuery.value("task_priority").toString();
+        QString date = selectQuery.value("task_date").toString();
 
         // Construct user_info string in the desired format
-        task_info = QString("%1*%2*%3*%4*%5*%6*%7")
-                        .arg(id, text, project, person, persons,is_done,priority);
+        task_info = QString("%1*%2*%3*%4*%5*%6*%7*%8")
+                        .arg(id, text, project, person, persons,is_done,priority,date);
 
         qDebug() << task_info;
         return task_info;
