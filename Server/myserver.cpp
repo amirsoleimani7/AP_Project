@@ -18,27 +18,6 @@ myServer::myServer(QWidget *parent)
         QMessageBox::information(this, "tcp error ",tcpServe->errorString());
     }
 
-
-
-    //for database person
-    // For person database
-
-
-
-    // QFile::copy(":/data/person_info_database.db", "person_info_database.db");
-    // mydb_person = QSqlDatabase::addDatabase("QSQLITE", "person_info_database");
-    // QString personDbPath = QCoreApplication::applicationDirPath() + "/person_database.db";
-    // mydb_person.setDatabaseName(personDbPath);
-    // mydb_person.setConnectOptions("QSQLITE_OPEN_READWRITE");
-
-    // if (!mydb_person.open()) {
-    //     qDebug() << "Error opening person database:" << mydb_person.lastError().text();
-    // } else {
-    //     qDebug() << "Person database is open";
-    // }
-
-    // Repeat similar changes for other databases
-
     QFile::copy(":/data/person_database.db", "person_database.db");
     mydb_person= QSqlDatabase::addDatabase("QSQLITE","person_info_database");
     mydb_person.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/person_database.db");
@@ -1136,28 +1115,47 @@ void myServer::add_organization_to_data_base(QString &organization_data)
 void myServer::chnage_name_of_organization(QString &organization_id, QString &new_name_for_organization)
 {
 
-    QString organization_id_in_data_base = organization_id;
+    QString organization_id_in_data_base = organization_id; //it's the old name of the organization
     QString new_name  = new_name_for_organization;
 
+    // CREATE TABLE "organization_info_database" (
+    //     "organization_id"	TEXT,
+    //     "organization_name"	TEXT,
+    //     "organization_owner"	TEXT,
+    //     "organization_team"	TEXT,
+    //     "organization_person"	TEXT
+    //     )
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE organization_info_database SET organization_name = :new_organization_name WHERE organization_id = :organization_id_in_data_base");
-    updateQuery.bindValue(":new_organization_name", new_name);
-    updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+    QSqlQuery checkQuery;
 
-    if (updateQuery.exec()) {
-        qDebug() << "organization name updated successfully.";
+    checkQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
+    checkQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
-        // You can add additional logic or feedback here
-        //feed back should be handled here
-
-
-    } else {
-        qDebug() << "Could not update organization name." << updateQuery.lastError();
-        // You can handle the error or provide feedback here
-        //feedback should be handled here
-
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "organization with the same id already exists in the database.";
+        //should be handeled with socket
     }
+    else{
+        QSqlQuery updateQuery(mydb_organization);
+        updateQuery.prepare("UPDATE organization_info_database SET organization_name = :new_organization_name WHERE organization_id = :organization_id_in_data_base");
+        updateQuery.bindValue(":new_organization_name", new_name);
+        updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+        if (updateQuery.exec()) {
+            qDebug() << "organization name updated successfully.";
+
+            // You can add additional logic or feedback here
+            //feed back should be handled here
+
+
+        } else {
+            qDebug() << "Could not update organization name." << updateQuery.lastError();
+            // You can handle the error or provide feedback here
+            //feedback should be handled here
+
+        }
+    }
+
 }
 
 //----------------------------
