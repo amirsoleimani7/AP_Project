@@ -73,6 +73,9 @@ private slots:
 
     //-------------------------
     //functions for organization
+    void change_team_name_in_all_organizations(QString& old_team_name,QString& new_team_name);
+
+
     void add_organization_to_data_base(QString& organization_data);
     void chnage_name_of_organization(QString& organization_id,QString& new_name_for_organization);
     void chnage_owner_of_organization(QString& organization_id,QString& new_owner_for_organization);
@@ -86,6 +89,8 @@ private slots:
 
     //--------------------------
     //team functions
+
+
     void add_team_to_data_base(QString& team_data);
     void change_name_of_team(QString& team_id,QString new_name);
     void change_admin_of_the_team(QString& team_id ,QString& new_name);

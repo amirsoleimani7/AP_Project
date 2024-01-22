@@ -393,7 +393,7 @@ void myServer::change_task_name_in_person(QString &task_old_name, QString &task_
 
 void myServer::change_project_name_in_all_person(QString &project_old_name, QString &project_new_name)
 {
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE projects LIKE :old_project");
     selectQuery.bindValue(":old_project", "%" + project_old_name + "%");
 
@@ -412,7 +412,7 @@ void myServer::change_project_name_in_all_person(QString &project_old_name, QStr
                 }
 
                 QString updated_projects = existingProjects.join(",");
-                QSqlQuery updateQuery;
+                QSqlQuery updateQuery(mydb_person);
                 updateQuery.prepare("UPDATE person_info_database SET projects = :new_projects WHERE person_id = :person_id");
                 updateQuery.bindValue(":new_projects", updated_projects);
                 updateQuery.bindValue(":person_id", selectQuery.value("person_id").toString());
@@ -1223,7 +1223,48 @@ QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
     }
 }
 
-//----------------------------------
+void myServer::change_team_name_in_all_organizations(QString &old_team_name, QString &new_team_name)
+{
+    QSqlQuery selectQuery(mydb_organization);
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_team LIKE :old_team");
+    selectQuery.bindValue(":old_team", "%" + old_team_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_teams = selectQuery.value("organization_team").toString();
+            QStringList existingTeams = list_of_teams.split(",");
+
+            if (existingTeams.contains(old_team_name)) {
+                // Replace old team name with new one
+                for (int i = 0; i < existingTeams.size(); ++i) {
+                    if (existingTeams.at(i) == old_team_name) {
+                        existingTeams.replace(i, new_team_name);
+                        break;
+                    }
+                }
+
+                QString updated_teams = existingTeams.join(",");
+                QSqlQuery updateQuery(mydb_organization);
+                updateQuery.prepare("UPDATE organization_info_database SET organization_team = :new_teams WHERE organization_id = :organization_id");
+                updateQuery.bindValue(":new_teams", updated_teams);
+                updateQuery.bindValue(":organization_id", selectQuery.value("organization_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for organization_id:" << selectQuery.value("organization_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for organization_id:" << selectQuery.value("organization_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
+
+//---------------------------------
 
 //organization functions
 
