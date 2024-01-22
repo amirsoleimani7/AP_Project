@@ -391,6 +391,48 @@ void myServer::change_task_name_in_person(QString &task_old_name, QString &task_
     }
 }
 
+void myServer::change_project_name_in_all_person(QString &project_old_name, QString &project_new_name)
+{
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE projects LIKE :old_project");
+    selectQuery.bindValue(":old_project", "%" + project_old_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_projects = selectQuery.value("projects").toString();
+            QStringList existingProjects = list_of_projects.split(",");
+
+            if (existingProjects.contains(project_old_name)) {
+                // Replace old project name with new one
+                for (int i = 0; i < existingProjects.size(); ++i) {
+                    if (existingProjects.at(i) == project_old_name) {
+                        existingProjects.replace(i, project_new_name);
+                        break;
+                    }
+                }
+
+                QString updated_projects = existingProjects.join(",");
+                QSqlQuery updateQuery;
+                updateQuery.prepare("UPDATE person_info_database SET projects = :new_projects WHERE person_id = :person_id");
+                updateQuery.bindValue(":new_projects", updated_projects);
+                updateQuery.bindValue(":person_id", selectQuery.value("person_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for person_id:" << selectQuery.value("person_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for person_id:" << selectQuery.value("person_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
+
+
 
 
 //----------------------------
