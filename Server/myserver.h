@@ -47,6 +47,10 @@ private slots:
     void reading_instructions_from_sokcet(QString& instruction_on_socket);
 
     //function for person ---------------- //sould work with id
+    void change_organization_name_in_all_person(QString& organization_old_name,QString& organization_new_name);
+    void change_team_name_in_all_person(QString& team_old_name,QString& team_new_name);
+    void change_task_name_in_person(QString& task_old_name,QString& task_new_name);
+
 
 
     void change_user_personal_name_1(QString& name_in_data_base,QString& new_name);

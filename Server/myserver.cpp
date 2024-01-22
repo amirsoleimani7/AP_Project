@@ -267,6 +267,132 @@ void myServer::reading_instructions_from_sokcet(QString& instruction_on_socket)
     choose_funtion(instruction_on_socket);
 }
 
+void myServer::change_organization_name_in_all_person(QString &organization_old_name, QString &organization_new_name)
+{
+    QSqlQuery selectQuery(mydb_person);
+
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE organizations LIKE :old_organization");
+    selectQuery.bindValue(":old_organization", "%" + organization_old_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_organizations = selectQuery.value("organizations").toString();
+            QStringList existingOrganizations = list_of_organizations.split(",");
+
+            if (existingOrganizations.contains(organization_old_name)) {
+                // Replace old organization name with new one
+                for (int i = 0; i < existingOrganizations.size(); ++i) {
+                    if (existingOrganizations.at(i) == organization_old_name) {
+                        existingOrganizations.replace(i, organization_new_name);
+                        break;
+                    }
+                }
+
+                QString updated_organizations = existingOrganizations.join(",");
+                QSqlQuery updateQuery(mydb_person);
+                updateQuery.prepare("UPDATE person_info_database SET organizations = :new_organizations WHERE person_id = :person_id");
+                updateQuery.bindValue(":new_organizations", updated_organizations);
+                updateQuery.bindValue(":person_id", selectQuery.value("person_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for person_id:" << selectQuery.value("person_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for person_id:" << selectQuery.value("person_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
+
+void myServer::change_team_name_in_all_person(QString &team_old_name, QString &team_new_name)
+{
+    QSqlQuery selectQuery(mydb_person);
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE teams LIKE :old_team");
+    selectQuery.bindValue(":old_team", "%" + team_old_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_teams = selectQuery.value("teams").toString();
+            QStringList existingTeams = list_of_teams.split(",");
+
+            if (existingTeams.contains(team_old_name)) {
+                // Replace old team name with new one
+                for (int i = 0; i < existingTeams.size(); ++i) {
+                    if (existingTeams.at(i) == team_old_name) {
+                        existingTeams.replace(i, team_new_name);
+                        break;
+                    }
+                }
+
+                QString updated_teams = existingTeams.join(",");
+                QSqlQuery updateQuery(mydb_person);
+                updateQuery.prepare("UPDATE person_info_database SET teams = :new_teams WHERE person_id = :person_id");
+                updateQuery.bindValue(":new_teams", updated_teams);
+                updateQuery.bindValue(":person_id", selectQuery.value("person_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for person_id:" << selectQuery.value("person_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for person_id:" << selectQuery.value("person_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
+
+void myServer::change_task_name_in_person(QString &task_old_name, QString &task_new_name)
+{
+    QSqlQuery selectQuery(mydb_person);
+    selectQuery.prepare("SELECT * FROM person_info_database WHERE tasks LIKE :old_task");
+    selectQuery.bindValue(":old_task", "%" + task_old_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_tasks = selectQuery.value("tasks").toString();
+            QStringList existingTasks = list_of_tasks.split(",");
+
+            if (existingTasks.contains(task_old_name)) {
+                // Replace old task name with new one
+                for (int i = 0; i < existingTasks.size(); ++i) {
+                    if (existingTasks.at(i) == task_old_name) {
+                        existingTasks.replace(i, task_new_name);
+                        break;
+                    }
+                }
+
+                QString updated_tasks = existingTasks.join(",");
+                QSqlQuery updateQuery(mydb_person);
+                updateQuery.prepare("UPDATE person_info_database SET tasks = :new_tasks WHERE person_id = :person_id");
+                updateQuery.bindValue(":new_tasks", updated_tasks);
+                updateQuery.bindValue(":person_id", selectQuery.value("person_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for person_id:" << selectQuery.value("person_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for person_id:" << selectQuery.value("person_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
+
+
+
 //----------------------------
 
 void myServer::change_user_personal_name_1(QString &name_in_data_base, QString &new_name)
