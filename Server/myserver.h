@@ -105,6 +105,10 @@ private slots:
 
     //--------------------------
     //project functions
+    void change_team_name_in_all_projects(QString& old_team_name,QString& new_team_name);
+    void change_task_name_in_all_projects(QString& old_task_name,QString& new_task_name);
+
+
     void add_project_to_data_base(QString& project_data);
     void changing_name_of_project(QString& project_id ,QString& new_project_name);
     void changing_type_of_project(QString& project_id ,QString& new_project_type);

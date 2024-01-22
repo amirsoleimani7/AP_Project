@@ -2150,6 +2150,47 @@ QString myServer::getting_info_of_team(QString team_id)
     }
 }
 
+void myServer::change_team_name_in_all_projects(QString &old_team_name, QString &new_team_name)
+{
+    QSqlQuery selectQuery(mydb_project);
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_teams LIKE :old_team");
+    selectQuery.bindValue(":old_team", "%" + old_team_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_teams = selectQuery.value("project_teams").toString();
+            QStringList existingTeams = list_of_teams.split(",");
+
+            if (existingTeams.contains(old_team_name)) {
+                // Replace old team name with new one
+                for (int i = 0; i < existingTeams.size(); ++i) {
+                    if (existingTeams.at(i) == old_team_name) {
+                        existingTeams.replace(i, new_team_name);
+                        break;
+                    }
+                }
+
+                QString updated_teams = existingTeams.join(",");
+                QSqlQuery updateQuery(mydb_project);
+                updateQuery.prepare("UPDATE project_info_database SET project_teams = :new_teams WHERE project_id = :project_id");
+                updateQuery.bindValue(":new_teams", updated_teams);
+                updateQuery.bindValue(":project_id", selectQuery.value("project_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for project_id:" << selectQuery.value("project_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for project_id:" << selectQuery.value("project_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
+
 //-------------------------------
 
 //project functions
