@@ -8,6 +8,7 @@ Dashboard::Dashboard(QWidget *parent)
     ui->setupUi(this);
     socket = new socket_connection(this);
     update_HomeOrgListLayout_bottons();
+    update_HomeTeamListLayout_bottons();
 }
 
 Dashboard::~Dashboard()
@@ -48,6 +49,39 @@ void Dashboard::update_HomeOrgListLayout_bottons()
     }
 }
 
+void Dashboard::update_HomeTeamListLayout_bottons()
+{
+
+    QString instruction = "get_teams*username";
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QString feed_back =socket->reading_feed_back();
+    qDebug() <<feed_back;
+    QStringList list_of_organizations = feed_back.split("*");
+    QVBoxLayout* existingLayout = ui->HomeTeamsListLayout_team;
+    if(list_of_organizations.size() != 0){
+        if (!existingLayout) {
+            // If there is no existing layout, create a new one
+            existingLayout = new QVBoxLayout();
+            //ui->widget_dynamic->setLayout(existingLayout);
+        }
+
+        for (int i = 0;i<list_of_organizations.size()-1;i++)
+        {
+            QString name_of_organization = list_of_organizations[i];
+            QPushButton *push_button_of_organization = new QPushButton(this);
+            push_button_of_organization->setText(name_of_organization);
+            existingLayout->addWidget(push_button_of_organization);
+            connect(push_button_of_organization, &QPushButton::clicked, this, &Dashboard::onTeamButtonClicked);
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+}
+
+
 void Dashboard::onOrganizationButtonClicked(){
 
     QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
@@ -55,6 +89,18 @@ void Dashboard::onOrganizationButtonClicked(){
         // Handle the button click event
         QString organizationName = senderButton->text();
         qDebug() << organizationName;
+        //here we should go to the page of organizations with the given organization name
+
+    }
+}
+
+void Dashboard::onTeamButtonClicked()
+{
+    QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
+    if (senderButton) {
+        // Handle the button click event
+        QString teamName = senderButton->text();
+        qDebug() << teamName;
         //here we should go to the page of organizations with the given organization name
 
     }
