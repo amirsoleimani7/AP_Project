@@ -43,6 +43,24 @@ private slots:
 
     void on_oneOrgButton_4_clicked();
 
+    void on_OneTeamButton_10_clicked();
+
+    void on_TeamEditBotton_clicked();
+
+    void on_TeamEditBackBotton_clicked();
+
+    void on_TeamAddProject_clicked();
+
+    void on_TeamCreateProject_clicked();
+
+    void on_TeamDeleteTeamBotton_clicked();
+
+    void on_TeamHomeButton_clicked();
+
+    void on_TeamAddPBackButton_clicked();
+
+    void on_TeamCreatPBackButton_clicked();
+
 private:
     Ui::Dashboard *ui;
 };

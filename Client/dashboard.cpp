@@ -91,3 +91,57 @@ void Dashboard::on_oneOrgButton_4_clicked()
     ui->MainStack->setCurrentWidget(ui->OneOrgPage);
 }
 
+
+void Dashboard::on_OneTeamButton_10_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->TeamPage);
+}
+
+
+void Dashboard::on_TeamEditBotton_clicked()
+{
+    ui->TeamSideStack->setCurrentWidget(ui->TeamEditPage);
+}
+
+
+void Dashboard::on_TeamEditBackBotton_clicked()
+{
+    ui->TeamSideStack->setCurrentWidget(ui->TeamSideMainPage);
+}
+
+
+void Dashboard::on_TeamAddProject_clicked()
+{
+    ui->TeamSideStack->setCurrentWidget(ui->TeamAddProjectPage);
+}
+
+
+void Dashboard::on_TeamCreateProject_clicked()
+{
+    ui->TeamSideStack->setCurrentWidget(ui->TeamCreatProjectPage);
+}
+
+
+void Dashboard::on_TeamDeleteTeamBotton_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->Homepage);
+}
+
+
+void Dashboard::on_TeamHomeButton_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->Homepage);
+}
+
+
+void Dashboard::on_TeamAddPBackButton_clicked()
+{
+    ui->TeamSideStack->setCurrentWidget(ui->TeamSideMainPage);
+}
+
+
+void Dashboard::on_TeamCreatPBackButton_clicked()
+{
+    ui->TeamSideStack->setCurrentWidget(ui->TeamSideMainPage);
+}
+
