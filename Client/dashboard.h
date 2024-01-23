@@ -16,9 +16,6 @@ public:
     ~Dashboard();
 
 private slots:
-    void on_HamborBotton_clicked();
-
-    void on_HamborBackBotton_clicked();
 
     void on_HomeNewPProjectBotton_clicked();
 
@@ -27,6 +24,56 @@ private slots:
     void on_HomeNewPPBackBotton_clicked();
 
     void on_HomeNewOrgBackBotton_clicked();
+
+    void on_OneOrgHomeBotton_clicked();
+
+    void on_HomeProfileBackBotton_clicked();
+
+    void on_HomeProfileBotton_clicked();
+
+    void on_OneOrgEditOrgBotton_clicked();
+
+    void on_OneOrgAddNewTeamBotton_clicked();
+
+    void on_OneOrgDeleteOrgBotton_clicked();
+
+    void on_OrgEditPageBackBotton_clicked();
+
+    void on_OrgNewTeamBackBotton_clicked();
+
+    void on_oneOrgButton_4_clicked();
+
+    void on_OneTeamButton_10_clicked();
+
+    void on_TeamEditBotton_clicked();
+
+    void on_TeamEditBackBotton_clicked();
+
+    void on_TeamAddProject_clicked();
+
+    void on_TeamCreateProject_clicked();
+
+    void on_TeamDeleteTeamBotton_clicked();
+
+    void on_TeamHomeButton_clicked();
+
+    void on_TeamAddPBackButton_clicked();
+
+    void on_TeamCreatPBackButton_clicked();
+
+    void on_SomeTeamButton_12_clicked();
+
+    void on_ProjectNewTaskBackButton_clicked();
+
+    void on_ProjectNewTaskButton_clicked();
+
+    void on_ProjectHomeButton_clicked();
+
+    void on_SomeProjectButton_17_clicked();
+
+    void on_SomeProjectButton_2_clicked();
+
+    void on_SomeProjectButton_14_clicked();
 
 private:
     Ui::Dashboard *ui;
