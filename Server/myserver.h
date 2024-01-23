@@ -54,7 +54,8 @@ private slots:
     void change_project_name_in_all_person(QString& project_old_name,QString& project_new_name);
 
 
-    void change_info_all_once(QString& changed_data_from_socket);
+    void change_user_info_all_once(QString& changed_data_from_socket);
+
     void change_user_personal_name_1(QString& name_in_data_base,QString& new_name);
     void change_user_email(QString& name_in_data_base,QString &new_email_1);
     void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
@@ -77,6 +78,7 @@ private slots:
     //functions for organization
     void change_team_name_in_all_organizations(QString& old_team_name,QString& new_team_name);
 
+    void change_organization_info_all_at_once(QString& changed_data_from_socket);
 
     void add_organization_to_data_base(QString& organization_data);
     void chnage_name_of_organization(QString& organization_id,QString& new_name_for_organization);
@@ -93,7 +95,6 @@ private slots:
     //team functions
     void change_project_name_in_all_teams(QString& old_project_name,QString& new_project_name);
 
-
     void add_team_to_data_base(QString& team_data);
     void change_name_of_team(QString& team_id,QString new_name);
     void change_admin_of_the_team(QString& team_id ,QString& new_name);
@@ -107,9 +108,11 @@ private slots:
 
     //--------------------------
     //project functions
+
     void change_team_name_in_all_projects(QString& old_team_name,QString& new_team_name);
     void change_task_name_in_all_projects(QString& old_task_name,QString& new_task_name);
 
+    void archive_task(QString& project_id,QString& task_id);
 
     void add_project_to_data_base(QString& project_data);
     void changing_name_of_project(QString& project_id ,QString& new_project_name);
@@ -126,8 +129,6 @@ private slots:
     //-------------------------
 
     //tasks function
-
-
 
     void add_task_to_data_task(QString& task_data);
     void changing_task_id(QString& task_id ,QString& task_new_id);

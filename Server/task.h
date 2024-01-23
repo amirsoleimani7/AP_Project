@@ -18,7 +18,6 @@ private:
     bool isDone;
     QDateTime taskDeadLine;
     int priority;
-
 public:
     Task();
     Task(Project pro,QString TT,Person pers,int prio,QDateTime dat);

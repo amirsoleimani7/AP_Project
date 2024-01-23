@@ -432,7 +432,7 @@ void myServer::change_project_name_in_all_person(QString &project_old_name, QStr
     }
 }
 
-void myServer::change_info_all_once(QString &changed_data_from_socket)
+void myServer::change_user_info_all_once(QString &changed_data_from_socket)
 {
     //chage_all_info*user_name*personl_name*new_pass*email
     QStringList data = changed_data_from_socket.split("*");
@@ -1268,6 +1268,11 @@ void myServer::change_team_name_in_all_organizations(QString &old_team_name, QSt
         qDebug() << "Error in selecting records:" << selectQuery.lastError();
         // Feedback for error in selecting records
     }
+}
+
+void myServer::change_organization_info_all_at_once(QString &changed_data_from_socket)
+{
+    //dont need it yet!!
 }
 
 //---------------------------------
@@ -2237,6 +2242,45 @@ void myServer::change_task_name_in_all_projects(QString &old_task_name, QString 
         // Feedback for error in selecting records
     }
 }
+void myServer::archive_task(const QString &project_id, const QString &task_id)
+{
+    QSqlQuery query(mydb_project);
+
+    // Fetch the current value of "project_tasks" for the given project_id
+    query.prepare("SELECT project_tasks FROM project_info_database WHERE project_id = :project_id");
+    query.bindValue(":project_id", project_id);
+
+    if (query.exec() && query.next()) {
+        QString currentTasks = query.value(0).toString();
+
+        // Check if the task is already archived
+        if (currentTasks.contains(task_id + "$")) {
+            qDebug() << "Task is already archived.";
+            return;  // Do nothing if the task is already archived
+        }
+
+        // Find and replace the task_id with the archived version
+        currentTasks.replace(task_id, task_id + "$");
+
+        // Update the "project_tasks" column in the database with the modified value
+        query.prepare("UPDATE project_info_database SET project_tasks = :newTasks WHERE project_id = :project_id");
+        query.bindValue(":newTasks", currentTasks);
+        query.bindValue(":project_id", project_id);
+
+        if (!query.exec()) {
+            // Handle errors if necessary
+            qDebug() << "Error updating project_tasks:" << query.lastError().text();
+        }
+        else{
+            qDebug() << "task archived!!";
+        }
+    } else {
+        // Handle errors if necessary
+        qDebug() << "Error fetching project_tasks:" << query.lastError().text();
+    }
+}
+
+
 //-------------------------------
 
 //project functions
