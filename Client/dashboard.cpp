@@ -25,7 +25,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_organizations = feed_back.split("*");
-    QVBoxLayout* existingLayout = ui->HomeOrgListLayout_1;
+    QVBoxLayout* existingLayout = ui->HomeOrgListLayout_organization;
     if(list_of_organizations.size() != 0){
         if (!existingLayout) {
             // If there is no existing layout, create a new one
@@ -55,7 +55,8 @@ void Dashboard::onOrganizationButtonClicked(){
         // Handle the button click event
         QString organizationName = senderButton->text();
         qDebug() << organizationName;
-        // Perform actions based on the clicked organization
+        //here we should go to the page of organizations with the given organization name
+
     }
 }
 
@@ -63,7 +64,6 @@ void Dashboard::on_HomeNewPProjectBotton_clicked()
 {
     ui->HomeSideStack->setCurrentWidget(ui->HomeNewPProjectPage);
 }
-
 
 void Dashboard::on_HomeNewOrgBotton_clicked()
 {
