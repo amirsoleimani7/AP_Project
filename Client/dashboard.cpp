@@ -1,14 +1,16 @@
 #include "dashboard.h"
 #include "ui_dashboard.h"
 
-Dashboard::Dashboard(QWidget *parent)
+Dashboard::Dashboard(QWidget *parent, QString RefrenceUserName)
     : QDialog(parent)
     , ui(new Ui::Dashboard)
 {
     ui->setupUi(this);
     socket = new socket_connection(this);
+    this->CurrentUserName = RefrenceUserName;
     update_HomeOrgListLayout_bottons();
     update_HomeTeamListLayout_bottons();
+    qDebug() << CurrentUserName;
 }
 
 Dashboard::~Dashboard()
@@ -20,7 +22,7 @@ Dashboard::~Dashboard()
 void Dashboard::update_HomeOrgListLayout_bottons()
 {
 
-    QString instruction = "get_organizations*username";
+    QString instruction = "get_organizations*" + CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
     QString feed_back =socket->reading_feed_back();
