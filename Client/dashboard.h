@@ -23,7 +23,9 @@ private slots:
 
     //updating HomeOrgListLayout
     void update_HomeOrgListLayout_bottons();
+    void update_HomeTeamListLayout_bottons();
     void onOrganizationButtonClicked();
+    void onTeamButtonClicked();
 
     void on_HomeNewPProjectBotton_clicked();
 
