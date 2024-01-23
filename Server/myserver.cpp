@@ -432,8 +432,14 @@ void myServer::change_project_name_in_all_person(QString &project_old_name, QStr
     }
 }
 
-
-
+void myServer::change_info_all_once(QString &changed_data_from_socket)
+{
+    //chage_all_info*user_name*personl_name*new_pass*email
+    QStringList data = changed_data_from_socket.split("*");
+    change_user_email(data[1],data[2]);
+    chnage_user_pass(data[1],data[3]);
+    change_user_personal_name_1(data[1],data[4]);
+}
 
 //----------------------------
 
@@ -2191,6 +2197,46 @@ void myServer::change_team_name_in_all_projects(QString &old_team_name, QString 
     }
 }
 
+void myServer::change_task_name_in_all_projects(QString &old_task_name, QString &new_task_name)
+{
+    QSqlQuery selectQuery(mydb_project);
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_tasks LIKE :old_task");
+    selectQuery.bindValue(":old_task", "%" + old_task_name + "%");
+
+    if (selectQuery.exec()) {
+        while (selectQuery.next()) {
+            QString list_of_tasks = selectQuery.value("project_tasks").toString();
+            QStringList existingTasks = list_of_tasks.split(",");
+
+            if (existingTasks.contains(old_task_name)) {
+                // Replace old task name with new one
+                for (int i = 0; i < existingTasks.size(); ++i) {
+                    if (existingTasks.at(i) == old_task_name) {
+                        existingTasks.replace(i, new_task_name);
+                        break;
+                    }
+                }
+
+                QString updated_tasks = existingTasks.join(",");
+                QSqlQuery updateQuery(mydb_project);
+                updateQuery.prepare("UPDATE project_info_database SET project_tasks = :new_tasks WHERE project_id = :project_id");
+                updateQuery.bindValue(":new_tasks", updated_tasks);
+                updateQuery.bindValue(":project_id", selectQuery.value("project_id").toString());
+
+                if (updateQuery.exec()) {
+                    qDebug() << "Row updated successfully for project_id:" << selectQuery.value("project_id").toString();
+                    // Feedback for updating the row
+                } else {
+                    qDebug() << "Failed to update row for project_id:" << selectQuery.value("project_id").toString() << updateQuery.lastError();
+                    // Fail
+                }
+            }
+        }
+    } else {
+        qDebug() << "Error in selecting records:" << selectQuery.lastError();
+        // Feedback for error in selecting records
+    }
+}
 //-------------------------------
 
 //project functions
