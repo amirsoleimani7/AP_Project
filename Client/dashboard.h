@@ -7,6 +7,7 @@
 #include <QVector>
 #include <vector>
 #include <QDebug>
+#include "myclient.h"
 namespace Ui {
 class Dashboard;
 }
@@ -16,7 +17,8 @@ class Dashboard : public QDialog
     Q_OBJECT
 
 public:
-    explicit Dashboard(QWidget *parent = nullptr);
+    QString CurrentUserName;
+    explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");
     ~Dashboard();
 public slots:
     void set_name_loged_in(QString& name);

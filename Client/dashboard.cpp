@@ -1,16 +1,18 @@
 #include "dashboard.h"
 #include "ui_dashboard.h"
 
-Dashboard::Dashboard(QWidget *parent)
+Dashboard::Dashboard(QWidget *parent, QString RefrenceUserName)
     : QDialog(parent)
     , ui(new Ui::Dashboard)
 {
 
     ui->setupUi(this);
     socket = new socket_connection(this);
+    this->CurrentUserName = RefrenceUserName;
     update_HomeOrgListLayout_bottons();
     update_HomeTeamListLayout_bottons();
     update_HomeProjectListLayout_bottons();
+    qDebug() << CurrentUserName;
 }
 
 Dashboard::~Dashboard()
@@ -26,8 +28,8 @@ void Dashboard::set_name_loged_in(QString& name)
 
 void Dashboard::update_HomeOrgListLayout_bottons()
 {
-    qDebug() << "this is it : "<<name_looged_in;
-    QString instruction = "get_organizations*username";
+
+    QString instruction = "get_organizations*" + CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
     QString feed_back =socket->reading_feed_back();
@@ -58,7 +60,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
 void Dashboard::update_HomeTeamListLayout_bottons()
 {
 
-    QString instruction = "get_teams*username";
+    QString instruction = "get_teams*"+CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
     QString feed_back =socket->reading_feed_back();
@@ -91,7 +93,7 @@ void Dashboard::update_HomeTeamListLayout_bottons()
 void Dashboard::update_HomeProjectListLayout_bottons()
 {
 
-    QString instruction = "get_project*username";
+    QString instruction = "get_project*"+CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
     QString feed_back =socket->reading_feed_back();
