@@ -22,6 +22,7 @@ public:
     ~Dashboard();
 public slots:
     void set_name_loged_in(QString& name);
+    void clearLayout(QLayout* layout);
     //updating HomeOrgListLayout
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
@@ -96,6 +97,8 @@ public slots:
 
 private slots:
     void on_HomeProfileChangeButton_clicked();
+
+    void on_HomeNewPPCreatBotton_clicked();
 
 private:
     Ui::Dashboard *ui;

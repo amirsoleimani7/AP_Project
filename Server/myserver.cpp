@@ -135,6 +135,11 @@ void myServer::choose_funtion(QString &instruction_from_socket)
             chnage_user_pass(fields[1],fields[4]);
         }
     }
+    if(main_instruction == "add_to_personal_project"){
+        add_project_to_person(fields[1],fields[2]);
+        add_project_to_data_base(instruction_from_socket);
+        changing_person_of_project(fields[2],fields[1]);
+    }
 
 }
 
@@ -548,7 +553,7 @@ void myServer::add_person_to_data_base(QString &user_data)
         // User doesn't exist, add them to the database
         QSqlQuery insertQuery(mydb_person);
 
-        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city) VALUES ( ?, ?, ?, ?, ?, ?, ?)");
 
         for (int i = 1; i <= 12; ++i) {
             qDebug() << "Bind Value " << i << ": " << fields.value(i);
@@ -563,10 +568,6 @@ void myServer::add_person_to_data_base(QString &user_data)
         insertQuery.addBindValue(fields[6]); //fav anmimal
         insertQuery.addBindValue(fields[7]);  //fav color
         insertQuery.addBindValue(fields[8]);  //fav city
-        insertQuery.addBindValue(fields[9]);  //fav city
-        insertQuery.addBindValue(fields[10]);  //fav city
-        insertQuery.addBindValue(fields[11]);  //fav city
-        insertQuery.addBindValue(fields[12]);  //fav city
 
 
         // insertQuery.addBindValue("default_org");
@@ -856,7 +857,7 @@ void myServer::add_project_to_person(QString &name_in_data_base, QString &projec
     QString user_name_in_data_base = name_in_data_base;  // Set the actual username
     QString project_to_add = project_name;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
 
@@ -868,7 +869,7 @@ void myServer::add_project_to_person(QString &name_in_data_base, QString &projec
         if (!existingProject.contains(project_to_add)) {
             list_of_project += "," + project_to_add;
 
-            QSqlQuery updateQuery;
+            QSqlQuery updateQuery(mydb_person);
             updateQuery.prepare("UPDATE person_info_database SET projects = :new_project WHERE username = :user_in_data_base");
             updateQuery.bindValue(":new_project", list_of_project);
             updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
@@ -2338,9 +2339,9 @@ void myServer::add_project_to_data_base(QString &project_data)
 
     QString id_project_to_database = fields[1];
 
-    QSqlQuery checkQuery;
+    QSqlQuery checkQuery(mydb_project);
 
-    checkQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :id_project_to_database");
+    checkQuery.prepare("SELECT * FROM project_info_database WHERE project_name = :id_project_to_database");
     checkQuery.bindValue(":id_project_to_database", id_project_to_database);
 
     if (checkQuery.exec() && checkQuery.next()) {
@@ -2349,18 +2350,14 @@ void myServer::add_project_to_data_base(QString &project_data)
 
     }
     else {
+        QSqlQuery insertQuery(mydb_project);
 
-        QSqlQuery insertQuery;
-
-        insertQuery.prepare("INSERT INTO project_info_database (project_id,project_name,project_type,project_person,project_teams,project_tasks) VALUES (?,?,?,?,?,?)");
+        insertQuery.prepare("INSERT INTO project_info_database (project_name,project_type) VALUES (?,?)");
 
         // Bind values for the insertion
-        insertQuery.addBindValue(fields[1]); // project_id
+        //insertQuery.addBindValue(fields[1]); // project_id
         insertQuery.addBindValue(fields[2]); // project_name
         insertQuery.addBindValue(fields[3]); // project_type
-        insertQuery.addBindValue(fields[4]); // project_person
-        insertQuery.addBindValue(fields[5]); // project_teams
-        insertQuery.addBindValue(fields[6]); // project_tasks
 
         // Execute the insertion query
 
@@ -2466,8 +2463,8 @@ void myServer::changing_person_of_project(QString &project_id, QString &id_of_pe
     //     "project_tasks"	TEXT
     // )
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE project_info_database SET project_person = :new_project_person_in_data WHERE project_id = :project_id_in_data_base");
+    QSqlQuery updateQuery(mydb_project);
+    updateQuery.prepare("UPDATE project_info_database SET project_person = :new_project_person_in_data WHERE project_name = :project_id_in_data_base");
     updateQuery.bindValue(":new_project_person_in_data", new_project_person_in_data);
     updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 

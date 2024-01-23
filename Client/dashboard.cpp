@@ -25,6 +25,21 @@ void Dashboard::set_name_loged_in(QString& name)
     qDebug() << "this is name : " << name;
 }
 
+void Dashboard::clearLayout(QLayout* layout) {
+
+    QLayoutItem* item;
+    while ((item = layout->takeAt(0)) != nullptr) {
+        if (item->layout() != nullptr) {
+            // Recursively clear sub-layouts
+            clearLayout(item->layout());
+        }
+        delete item->widget();
+        delete item;
+    }
+}
+
+
+
 void Dashboard::update_profile_of_user()
 {
     QString instruction = "get_user_inf*"+CurrentUserName;
@@ -43,25 +58,9 @@ void Dashboard::update_profile_of_user()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void Dashboard::update_HomeOrgListLayout_bottons()
 {
-
+    clearLayout(ui->HomeOrgListLayout_organization);
     QString instruction = "get_organizations*" + CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
@@ -93,6 +92,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
 void Dashboard::update_HomeTeamListLayout_bottons()
 {
 
+    clearLayout(ui->HomeTeamsListLayout_team);
     QString instruction = "get_teams*"+CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
@@ -125,7 +125,7 @@ void Dashboard::update_HomeTeamListLayout_bottons()
 
 void Dashboard::update_HomeProjectListLayout_bottons()
 {
-
+    clearLayout(ui->HomePProjectsListLayout_project);
     QString instruction = "get_project*"+CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
@@ -133,6 +133,7 @@ void Dashboard::update_HomeProjectListLayout_bottons()
     qDebug() <<feed_back;
     QStringList list_of_project = feed_back.split("*");
     QVBoxLayout* existingLayout = ui->HomePProjectsListLayout_project;
+
     if(list_of_project.size() != 0){
         if (!existingLayout) {
             // If there is no existing layout, create a new one
@@ -155,7 +156,6 @@ void Dashboard::update_HomeProjectListLayout_bottons()
     }
 
 }
-
 
 void Dashboard::onOrganizationButtonClicked(){
 
@@ -189,7 +189,6 @@ void Dashboard::onProjectButtonClicked(){
         QString projectName = senderButton->text();
         qDebug() << projectName;
         //here we should go to the page of organizations with the given organization name
-
     }
 }
 
@@ -384,5 +383,16 @@ void Dashboard::on_HomeProfileChangeButton_clicked()
     socket->delay();
     QMessageBox::information(this,"this","info updated!!");
     update_profile_of_user();
+}
+
+
+void Dashboard::on_HomeNewPPCreatBotton_clicked()
+{
+    QString new_personal_project = ui->HomeNewPPNameLineEdit->text();
+    QString instruction = "add_to_personal_project*"+CurrentUserName+"*"+new_personal_project+"*personal";
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QMessageBox::information(this,"this","added updated!!");
+    update_HomeProjectListLayout_bottons();
 }
 

@@ -995,7 +995,7 @@
        <item>
         <widget class="QStackedWidget" name="TeamSideStack">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="TeamSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1249,6 +1249,13 @@
             <widget class="QLineEdit" name="TeamAddProjectLineEdit"/>
            </item>
            <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>PushButton</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <spacer name="verticalSpacer_44">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1493,7 +1500,7 @@
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">
