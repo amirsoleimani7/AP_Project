@@ -442,6 +442,7 @@ void myServer::change_user_info_all_once(QString &changed_data_from_socket)
     change_user_email(data[1],data[2]);
     chnage_user_pass(data[1],data[3]);
     change_user_personal_name_1(data[1],data[4]);
+
 }
 
 //----------------------------
@@ -565,12 +566,14 @@ void myServer::add_person_to_data_base(QString &user_data)
             qDebug() << "User added successfully.";
             QString feed_b = "true_person_add";
             writing_feed_back(feed_b);
+            on_sendFileBTN_clicked();
             // Sending feedback through socket that person added to the database
         } else {
             qDebug() << "Could not add user." <<insertQuery.lastError();
 
             QString feed_b = "could not add person";
             writing_feed_back(feed_b);
+            on_sendFileBTN_clicked();
         }
     }
 }
@@ -664,12 +667,14 @@ QString myServer::get_user_info(QString& name_in_data_base)
 
         qDebug() << user_info;
         writing_feed_back(user_info);
+        on_sendFileBTN_clicked();
         return user_info;
 
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
         QString x = "false_user_info";
         writing_feed_back(x);
+        on_sendFileBTN_clicked();
     }
 }
 
@@ -1105,8 +1110,6 @@ void myServer::remove_task_from_person(QString& name_in_data_base,QString& task_
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
     }
 }
-
-
 //-----------------------------------
 QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
 {
@@ -1167,7 +1170,6 @@ QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
 
         writing_feed_back(organizations_to_send);
         on_sendFileBTN_clicked();
-
 
         return organizationVector;
         //handeling

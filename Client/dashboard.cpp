@@ -5,9 +5,11 @@ Dashboard::Dashboard(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Dashboard)
 {
+
     ui->setupUi(this);
     socket = new socket_connection(this);
     update_HomeOrgListLayout_bottons();
+
 }
 
 Dashboard::~Dashboard()
@@ -15,11 +17,15 @@ Dashboard::~Dashboard()
     delete ui;
 }
 
+void Dashboard::set_name_loged_in(QString& name)
+{
+    qDebug() << "this is name : " << name;
+}
 
 void Dashboard::update_HomeOrgListLayout_bottons()
 {
-
-    QString instruction = "get_organizations*username";
+    qDebug() << "this is it : "<<name_looged_in;
+    QString instruction = "get_organizations*"+name_looged_in+"";
     socket->witing_instructions(instruction);
     socket->delay();
     QString feed_back =socket->reading_feed_back();
@@ -32,7 +38,6 @@ void Dashboard::update_HomeOrgListLayout_bottons()
             existingLayout = new QVBoxLayout();
             //ui->widget_dynamic->setLayout(existingLayout);
         }
-
         for (int i = 0;i<list_of_organizations.size()-1;i++)
         {
             QString name_of_organization = list_of_organizations[i];
