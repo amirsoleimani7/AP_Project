@@ -75,6 +75,7 @@ QDateTime Task::getTaskDeadLine() const
 void Task::setTaskDeadLine(const QDateTime &newTaskDeadLine)
 {
     taskDeadLine = newTaskDeadLine;
+}
 
 QVector<Person> Task::getPersons() const
 {

@@ -2,7 +2,11 @@
 #define DASHBOARD_H
 
 #include <QDialog>
-
+#include "socket_connection.h"
+#include <QString>
+#include <QVector>
+#include <vector>
+#include <QDebug>
 namespace Ui {
 class Dashboard;
 }
@@ -16,6 +20,10 @@ public:
     ~Dashboard();
 
 private slots:
+
+    //updating HomeOrgListLayout
+    void update_HomeOrgListLayout_bottons();
+    void onOrganizationButtonClicked();
 
     void on_HomeNewPProjectBotton_clicked();
 
@@ -41,7 +49,7 @@ private slots:
 
     void on_OrgNewTeamBackBotton_clicked();
 
-    void on_oneOrgButton_4_clicked();
+    //void on_oneOrgButton_4_clicked();
 
     void on_OneTeamButton_10_clicked();
 
@@ -75,8 +83,11 @@ private slots:
 
     void on_SomeProjectButton_14_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::Dashboard *ui;
+    socket_connection* socket;
 };
 
 #endif // DASHBOARD_H

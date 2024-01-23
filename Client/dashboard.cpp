@@ -6,6 +6,8 @@ Dashboard::Dashboard(QWidget *parent)
     , ui(new Ui::Dashboard)
 {
     ui->setupUi(this);
+    socket = new socket_connection(this);
+    update_HomeOrgListLayout_bottons();
 }
 
 Dashboard::~Dashboard()
@@ -14,11 +16,54 @@ Dashboard::~Dashboard()
 }
 
 
+void Dashboard::update_HomeOrgListLayout_bottons()
+{
+
+    QString instruction = "get_organizations*username";
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QString feed_back =socket->reading_feed_back();
+    qDebug() <<feed_back;
+    QStringList list_of_organizations = feed_back.split("*");
+    QVBoxLayout* existingLayout = ui->HomeOrgListLayout_organization;
+    if(list_of_organizations.size() != 0){
+        if (!existingLayout) {
+            // If there is no existing layout, create a new one
+            existingLayout = new QVBoxLayout();
+            //ui->widget_dynamic->setLayout(existingLayout);
+        }
+
+        for (int i = 0;i<list_of_organizations.size()-1;i++)
+        {
+            QString name_of_organization = list_of_organizations[i];
+            QPushButton *push_button_of_organization = new QPushButton(this);
+            push_button_of_organization->setText(name_of_organization);
+            existingLayout->addWidget(push_button_of_organization);
+            connect(push_button_of_organization, &QPushButton::clicked, this, &Dashboard::onOrganizationButtonClicked);
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+}
+
+void Dashboard::onOrganizationButtonClicked(){
+
+    QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
+    if (senderButton) {
+        // Handle the button click event
+        QString organizationName = senderButton->text();
+        qDebug() << organizationName;
+        //here we should go to the page of organizations with the given organization name
+
+    }
+}
+
 void Dashboard::on_HomeNewPProjectBotton_clicked()
 {
     ui->HomeSideStack->setCurrentWidget(ui->HomeNewPProjectPage);
 }
-
 
 void Dashboard::on_HomeNewOrgBotton_clicked()
 {
@@ -86,10 +131,10 @@ void Dashboard::on_OrgNewTeamBackBotton_clicked()
 }
 
 
-void Dashboard::on_oneOrgButton_4_clicked()
-{
-    ui->MainStack->setCurrentWidget(ui->OneOrgPage);
-}
+// void Dashboard::on_oneOrgButton_4_clicked()
+// {
+//     ui->MainStack->setCurrentWidget(ui->OneOrgPage);
+// }
 
 
 void Dashboard::on_OneTeamButton_10_clicked()
@@ -185,5 +230,11 @@ void Dashboard::on_SomeProjectButton_2_clicked()
 void Dashboard::on_SomeProjectButton_14_clicked()
 {
     ui->MainStack->setCurrentWidget(ui->ProjectPage);
+}
+
+
+void Dashboard::on_pushButton_clicked()
+{
+   // update_HomeOrgListLayout_bottons();
 }
 

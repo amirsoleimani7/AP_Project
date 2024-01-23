@@ -13,6 +13,8 @@
 #include <QVector>
 #include <QString>
 #include <QStringList>
+#include <QFile>
+
 
 
 QT_BEGIN_NAMESPACE
@@ -26,18 +28,35 @@ class myServer : public QMainWindow
     Q_OBJECT
 
 public:
+
     myServer(QWidget *parent = nullptr);
     ~myServer();
+    void add_person_to_data_base(QString &user_data);
+
 private slots:
+
+    // void read_instruction();
+
+    void choose_funtion(QString& instruction_from_socket);
     void readSocket();
     void discardsocket();
     void newConnection();
     void addToSocketList(QTcpSocket* socket);
     void on_sendFileBTN_clicked();
+    void writing_feed_back(QString& feed_back);
+    void reading_instructions_from_sokcet(QString& instruction_on_socket);
 
     //function for person ---------------- //sould work with id
-    void change_user_personal_name(QString& name_in_data_base,QString &new_name_1);
-    void add_person_to_data_base(QString &user_data);
+
+    void change_organization_name_in_all_person(QString& organization_old_name,QString& organization_new_name);
+    void change_team_name_in_all_person(QString& team_old_name,QString& team_new_name);
+    void change_task_name_in_person(QString& task_old_name,QString& task_new_name);
+    void change_project_name_in_all_person(QString& project_old_name,QString& project_new_name);
+
+
+    void change_user_info_all_once(QString& changed_data_from_socket);
+
+    void change_user_personal_name_1(QString& name_in_data_base,QString& new_name);
     void change_user_email(QString& name_in_data_base,QString &new_email_1);
     void chnage_user_pass(QString& name_in_data_base,QString &new_pass_1);
     QString get_user_info(QString& name_in_data_base);
@@ -54,8 +73,13 @@ private slots:
     QVector<QString> teams_of_person(QString& name_in_data_base);
     QVector<QString> task_of_person(QString& name_in_data_base);
     QVector<QString> projects_of_person(QString& name_in_data_base);
+
     //-------------------------
     //functions for organization
+    void change_team_name_in_all_organizations(QString& old_team_name,QString& new_team_name);
+
+    void change_organization_info_all_at_once(QString& changed_data_from_socket);
+
     void add_organization_to_data_base(QString& organization_data);
     void chnage_name_of_organization(QString& organization_id,QString& new_name_for_organization);
     void chnage_owner_of_organization(QString& organization_id,QString& new_owner_for_organization);
@@ -66,8 +90,11 @@ private slots:
     QString getting_info_of_organizatios(QString& organization_id);
     QVector<QString> get_team_of_organization(QString& organization_id);
     QVector<QString> get_person_of_organization(QString& organization_id);
+
     //--------------------------
     //team functions
+    void change_project_name_in_all_teams(QString& old_project_name,QString& new_project_name);
+
     void add_team_to_data_base(QString& team_data);
     void change_name_of_team(QString& team_id,QString new_name);
     void change_admin_of_the_team(QString& team_id ,QString& new_name);
@@ -78,8 +105,15 @@ private slots:
     QVector<QString> getting_persons_of_team(QString team_id);
     QVector<QString> getting_projects_of_team(QString team_id);
     QString getting_info_of_team(QString team_id);
+
     //--------------------------
     //project functions
+
+    void change_team_name_in_all_projects(QString& old_team_name,QString& new_team_name);
+    void change_task_name_in_all_projects(QString& old_task_name,QString& new_task_name);
+
+    void archive_task(QString& project_id,QString& task_id);
+
     void add_project_to_data_base(QString& project_data);
     void changing_name_of_project(QString& project_id ,QString& new_project_name);
     void changing_type_of_project(QString& project_id ,QString& new_project_type);
@@ -91,33 +125,42 @@ private slots:
     QString getting_info_of_project(QString& project_id);
     QVector<QString> getting_teams_of_project(QString& project_id);
     QVector<QString> getting_tasks_of_project(QString& project_id);
+
     //-------------------------
+
     //tasks function
+
     void add_task_to_data_task(QString& task_data);
+    void changing_task_id(QString& task_id ,QString& task_new_id);
     void changing_text_of_task(QString& task_id,QString& new_text);
     void changing_project_of_task(QString& task_id ,QString& new_project);
     void adding_person_to_task(QString& task_id,QString& person_to_add);
     void changing_is_done_of_task(QString& task_id,QString& new_id_done);
     void changing_priority_of_task(QString& task_id,QString& new_priority);
+    void chaning_date_of_task(QString& task_name,QString& new_task_date);
     QString getting_info_of_tasks(QString& task_id);
     void removing_person_from_task(QString& task_id,QString& person_id);
     QVector<QString> getting_persons_of_task(QString& task_id);
+
     //--------------------------
+    //comment functions
+
     void adding_comment_to_data_base(QString& comment_data);
+    void chnaging_comment_id(QString& comment_id,QString& new_comment_id);
     void changing_comment_value(QString& comment_id ,QString& new_comment_value);
     void changing_comment_reply(QString& comment_id,QString& new_comment_reply);
     void chnaing_comment_task(QString& comment_id,QString& new_comment_task);
     void chnaing_comment_person(QString& comment_id,QString& new_comment_person);
     QString getting_info_of_comment(QString& comment_id);
 
-
-
+    //-------------------------
 
 private:
     void sendFile (QTcpSocket* socket,QString fileName);
 
 private:
     Ui::myServer *ui;
+
     QSqlDatabase mydb_person;
     QSqlDatabase mydb_organization;
     QSqlDatabase mydb_team;
