@@ -117,6 +117,10 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         chnage_user_pass(fields[1],fields[2]);
     }
 
+    if(main_instruction == "get_organizations"){
+        organizations_of_person(fields[1]);
+    }
+
 }
 
 myServer::~myServer()
@@ -257,7 +261,6 @@ void myServer::writing_feed_back(QString &feed_back)
         // Handle the case where the file cannot be opened
         qDebug() << "error opening the file for writing.";
     }
-    on_sendFileBTN_clicked();
 
 }
 
@@ -1139,7 +1142,7 @@ QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
 
 QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
 {
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", name_in_data_base);
 
@@ -1153,12 +1156,19 @@ QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
         QVector<QString> organizationVector = organizationList.toVector();
 
         // Use teamsVector as needed
+        QString organizations_to_send = "";
         for(int i = 0;i<organizationVector.size();i++){
             qDebug() <<organizationVector[i];
+            organizations_to_send.append(organizationVector[i]);
+            organizations_to_send.append("*");
         }
 
-
         qDebug() << "organization Vector: " << organizationVector;
+
+        writing_feed_back(organizations_to_send);
+        on_sendFileBTN_clicked();
+
+
         return organizationVector;
         //handeling
 
@@ -2242,7 +2252,8 @@ void myServer::change_task_name_in_all_projects(QString &old_task_name, QString 
         // Feedback for error in selecting records
     }
 }
-void myServer::archive_task(const QString &project_id, const QString &task_id)
+
+void myServer::archive_task(QString &project_id, QString &task_id)
 {
     QSqlQuery query(mydb_project);
 
@@ -2278,7 +2289,9 @@ void myServer::archive_task(const QString &project_id, const QString &task_id)
         // Handle errors if necessary
         qDebug() << "Error fetching project_tasks:" << query.lastError().text();
     }
+
 }
+
 
 
 //-------------------------------
