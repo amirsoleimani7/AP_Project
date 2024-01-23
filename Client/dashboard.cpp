@@ -13,17 +13,6 @@ Dashboard::~Dashboard()
     delete ui;
 }
 
-void Dashboard::on_HamborBotton_clicked()
-{
-    ui->HomeSideStack->setCurrentWidget(ui->HomeOpenHamborPage);
-}
-
-
-void Dashboard::on_HamborBackBotton_clicked()
-{
-    ui->HomeSideStack->setCurrentWidget(ui->HomeCloseHamborPage);
-}
-
 
 void Dashboard::on_HomeNewPProjectBotton_clicked()
 {

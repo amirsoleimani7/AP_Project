@@ -16,9 +16,6 @@ public:
     ~Dashboard();
 
 private slots:
-    void on_HamborBotton_clicked();
-
-    void on_HamborBackBotton_clicked();
 
     void on_HomeNewPProjectBotton_clicked();
 

@@ -17,512 +17,15 @@
    <item>
     <widget class="QStackedWidget" name="MainStack">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
-     <widget class="QWidget" name="page_3">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QStackedWidget" name="stackedWidget_4">
-         <property name="currentIndex">
-          <number>1</number>
-         </property>
-         <widget class="QWidget" name="TeamOpenHamborPage">
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <layout class="QGridLayout" name="gridLayout_10">
-             <item row="0" column="1">
-              <widget class="QPushButton" name="TeamHamborBackBotton">
-               <property name="text">
-                <string>&lt;-</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <spacer name="verticalSpacer_5">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="0" column="0">
-              <spacer name="horizontalSpacer_12">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="1">
-              <spacer name="verticalSpacer_18">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_30">
-             <property name="text">
-              <string>Home</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_23">
-             <property name="text">
-              <string>Projects</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_22">
-             <property name="text">
-              <string>Team</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_21">
-             <property name="text">
-              <string>Organizations</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_19">
-             <property name="text">
-              <string>Profile</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_10">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>322</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_44">
-             <property name="text">
-              <string>Back</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="TeamCloseHamborPage">
-          <layout class="QVBoxLayout" name="verticalLayout_14">
-           <item>
-            <layout class="QGridLayout" name="gridLayout_12">
-             <item row="1" column="1">
-              <spacer name="horizontalSpacer_16">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="TeamHamborBotton">
-               <property name="text">
-                <string>=</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>One Team</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <spacer name="verticalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamEditBotton">
-             <property name="text">
-              <string>Edit Team</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamAddProject">
-             <property name="text">
-              <string>Add Project</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamDeleteTeamBotton">
-             <property name="text">
-              <string>Delete Team</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_12">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>368</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamCloseHBackBotton">
-             <property name="text">
-              <string>Back</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="TeamEditPage">
-          <layout class="QVBoxLayout" name="verticalLayout_17">
-           <item>
-            <spacer name="verticalSpacer_38">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>46</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="TeamNewNameLabel">
-             <property name="text">
-              <string>Team New Name :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="TeamNewNameLineEdit"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamChangeNameBotton">
-             <property name="text">
-              <string>Change Team Name</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_37">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>46</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="TeamSearchNewMemberLabel">
-             <property name="text">
-              <string>Search New Member User Name</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="TeamNewMemberLineEdit"/>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_41">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>46</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="TeamDeletingMemberLabel">
-             <property name="text">
-              <string>Member You Want to Delete User Name :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="TeamDeletingMemberLineEdit"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamDeletingMemberBotton">
-             <property name="text">
-              <string>Delete Member</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_39">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>46</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="TeamNewOwnerLabel">
-             <property name="text">
-              <string>Team New Admin User Name :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="TeamNewAdminLineEdit"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamChangeAdminBotton">
-             <property name="text">
-              <string>Change Team Admin</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_40">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>46</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="TeamEditBackBotton">
-             <property name="text">
-              <string>Back</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_12">
-         <item>
-          <spacer name="horizontalSpacer_11">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_16">
-         <item>
-          <widget class="QPushButton" name="pushButton_17">
-           <property name="text">
-            <string>Projects</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_15">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="page_8">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QStackedWidget" name="stackedWidget_6">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
-         <widget class="QWidget" name="page_13">
-          <layout class="QVBoxLayout" name="verticalLayout_21">
-           <item>
-            <layout class="QGridLayout" name="gridLayout_14">
-             <item row="0" column="1">
-              <widget class="QPushButton" name="HamborBackBotton_5">
-               <property name="text">
-                <string>&lt;-</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <spacer name="horizontalSpacer_14">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="1">
-              <spacer name="verticalSpacer_9">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_15">
-             <item>
-              <widget class="QPushButton" name="pushButton_33">
-               <property name="text">
-                <string>Home</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_34">
-               <property name="text">
-                <string>Projects</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_35">
-               <property name="text">
-                <string>Team</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_36">
-               <property name="text">
-                <string>Organizations</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_37">
-               <property name="text">
-                <string>Profile</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_15">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>322</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
          <widget class="QWidget" name="page_14">
           <layout class="QVBoxLayout" name="verticalLayout_22">
            <item>
@@ -543,7 +46,7 @@
              <item row="1" column="0">
               <widget class="QPushButton" name="HamborBotton_5">
                <property name="text">
-                <string>=</string>
+                <string>Home</string>
                </property>
               </widget>
              </item>
@@ -570,13 +73,6 @@
             </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_38">
-             <property name="text">
-              <string>Edit Team</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QPushButton" name="pushButton_40">
              <property name="text">
               <string>New Task</string>
@@ -596,16 +92,163 @@
              </property>
             </spacer>
            </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_15">
+          <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QPushButton" name="pushButton_39">
+            <spacer name="verticalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_10">
              <property name="text">
-              <string>Back</string>
+              <string>Task Title</string>
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_2"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Task Content</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_3"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Priority</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_2"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Date</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDateEdit" name="dateEdit_2"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_6">
+             <property name="text">
+              <string>Submit</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="page_15"/>
         </widget>
        </item>
        <item>
@@ -618,9 +261,75 @@
           </widget>
          </item>
          <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="checkBox">
+             <property name="text">
+              <string>doing homeworks</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <family>Dubai</family>
+                 <pointsize>12</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>1.21.1375</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton">
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_7">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Expanding</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -635,16 +344,12 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
          <item row="5" column="0">
-          <widget class="QPushButton" name="pushButton_41">
-           <property name="text">
-            <string>PushButton</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
           <spacer name="horizontalSpacer_19">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Expanding</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -663,21 +368,21 @@
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
-         <widget class="QWidget" name="HomeOpenHamborPage">
-          <layout class="QVBoxLayout" name="verticalLayout_5">
+         <widget class="QWidget" name="HomeCloseHamborPage">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <layout class="QGridLayout" name="gridLayout">
-             <item row="0" column="1">
-              <widget class="QPushButton" name="HamborBackBotton">
+            <layout class="QGridLayout" name="CloseHmborGrid">
+             <item row="1" column="1">
+              <widget class="QLabel" name="HomeLabel">
                <property name="text">
-                <string>&lt;-</string>
+                <string>Home</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <spacer name="horizontalSpacer_2">
+             <item row="1" column="0">
+              <spacer name="horizontalSpacer">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -689,91 +394,57 @@
                </property>
               </spacer>
              </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="0" column="0">
-              <widget class="QPushButton" name="pushButton_4">
-               <property name="text">
-                <string>Projects</string>
+             <item row="2" column="1">
+              <spacer name="verticalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
                </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="pushButton_5">
-               <property name="text">
-                <string>Organizations</string>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
                </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="pushButton_3">
-               <property name="text">
-                <string>Teams</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="pushButton_18">
-               <property name="text">
-                <string>Profile</string>
-               </property>
-              </widget>
+              </spacer>
              </item>
             </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>322</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_10">
+            <widget class="QPushButton" name="HomeNewOrgBotton">
              <property name="text">
-              <string>Log out</string>
+              <string>New Organization</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_9">
+            <widget class="QPushButton" name="HomeNewPProjectBotton">
+             <property name="text">
+              <string>New Personal Project</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_18">
+             <property name="text">
+              <string>Profile</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>368</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="QuitBottonCH">
              <property name="text">
               <string>Quit</string>
              </property>
@@ -941,135 +612,11 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="HomeCloseHamborPage">
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <layout class="QGridLayout" name="CloseHmborGrid">
-             <item row="2" column="2">
-              <spacer name="verticalSpacer_8">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="1">
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="2">
-              <widget class="QLabel" name="HomeLabel">
-               <property name="text">
-                <string>Home</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="HamborBotton">
-               <property name="text">
-                <string>=</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="HomeNewOrgBotton">
-             <property name="text">
-              <string>New Organization</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="HomeNewPProjectBotton">
-             <property name="text">
-              <string>New Personal Project</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>368</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="QuitBottonCH">
-             <property name="text">
-              <string>Quit</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
         </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="1" column="1">
-          <widget class="QTabWidget" name="tabWidget">
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="tab">
-            <attribute name="title">
-             <string>Tab 1</string>
-            </attribute>
-            <layout class="QGridLayout" name="gridLayout_16">
-             <item row="1" column="0">
-              <widget class="QPushButton" name="pushButton_6">
-               <property name="text">
-                <string>Organization</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QToolButton" name="toolButton_3">
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="tab_2">
-            <attribute name="title">
-             <string>Tab 2</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_6">
-             <item>
-              <widget class="QPushButton" name="pushButton_7">
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-         <item row="2" column="1">
+         <item row="4" column="1">
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -1081,6 +628,62 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QWidget" name="widget" native="true">
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="1">
+             <widget class="QComboBox" name="comboBox"/>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="0">
+             <spacer name="horizontalSpacer_20">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QPushButton" name="pushButton_4">
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QPushButton" name="pushButton_5">
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="pushButton_3">
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1100,13 +703,6 @@
               <widget class="QPushButton" name="pushButton_8">
                <property name="text">
                 <string>Team</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QToolButton" name="toolButton_4">
-               <property name="text">
-                <string>...</string>
                </property>
               </widget>
              </item>
@@ -1153,13 +749,6 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QToolButton" name="toolButton_5">
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </widget>
            <widget class="QWidget" name="tab_6">
@@ -1186,19 +775,19 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2">
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <widget class="QWidget" name="page_3">
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
-        <widget class="QStackedWidget" name="OneOrgSideStack">
+        <widget class="QStackedWidget" name="stackedWidget_4">
          <property name="currentIndex">
-          <number>1</number>
+          <number>3</number>
          </property>
-         <widget class="QWidget" name="OneOrgOpenHamborPage">
-          <layout class="QVBoxLayout" name="verticalLayout">
+         <widget class="QWidget" name="TeamCloseHamborPage">
+          <layout class="QVBoxLayout" name="verticalLayout_14">
            <item>
-            <layout class="QGridLayout" name="gridLayout_11">
-             <item row="0" column="0">
-              <spacer name="horizontalSpacer_13">
+            <layout class="QGridLayout" name="gridLayout_12">
+             <item row="1" column="1">
+              <spacer name="horizontalSpacer_16">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -1210,15 +799,22 @@
                </property>
               </spacer>
              </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="HamborBackBotton_4">
+             <item row="1" column="2">
+              <widget class="QLabel" name="TeamLabel">
                <property name="text">
-                <string>&lt;-</string>
+                <string>One Team</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
-              <spacer name="verticalSpacer_11">
+             <item row="1" column="0">
+              <widget class="QPushButton" name="TeamHamborBotton">
+               <property name="text">
+                <string>Home</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <spacer name="verticalSpacer_6">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -1233,55 +829,178 @@
             </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_27">
+            <widget class="QPushButton" name="TeamEditBotton">
              <property name="text">
-              <string>Home</string>
+              <string>Edit Team</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_24">
+            <widget class="QPushButton" name="TeamAddProject">
              <property name="text">
-              <string>Projects</string>
+              <string>Add Project</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_25">
+            <widget class="QPushButton" name="TeamCreateProject">
              <property name="text">
-              <string>Team</string>
+              <string>Create Project</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_26">
+            <widget class="QPushButton" name="TeamDeleteTeamBotton">
              <property name="text">
-              <string>Organizations</string>
+              <string>Delete Team</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_20">
-             <property name="text">
-              <string>Profile</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_13">
+            <spacer name="verticalSpacer_12">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>322</height>
+               <height>368</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="TeamEditPage">
+          <layout class="QVBoxLayout" name="verticalLayout_17">
+           <item>
+            <spacer name="verticalSpacer_38">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>46</height>
               </size>
              </property>
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_14">
+            <widget class="QLabel" name="TeamNewNameLabel">
+             <property name="text">
+              <string>Team New Name :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="TeamNewNameLineEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="TeamChangeNameBotton">
+             <property name="text">
+              <string>Change Team Name</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_37">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>46</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="TeamSearchNewMemberLabel">
+             <property name="text">
+              <string>Search New Member User Name</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="TeamNewMemberLineEdit"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_41">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>46</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="TeamDeletingMemberLabel">
+             <property name="text">
+              <string>Member You Want to Delete User Name :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="TeamDeletingMemberLineEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="TeamDeletingMemberBotton">
+             <property name="text">
+              <string>Delete Member</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_39">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>46</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="TeamNewOwnerLabel">
+             <property name="text">
+              <string>Team New Admin User Name :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="TeamNewAdminLineEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="TeamChangeAdminBotton">
+             <property name="text">
+              <string>Change Team Admin</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_40">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>46</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="TeamEditBackBotton">
              <property name="text">
               <string>Back</string>
              </property>
@@ -1289,6 +1008,180 @@
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="page">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <spacer name="verticalSpacer_42">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Search For Project</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_4"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_44">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_43">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_18">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_4">
+          <widget class="QLabel" name="label_12">
+           <property name="geometry">
+            <rect>
+             <x>140</x>
+             <y>240</y>
+             <width>49</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="lineEdit_5">
+           <property name="geometry">
+            <rect>
+             <x>120</x>
+             <y>280</y>
+             <width>113</width>
+             <height>24</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_12">
+         <item>
+          <widget class="QPushButton" name="pushButton_9">
+           <property name="text">
+            <string>Search Result</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_11">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QPushButton" name="pushButton_7">
+           <property name="text">
+            <string>Members</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_16">
+         <item>
+          <widget class="QPushButton" name="pushButton_17">
+           <property name="text">
+            <string>Projects</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_15">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QStackedWidget" name="OneOrgSideStack">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
          <widget class="QWidget" name="OneOrgCloseHamborPage">
           <layout class="QVBoxLayout" name="verticalLayout_20">
            <item>
@@ -1309,7 +1202,7 @@
              <item row="1" column="0">
               <widget class="QPushButton" name="OneOrgHamborBotton">
                <property name="text">
-                <string>=</string>
+                <string>Home</string>
                </property>
               </widget>
              </item>
@@ -1368,13 +1261,6 @@
               </size>
              </property>
             </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="OneOrgBackBotton">
-             <property name="text">
-              <string>Back</string>
-             </property>
-            </widget>
            </item>
           </layout>
          </widget>
@@ -1505,6 +1391,13 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="OrgDeleteBotton">
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="OrgEditPageBackBotton">
@@ -1653,7 +1546,7 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_8">
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QPushButton" name="pushButton_12">
            <property name="text">
             <string>Teams</string>
@@ -1673,17 +1566,17 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="1">
-          <widget class="QToolButton" name="toolButton">
-           <property name="text">
-            <string>...</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_9">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="text">
+            <string>Projects</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="0">
           <spacer name="horizontalSpacer_9">
            <property name="orientation">
@@ -1696,20 +1589,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="text">
-            <string>Projects</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QToolButton" name="toolButton_2">
-           <property name="text">
-            <string>...</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
