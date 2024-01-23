@@ -119,7 +119,12 @@ void myServer::choose_funtion(QString &instruction_from_socket)
     if(main_instruction == "get_organizations"){
         organizations_of_person(fields[1]);
     }
-
+    if(main_instruction == "get_teams"){
+        teams_of_person(fields[1]);
+    }
+    if(main_instruction == "get_project"){
+        projects_of_person(fields[1]);
+    }
 }
 
 myServer::~myServer()
@@ -1114,7 +1119,7 @@ QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
 {
     //QString name_in_data_base = "";  // Set the actual username
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", name_in_data_base);
 
@@ -1126,11 +1131,16 @@ QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
 
         // Convert QStringList to QVector<QString>
         QVector<QString> teamsVector = teamsList.toVector();
-
+        QString teams_to_send_on_socket;
         // Use teamsVector as needed
         for(int i = 0;i<teamsVector.size();i++){
             qDebug() <<teamsVector[i];
+            teams_to_send_on_socket.append(teamsVector[i]);
+            teams_to_send_on_socket.append("*");
         }
+
+        writing_feed_back(teams_to_send_on_socket);
+        on_sendFileBTN_clicked();
 
         //qDebug() << "Teams Vector: " << teamsVector;
         return teamsVector;
@@ -1215,7 +1225,7 @@ QVector<QString> myServer::task_of_person(QString &name_in_data_base)
 QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
 {
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", name_in_data_base);
 
@@ -1227,11 +1237,15 @@ QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
 
         // Convert QStringList to QVector<QString>
         QVector<QString> projectVector = projectList.toVector();
-
+        QString project_send_to_socket;
         // Use teamsVector as needed
         for(int i = 0;i<projectVector.size();i++){
             qDebug() <<projectVector[i];
+            project_send_to_socket.append(projectVector[i]);
+            project_send_to_socket.append("*");
         }
+        writing_feed_back(project_send_to_socket);
+        on_sendFileBTN_clicked();
 
         qDebug() << "project  Vector: " << projectVector;
 

@@ -23,8 +23,12 @@ public slots:
     //updating HomeOrgListLayout
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
+    void update_HomeProjectListLayout_bottons();
+
     void onOrganizationButtonClicked();
     void onTeamButtonClicked();
+    void onProjectButtonClicked();
+
 
     void on_HomeNewPProjectBotton_clicked();
 
