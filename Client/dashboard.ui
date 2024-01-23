@@ -16,6 +16,9 @@
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <widget class="QStackedWidget" name="MainStack">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -28,6 +31,90 @@
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QLabel" name="ProfileUserNameLabel">
+             <property name="text">
+              <string>User name:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="ProfileNameLabel">
+             <property name="text">
+              <string>Name:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="ProfileEmailLabel">
+             <property name="text">
+              <string>Email:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_50">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>New Name:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ProfileNewNameLineEdit"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>New Email:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ProfileNewEmail"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_17">
+             <property name="text">
+              <string>New Password:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="ProfileNewPassLineEdit"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_51">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="HomeProfileChangeButton">
+             <property name="text">
+              <string>Submit</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <spacer name="verticalSpacer_48">
              <property name="orientation">
@@ -301,6 +388,13 @@
         </widget>
        </item>
        <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QVBoxLayout" name="HomeOrgListLayout">
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -374,6 +468,13 @@
           </spacer>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QVBoxLayout" name="HomeTeamsListLayout">
