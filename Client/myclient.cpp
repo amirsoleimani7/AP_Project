@@ -220,6 +220,7 @@ void myClient::on_pushButton_Login_clicked()
 {
 
     QString input_user_name = ui->lineEdit_User_Name->text();
+    currentUserName = input_user_name;
     QString input_user_pass = ui->lineEdit_Password->text();
 
     QString cheack_for_user_pass  = "cheack_pass*"+input_user_name+"*"+input_user_pass+"";
@@ -234,7 +235,8 @@ void myClient::on_pushButton_Login_clicked()
     // QDesktopServices::openUrl(QUrl(link));
 
     if(x  == "Correct_pass"){
-        show_dashboard_page = new Dashboard(this);
+        Dashboard *show_dashboard_page = new Dashboard(this,currentUserName);
+        //show_dashboard_page =
         show_dashboard_page->exec();
     }
 
