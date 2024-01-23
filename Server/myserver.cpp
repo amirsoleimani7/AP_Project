@@ -88,7 +88,6 @@ myServer::myServer(QWidget *parent)
     }
 }
 
-
 void myServer::choose_funtion(QString &instruction_from_socket)
 {
     QStringList fields= instruction_from_socket.split("*");
