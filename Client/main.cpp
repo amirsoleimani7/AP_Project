@@ -1,5 +1,5 @@
 #include "myclient.h"
-
+#include "dashboard.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
