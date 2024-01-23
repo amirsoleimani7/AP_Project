@@ -32,6 +32,8 @@ public slots:
     void onProjectButtonClicked();
 
 
+    void update_profile_of_user();
+
     void on_HomeNewPProjectBotton_clicked();
 
     void on_HomeNewOrgBotton_clicked();
@@ -91,6 +93,9 @@ public slots:
     void on_SomeProjectButton_14_clicked();
 
     void on_pushButton_clicked();
+
+private slots:
+    void on_HomeProfileChangeButton_clicked();
 
 private:
     Ui::Dashboard *ui;

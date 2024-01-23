@@ -104,10 +104,8 @@ void myServer::choose_funtion(QString &instruction_from_socket)
 
     if(main_instruction == "add_person"){
         add_person_to_data_base(instruction_from_socket);
-
         //should be handled acordingly
     }
-
     if(main_instruction == "get_user_inf"){
         get_user_info(fields[1]);
     }
@@ -125,6 +123,19 @@ void myServer::choose_funtion(QString &instruction_from_socket)
     if(main_instruction == "get_project"){
         projects_of_person(fields[1]);
     }
+
+    if(main_instruction == "update_person_all_at_once"){
+        if(fields[2] != ""){
+        change_user_personal_name_1(fields[1],fields[2]);
+        }
+        if(fields[3] !=""){
+            change_user_email(fields[1],fields[3]);
+        }
+        if(fields[4] != ""){
+            chnage_user_pass(fields[1],fields[4]);
+        }
+    }
+
 }
 
 myServer::~myServer()
@@ -132,8 +143,6 @@ myServer::~myServer()
 {
     delete ui;
 }
-
-
 
 void myServer::readSocket()
 {
@@ -457,7 +466,7 @@ void myServer::change_user_personal_name_1(QString &name_in_data_base, QString &
 
     //updating personal_name
 
-    QSqlQuery updateQuery;
+    QSqlQuery updateQuery(mydb_person);
     updateQuery.prepare("UPDATE person_info_database SET personal_name = :new_name WHERE username = :user_name_in_data_base");
     updateQuery.bindValue(":new_name", new_name);
     updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);
@@ -539,14 +548,14 @@ void myServer::add_person_to_data_base(QString &user_data)
         // User doesn't exist, add them to the database
         QSqlQuery insertQuery(mydb_person);
 
-        insertQuery.prepare("INSERT INTO person_info_database (person_id,username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+        insertQuery.prepare("INSERT INTO person_info_database (username, password, personal_name, email, fav_animal, fav_color, fav_city, organizations, teams, projects, tasks) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
 
         for (int i = 1; i <= 12; ++i) {
             qDebug() << "Bind Value " << i << ": " << fields.value(i);
         }
 
         // Bind values for the insertion
-        insertQuery.addBindValue(fields[1]); //person_id
+        //insertQuery.addBindValue(fields[1]); //person_id
         insertQuery.addBindValue(fields[2]); //user_name
         insertQuery.addBindValue(fields[3]); //pass
         insertQuery.addBindValue(fields[4]); //personal name
@@ -606,7 +615,7 @@ void myServer::change_user_email(QString &name_in_data_base, QString &new_email_
     QString user_name_in_data_base = name_in_data_base;
     QString new_email  = new_email_1;
 
-    QSqlQuery updateQuery;
+    QSqlQuery updateQuery(mydb_person);
     updateQuery.prepare("UPDATE person_info_database SET email = :new_email WHERE username = :user_name_in_data_base");
     updateQuery.bindValue(":new_email", new_email);
     updateQuery.bindValue(":user_name_in_data_base", user_name_in_data_base);

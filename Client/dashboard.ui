@@ -488,7 +488,7 @@
        <item>
         <widget class="QStackedWidget" name="OneOrgSideStack">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="OneOrgSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -1493,7 +1493,7 @@
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">

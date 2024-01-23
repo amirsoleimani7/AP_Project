@@ -25,6 +25,39 @@ void Dashboard::set_name_loged_in(QString& name)
     qDebug() << "this is name : " << name;
 }
 
+void Dashboard::update_profile_of_user()
+{
+    QString instruction = "get_user_inf*"+CurrentUserName;
+    //.arg(id, user_name, password, personal_name, email, fav_animal, fav_color, fav_city);
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QString feed_back = socket->reading_feed_back();
+    QStringList fields = feed_back.split("*");
+    QString user_name = fields[1];
+    QString user_personal_name = fields[3];
+    QString user_email =fields[4];
+
+    ui->ProfileUserNameLabel->setText("User Name: "+user_name);
+    ui->ProfileNameLabel->setText("Personal Name: "+user_personal_name);
+    ui->ProfileEmailLabel->setText("Email: "+user_email);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void Dashboard::update_HomeOrgListLayout_bottons()
 {
@@ -199,6 +232,7 @@ void Dashboard::on_HomeProfileBackBotton_clicked()
 void Dashboard::on_HomeProfileBotton_clicked()
 {
     ui->HomeSideStack->setCurrentWidget(ui->HomeProfilePage);
+    update_profile_of_user();
 }
 
 
@@ -337,5 +371,18 @@ void Dashboard::on_SomeProjectButton_14_clicked()
 void Dashboard::on_pushButton_clicked()
 {
    // update_HomeOrgListLayout_bottons();
+}
+
+
+void Dashboard::on_HomeProfileChangeButton_clicked()
+{
+    QString new_personal_name = ui->ProfileNewNameLineEdit->text();
+    QString new_email = ui->ProfileNewEmail->text();
+    QString new_pass = ui->ProfileNewPassLineEdit->text();
+    QString instruction = "update_person_all_at_once*"+CurrentUserName+"*"+new_personal_name+"*"+new_email+"*"+new_pass;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QMessageBox::information(this,"this","info updated!!");
+    update_profile_of_user();
 }
 

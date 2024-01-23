@@ -53,7 +53,6 @@ private slots:
     void change_task_name_in_person(QString& task_old_name,QString& task_new_name);
     void change_project_name_in_all_person(QString& project_old_name,QString& project_new_name);
 
-
     void change_user_info_all_once(QString& changed_data_from_socket);
 
     void change_user_personal_name_1(QString& name_in_data_base,QString& new_name);
