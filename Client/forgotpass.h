@@ -3,11 +3,13 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include "socket_connection.h"
+#include <QString>
 namespace Ui {
 class ForgotPass ;
 }
 
-class ForgotPass : public QDialog , public myClient
+class ForgotPass : public QDialog
 {
     Q_OBJECT
 
@@ -22,7 +24,8 @@ private slots:
 
 private:
     Ui::ForgotPass *ui;
-    bool flag_change = false;
+    socket_connection *socket;
+    bool flag_change = true;
 };
 
 #endif // FORGOTPASS_H
