@@ -14,7 +14,6 @@ ForgotPass::~ForgotPass()
     delete ui;
 }
 
-
 void ForgotPass::on_pushButton_clicked()
 {
     if(ui->lineEdit_get_user_name->text().isEmpty() ||ui->lineEdit_get_fav_animal->text().isEmpty() ||

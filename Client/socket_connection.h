@@ -19,6 +19,7 @@ class socket_connection : public QMainWindow
     Q_OBJECT
 
 public:
+
     socket_connection(QWidget *parent = nullptr);
     ~socket_connection();
     QString reading_feed_back();

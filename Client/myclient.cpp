@@ -231,8 +231,10 @@ void myClient::on_pushButton_Login_clicked()
     QString x = socket->reading_feed_back();
     qDebug() << x;
 
+
     // QString link = "https://chat.openai.com/";
     // QDesktopServices::openUrl(QUrl(link));
+    qDebug() << "this is : "<<input_user_name;
 
     if(x  == "Correct_pass"){
         Dashboard *show_dashboard_page = new Dashboard(this,currentUserName);
