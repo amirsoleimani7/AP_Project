@@ -28,6 +28,7 @@ class myClient : public QMainWindow
     Q_OBJECT
 
 public:
+    QString currentUserName;
     myClient(QWidget *parent = nullptr);
     ~myClient();
     //QString reading_feed_back();
@@ -54,7 +55,6 @@ private:
     Ui::myClient *ui;
     Signup *show_sign_up_page;
     ForgotPass *show_forgot_page;
-    Dashboard *show_dashboard_page;
     socket_connection *socket;
     // QTcpSocket * tcpSocket;
 
