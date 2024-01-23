@@ -145,3 +145,45 @@ void Dashboard::on_TeamCreatPBackButton_clicked()
     ui->TeamSideStack->setCurrentWidget(ui->TeamSideMainPage);
 }
 
+
+void Dashboard::on_SomeTeamButton_12_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->TeamPage);
+}
+
+
+void Dashboard::on_ProjectNewTaskBackButton_clicked()
+{
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
+}
+
+
+void Dashboard::on_ProjectNewTaskButton_clicked()
+{
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectNewTaskPage);
+}
+
+
+void Dashboard::on_ProjectHomeButton_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->Homepage);
+}
+
+
+void Dashboard::on_SomeProjectButton_17_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->ProjectPage);
+}
+
+
+void Dashboard::on_SomeProjectButton_2_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->ProjectPage);
+}
+
+
+void Dashboard::on_SomeProjectButton_14_clicked()
+{
+    ui->MainStack->setCurrentWidget(ui->ProjectPage);
+}
+

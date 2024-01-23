@@ -61,6 +61,20 @@ private slots:
 
     void on_TeamCreatPBackButton_clicked();
 
+    void on_SomeTeamButton_12_clicked();
+
+    void on_ProjectNewTaskBackButton_clicked();
+
+    void on_ProjectNewTaskButton_clicked();
+
+    void on_ProjectHomeButton_clicked();
+
+    void on_SomeProjectButton_17_clicked();
+
+    void on_SomeProjectButton_2_clicked();
+
+    void on_SomeProjectButton_14_clicked();
+
 private:
     Ui::Dashboard *ui;
 };
