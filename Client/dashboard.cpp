@@ -396,3 +396,13 @@ void Dashboard::on_HomeNewPPCreatBotton_clicked()
     update_HomeProjectListLayout_bottons();
 }
 
+
+void Dashboard::on_HomeNewOrgCreatBotton_clicked()
+{
+    QString new_organization_name = ui->NewOrgNameLineEdit->text();
+    QString owner_name = CurrentUserName;
+    QString instruction = "add_to_organizations*"+new_organization_name+"*"+owner_name;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_HomeOrgListLayout_bottons();
+}

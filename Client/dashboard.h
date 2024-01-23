@@ -100,6 +100,8 @@ private slots:
 
     void on_HomeNewPPCreatBotton_clicked();
 
+    void on_HomeNewOrgCreatBotton_clicked();
+
 private:
     Ui::Dashboard *ui;
     socket_connection* socket;

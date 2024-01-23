@@ -135,10 +135,15 @@ void myServer::choose_funtion(QString &instruction_from_socket)
             chnage_user_pass(fields[1],fields[4]);
         }
     }
+
     if(main_instruction == "add_to_personal_project"){
         add_project_to_person(fields[1],fields[2]);
         add_project_to_data_base(instruction_from_socket);
         changing_person_of_project(fields[2],fields[1]);
+    }
+    if(main_instruction == "add_to_organizations"){
+        add_organizations_to_person(fields[2],fields[1]);
+        add_organization_to_data_base(instruction_from_socket);
     }
 
 }
@@ -769,7 +774,7 @@ void myServer::add_organizations_to_person(QString &name_in_data_base, QString &
     QString user_name_in_data_base = name_in_data_base;  // Set the actual username
     QString organizations_to_add = organizations_name;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
 
@@ -781,7 +786,7 @@ void myServer::add_organizations_to_person(QString &name_in_data_base, QString &
         if (!existingOrganizations.contains(organizations_to_add)) {
             list_of_organizations += "," + organizations_to_add;
 
-            QSqlQuery updateQuery;
+            QSqlQuery updateQuery(mydb_person);
             updateQuery.prepare("UPDATE person_info_database SET organizations = :new_organizations WHERE username = :user_in_data_base");
             updateQuery.bindValue(":new_organizations", list_of_organizations);
             updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
@@ -1321,9 +1326,9 @@ void myServer::add_organization_to_data_base(QString &organization_data)
     QStringList fields = data_recieved_by_socket_to_add_to_organization.split("*");
     QString id_organization_to_database = fields[1];
 
-    QSqlQuery checkQuery;
+    QSqlQuery checkQuery(mydb_organization);
 
-    checkQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :id_organization_to_database");
+    checkQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :id_organization_to_database");
     checkQuery.bindValue(":id_organization_to_database", id_organization_to_database);
 
     if (checkQuery.exec() && checkQuery.next()) {
@@ -1341,17 +1346,13 @@ void myServer::add_organization_to_data_base(QString &organization_data)
     //     )
 
     else {
-        QSqlQuery insertQuery;
+        QSqlQuery insertQuery(mydb_organization);
 
-        insertQuery.prepare("INSERT INTO organization_info_database (organization_id,organization_name, organization_owner, organization_team,organization_person) VALUES (?, ?, ?, ?, ?)");
+        insertQuery.prepare("INSERT INTO organization_info_database (organization_name, organization_owner) VALUES (?, ?)");
 
         // Bind values for the insertion
-        insertQuery.addBindValue(fields[1]); //organization_id
-        insertQuery.addBindValue(fields[2]); //organization_name
-        insertQuery.addBindValue(fields[3]); //organization_owner
-        insertQuery.addBindValue(fields[4]); //organization_team
-        insertQuery.addBindValue(fields[5]); //organization_person
-
+        insertQuery.addBindValue(fields[1]); //organization_name
+        insertQuery.addBindValue(fields[2]); //organization_owner
 
         // Execute the insertion query
         if (insertQuery.exec()) {

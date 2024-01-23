@@ -1500,7 +1500,7 @@
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>2</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">
