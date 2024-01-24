@@ -38,6 +38,11 @@ void Dashboard::clearLayout(QLayout* layout) {
     }
 }
 
+void Dashboard::set_current_organization_name(const QString& organization_name)
+{
+    CurrentOrganizationName = organization_name;
+}
+
 
 
 void Dashboard::update_profile_of_user()
@@ -76,11 +81,14 @@ void Dashboard::update_HomeOrgListLayout_bottons()
         }
         for (int i = 0;i<list_of_organizations.size()-1;i++)
         {
-            QString name_of_organization = list_of_organizations[i];
-            QPushButton *push_button_of_organization = new QPushButton(this);
-            push_button_of_organization->setText(name_of_organization);
-            existingLayout->addWidget(push_button_of_organization);
-            connect(push_button_of_organization, &QPushButton::clicked, this, &Dashboard::onOrganizationButtonClicked);
+            if(list_of_organizations[i] != ""){
+                QString name_of_organization = list_of_organizations[i];
+                QPushButton *push_button_of_organization = new QPushButton(this);
+                push_button_of_organization->setText(name_of_organization);
+                existingLayout->addWidget(push_button_of_organization);
+                connect(push_button_of_organization, &QPushButton::clicked, this, &Dashboard::onOrganizationButtonClicked);
+            }
+
         }
         existingLayout->addStretch();
     }
@@ -109,11 +117,14 @@ void Dashboard::update_HomeTeamListLayout_bottons()
 
         for (int i = 0;i<list_of_teams.size()-1;i++)
         {
-            QString name_of_team = list_of_teams[i];
-            QPushButton *push_button_of_team = new QPushButton(this);
-            push_button_of_team->setText(name_of_team);
-            existingLayout->addWidget(push_button_of_team);
-            connect(push_button_of_team, &QPushButton::clicked, this, &Dashboard::onTeamButtonClicked);
+            if(list_of_teams[i]!=""){
+                QString name_of_team = list_of_teams[i];
+                QPushButton *push_button_of_team = new QPushButton(this);
+                push_button_of_team->setText(name_of_team);
+                existingLayout->addWidget(push_button_of_team);
+                connect(push_button_of_team, &QPushButton::clicked, this, &Dashboard::onTeamButtonClicked);
+            }
+
         }
         existingLayout->addStretch();
     }
@@ -121,8 +132,6 @@ void Dashboard::update_HomeTeamListLayout_bottons()
         existingLayout->addStretch();
     }
 }
-
-
 void Dashboard::update_HomeProjectListLayout_bottons()
 {
     clearLayout(ui->HomePProjectsListLayout_project);
@@ -143,11 +152,14 @@ void Dashboard::update_HomeProjectListLayout_bottons()
 
         for (int i = 0;i<list_of_project.size()-1;i++)
         {
-            QString name_of_project = list_of_project[i];
-            QPushButton *push_button_of_project = new QPushButton(this);
-            push_button_of_project->setText(name_of_project);
-            existingLayout->addWidget(push_button_of_project);
-            connect(push_button_of_project, &QPushButton::clicked, this, &Dashboard::onProjectButtonClicked);
+            if(list_of_project[i]!=""){
+                QString name_of_project = list_of_project[i];
+                QPushButton *push_button_of_project = new QPushButton(this);
+                push_button_of_project->setText(name_of_project);
+                existingLayout->addWidget(push_button_of_project);
+                connect(push_button_of_project, &QPushButton::clicked, this, &Dashboard::onProjectButtonClicked);
+            }
+
         }
         existingLayout->addStretch();
     }
@@ -164,6 +176,9 @@ void Dashboard::onOrganizationButtonClicked(){
         // Handle the button click event
         QString organizationName = senderButton->text();
         qDebug() << organizationName;
+        set_current_organization_name(organizationName);
+        ui->MainStack->setCurrentWidget(ui->OneOrgPage);
+        update_teams_in_organization();
         //here we should go to the page of organizations with the given organization name
 
     }
@@ -190,6 +205,46 @@ void Dashboard::onProjectButtonClicked(){
         qDebug() << projectName;
         //here we should go to the page of organizations with the given organization name
     }
+}
+
+
+void Dashboard::update_teams_in_organization()
+{
+    clearLayout(ui->OrgTeamsListLayout_layout);
+    qDebug() << "current org name is :" +CurrentOrganizationName;
+    QString instruction = "get_teams_of_organization*"+ CurrentOrganizationName;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QString feed_back =socket->reading_feed_back();
+
+    qDebug() << "feed back for teams os org : "<<feed_back;
+    QStringList list_of_teams_in_organization = feed_back.split("*");
+    QVBoxLayout* existingLayout = ui->OrgTeamsListLayout_layout;
+
+    if(list_of_teams_in_organization.size() != 0){
+        if (!existingLayout) {
+            // If there is no existing layout, create a new one
+            existingLayout = new QVBoxLayout();
+            //ui->widget_dynamic->setLayout(existingLayout);
+        }
+
+        for (int i = 0;i<list_of_teams_in_organization.size()-1;i++)
+        {
+            if(list_of_teams_in_organization[i]!=""){
+                QString name_of_team_in_org = list_of_teams_in_organization[i];
+                QPushButton *push_button_of_team_in_org = new QPushButton(this);
+                push_button_of_team_in_org->setText(name_of_team_in_org);
+                existingLayout->addWidget(push_button_of_team_in_org);
+                //connect(push_button_of_team_in_org, &QPushButton::clicked, this, &Dashboard::onProjectButtonClicked);
+            }
+
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+
 }
 
 

@@ -92,7 +92,7 @@ void myServer::choose_funtion(QString &instruction_from_socket)
 {
     QStringList fields= instruction_from_socket.split("*");
 
-    qDebug() << "instruction is : "<<instruction_from_socket;
+    qDebug() << "instruction is : "<< "["<<instruction_from_socket<<"]";
 
     QString main_instruction = fields[0];
 
@@ -146,6 +146,12 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         add_organization_to_data_base(instruction_from_socket);
     }
 
+    if(main_instruction == "get_teams_of_organization"){
+        get_team_of_organization(fields[1]);
+    }
+    else{
+        qDebug() << "invalid";
+    }
 }
 
 myServer::~myServer()
@@ -651,13 +657,13 @@ void myServer::chnage_user_pass(QString &name_in_data_base, QString &new_pass_1)
     if (updateQuery.exec()) {
         qDebug() << "pass updated successfully.";
         QString x ="true";
-        writing_feed_back(x);
+        //writing_feed_back(x);
         // Feedback should be handled here
     } else {
         qDebug() << "Could not update pass." << updateQuery.lastError();
         // Feedback should be handled here
         QString x ="coudn't update pass";
-        writing_feed_back(x);
+        //writing_feed_back(x);
     }
 }
 //----------------------------------
@@ -1666,9 +1672,10 @@ QString myServer::getting_info_of_organizatios(QString &organization_id)
 QVector<QString> myServer::get_team_of_organization(QString &organization_id)
 {
     //getting teams
-
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    qDebug() << "org name" <<organization_id;
+    qDebug() << "we are in getting teams";
+    QSqlQuery selectQuery(mydb_organization);
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     selectQuery.bindValue(":organization_id_in_data_base", organization_id);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -1679,17 +1686,32 @@ QVector<QString> myServer::get_team_of_organization(QString &organization_id)
 
         // Convert QStringList to QVector<QString>
         QVector<QString> teamVector = teamList.toVector();
-
+        QString teams_to_send_on_socket;
         // Use teamsVector as needed
         for(int i = 0;i<teamVector.size();i++){
             qDebug() <<teamVector[i];
+            teams_to_send_on_socket.append(teamVector[i]);
+            teams_to_send_on_socket.append("*");
         }
+        qDebug() << "feed back of get teams of org is :" <<teams_to_send_on_socket;
+
+        writing_feed_back(teams_to_send_on_socket);
+        on_sendFileBTN_clicked();
 
         qDebug() << "team  Vector: " << teamVector;
         return  teamVector;
 
     } else {
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> errorVector;
+        errorVector.append("Error: Organization not found or an error occurred.");
+
+        // Write feedback and handle the error gracefully
+        QString feed = "";
+        writing_feed_back(feed);
+        on_sendFileBTN_clicked();
+
+        return errorVector;
     }
 }
 
