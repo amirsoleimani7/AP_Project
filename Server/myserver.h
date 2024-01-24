@@ -84,11 +84,15 @@ private slots:
     void chnage_owner_of_organization(QString& organization_id,QString& new_owner_for_organization);
     void adding_teams_to_organization(QString& organization_id,QString& id_of_team_to_add);
     void adding_person_to_organization(QString& organization_id,QString& id_of_person_to_add);
+    void adding_project_to_organization(QString& organization_id,QString& id_of_project);
+    void removing_project_from_organization(QString& organization_id,QString& id_of_project_to_remove);
     void removing_team_from_organization(QString& organization_id,QString& id_of_team_to_remove);
     void removing_person_from_organization(QString& organization_id,QString& id_of_person_to_remove);
     QString getting_info_of_organizatios(QString& organization_id);
     QVector<QString> get_team_of_organization(QString& organization_id);
     QVector<QString> get_person_of_organization(QString& organization_id);
+    QVector<QString> get_projects_of_organization(QString& organization_id);
+
 
     //--------------------------
     //team functions

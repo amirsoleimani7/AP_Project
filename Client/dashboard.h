@@ -26,9 +26,12 @@ public slots:
     void clearLayout(QLayout* layout);
     void set_current_organization_name(const QString& organization_name);
     //updating HomeOrgListLayout
+    void onTeamsInOrganizationButtonClicked();
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
     void update_HomeProjectListLayout_bottons();
+    void update_projects_in_organization();
+    void onProjecsInOrganizationButtonClicked();
 
     void onOrganizationButtonClicked();
     void onTeamButtonClicked();
