@@ -57,6 +57,48 @@ void Dashboard::update_HomeOrgListLayout_bottons()
     }
 }
 
+
+void Dashboard::update_ProjectTaskListLayout_objects()
+{
+
+    QString instruction = "get_Tasks*" + CurrentProjectName;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QString feed_back =socket->reading_feed_back();
+    qDebug() <<feed_back;
+    QVector <QStringList> ListOfTasks;
+    QStringList list_of_Task = feed_back.split("*");
+    for(int i = 0;i<list_of_Task.size()-1;i++){
+        ListOfTasks.push_back(list_of_Task[i].split("$"));
+    }
+    QVBoxLayout* existingLayout = ui->TasksList;
+    if(ListOfTasks.size() != 0){
+        for (auto index:ListOfTasks)
+        {
+            QCheckBox *taskCheckBox = new QCheckBox (index[0],this);
+            if (index[2] == "1")
+                taskCheckBox->setChecked(true);
+            QHBoxLayout *Horizbox = new QHBoxLayout(this);
+            QLabel *Priority = new QLabel(index[3],this);
+            QLabel *Person = new QLabel(index[1],this);
+            QPushButton *CommentPushButton = new QPushButton("Commment",this);
+            QPushButton *EditPushButton = new QPushButton("Edit",this);
+            connect(CommentPushButton, &QPushButton::clicked, this, &Dashboard::onCommentButtonClicked);
+            connect(push_button_of_organization, &QPushButton::clicked, this, &Dashboard::onEditTaskButtonClicked);
+            Horizbox->addWidget(Person);
+            Horizbox->addWidget(Priority);
+            Horizbox->addWidget(CommentPushButton);
+            Horizbox->addWidget(EditPushButton);
+
+            existingLayout->addWidget(taskCheckBox);
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+}
+
 void Dashboard::update_HomeTeamListLayout_bottons()
 {
 
@@ -158,6 +200,16 @@ void Dashboard::onProjectButtonClicked(){
         //here we should go to the page of organizations with the given organization name
 
     }
+}
+
+void Dashboard::onCommentButtonClicked()
+{
+
+}
+
+void Dashboard::onEditTaskButtonClicked()
+{
+
 }
 
 

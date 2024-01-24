@@ -17,19 +17,22 @@ class Dashboard : public QDialog
     Q_OBJECT
 
 public:
+    QString currentTask;
     QString CurrentUserName;
-    explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");
+    explicit Dashboard(QWidget *parent = nullptr,QString& RefrenceUserName = "");
     ~Dashboard();
 public slots:
-    void set_name_loged_in(QString& name);
     //updating HomeOrgListLayout
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
     void update_HomeProjectListLayout_bottons();
+    void update_ProjectTaskListLayout_bottons();
 
     void onOrganizationButtonClicked();
     void onTeamButtonClicked();
     void onProjectButtonClicked();
+    void onCommentButtonClicked();
+    void onEditTaskButtonClicked();
 
 
     void on_HomeNewPProjectBotton_clicked();
@@ -95,7 +98,6 @@ public slots:
 private:
     Ui::Dashboard *ui;
     socket_connection* socket;
-    QString name_looged_in;
 
 };
 
