@@ -47,7 +47,7 @@ private slots:
     void reading_instructions_from_sokcet(QString& instruction_on_socket);
 
     //function for person ---------------- //sould work with id
-
+    void search_for_persons(QString& person_search);
     void change_organization_name_in_all_person(QString& organization_old_name,QString& organization_new_name);
     void change_team_name_in_all_person(QString& team_old_name,QString& team_new_name);
     void change_task_name_in_person(QString& task_old_name,QString& task_new_name);
@@ -114,6 +114,9 @@ private slots:
 
     void change_team_name_in_all_projects(QString& old_team_name,QString& new_team_name);
     void change_task_name_in_all_projects(QString& old_task_name,QString& new_task_name);
+
+    void search_for_projects(QString& project_search);
+
 
     void archive_task(QString& project_id,QString& task_id);
 

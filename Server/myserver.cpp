@@ -162,6 +162,29 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         remove_team_from_person(fields[1],fields[2]);
         removing_person_from_team(fields[2],fields[1]);
     }
+    if(main_instruction == "search_for_projects")
+    {
+        search_for_projects(fields[1]);
+    }
+    if(main_instruction == "add_project_to_team"){
+        //team rpoject
+        add_project_to_team(fields[1],fields[2]);
+        add_team_to_project(fields[2],fields[1]);
+    }
+    if(main_instruction == "change_team_name"){
+        change_team_name_in_all_organizations(fields[1],fields[2]);
+        change_team_name_in_all_person(fields[1],fields[2]);
+        change_team_name_in_all_projects(fields[1],fields[2]);
+        change_name_of_team(fields[1],fields[2]);
+    }
+    if(main_instruction == "add_person_to_team"){
+        //team person
+        add_person_to_team(fields[1],fields[2]);
+        add_team_to_person(fields[2],fields[1]);
+    }
+    if(main_instruction == "search_for_person"){
+        search_for_persons(fields[1]);
+    }
     else{
         qDebug() << "invalid";
     }
@@ -310,6 +333,45 @@ void myServer::reading_instructions_from_sokcet(QString& instruction_on_socket)
 {
     //QStringList fields= instruction_on_socket.split("*");
     choose_funtion(instruction_on_socket);
+}
+
+void myServer::search_for_persons(QString &person_search)
+{
+    qDebug() << "we are in seaerch for perosn";
+    QSqlQuery query(mydb_person);
+    query.prepare("SELECT * FROM person_info_database WHERE username LIKE :search");
+    query.bindValue(":search", "%" + person_search + "%");
+
+    // Execute the query
+    if (query.exec())
+    {
+        // Initialize a QString to store the concatenated project names
+        QString foundProjects;
+
+        // Process the results, concatenate project names with a comma
+        while (query.next())
+        {
+            QString projectName = query.value("username").toString();
+            foundProjects += projectName + "*";
+        }
+
+        // Remove the trailing comma and space
+        //        foundProjects = foundProjects.left(foundProjects.length() - 2);
+
+        // Print the concatenated project names
+        qDebug() << "Found persons: " << foundProjects;
+        writing_feed_back(foundProjects);
+        on_sendFileBTN_clicked();
+    }
+    else
+    {
+        QString feed= "";
+        writing_feed_back(feed);
+        on_sendFileBTN_clicked();
+        // Handle query execution error
+        qDebug() << "Error executing query: " << query.lastError().text();
+    }
+
 }
 
 void myServer::change_organization_name_in_all_person(QString &organization_old_name, QString &organization_new_name)
@@ -839,10 +901,11 @@ void myServer::add_organizations_to_person(QString &name_in_data_base, QString &
 
 void myServer::add_team_to_person(QString &name_in_data_base, QString &team_name)
 {
+    qDebug() << "we are in the add team to person";
     QString user_name_in_data_base = name_in_data_base;  // Set the actual username
     QString team_to_add = team_name;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
 
@@ -854,7 +917,7 @@ void myServer::add_team_to_person(QString &name_in_data_base, QString &team_name
         if (!existingteam.contains(team_to_add)) {
             list_of_team += "," + team_to_add;
 
-            QSqlQuery updateQuery;
+            QSqlQuery updateQuery(mydb_person);
             updateQuery.prepare("UPDATE person_info_database SET teams = :new_teams WHERE username = :user_in_data_base");
             updateQuery.bindValue(":new_teams", list_of_team);
             updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
@@ -2013,7 +2076,6 @@ void myServer::change_name_of_team(QString &team_id, QString new_name)
             //feedback should be handled here
         }
     }
-
 }
 
 
@@ -2047,9 +2109,9 @@ void myServer::add_person_to_team(QString &team_id, QString& new_person)
     QString team_id_in_data_base = team_id;  // Set the actual username
     QString person_to_add = new_person;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_team);
 
-    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
     selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
 
@@ -2062,8 +2124,8 @@ void myServer::add_person_to_team(QString &team_id, QString& new_person)
         if (!existingperson.contains(person_to_add)) {
             list_of_person += "," + person_to_add;
 
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE team_info_database SET team_persons = :new_person WHERE team_id = :team_id_in_data_base");
+            QSqlQuery updateQuery(mydb_team);
+            updateQuery.prepare("UPDATE team_info_database SET team_persons = :new_person WHERE team_name = :team_id_in_data_base");
             updateQuery.bindValue(":new_person", list_of_person);
             updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
@@ -2089,9 +2151,9 @@ void myServer::add_project_to_team(QString team_id, QString &new_project)
     QString team_id_in_data_base = team_id;  // Set the actual username
     QString project_to_add = new_project;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_team);
 
-    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
     selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
 
@@ -2104,8 +2166,8 @@ void myServer::add_project_to_team(QString team_id, QString &new_project)
         if (!existingprojects.contains(project_to_add)) {
             list_of_project += "," + project_to_add;
 
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE team_info_database SET team_projects = :new_project WHERE team_id = :team_id_in_data_base");
+            QSqlQuery updateQuery(mydb_team);
+            updateQuery.prepare("UPDATE team_info_database SET team_projects = :new_project WHERE team_name = :team_id_in_data_base");
             updateQuery.bindValue(":new_project", list_of_project);
             updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
@@ -2456,6 +2518,44 @@ void myServer::change_task_name_in_all_projects(QString &old_task_name, QString 
     }
 }
 
+void myServer::search_for_projects(QString &project_search)
+{
+    qDebug() << "we are in seaerch for project";
+    QSqlQuery query(mydb_project);
+    query.prepare("SELECT * FROM project_info_database WHERE project_name LIKE :search");
+    query.bindValue(":search", "%" + project_search + "%");
+
+    // Execute the query
+    if (query.exec())
+    {
+        // Initialize a QString to store the concatenated project names
+        QString foundProjects;
+
+        // Process the results, concatenate project names with a comma
+        while (query.next())
+        {
+            QString projectName = query.value("project_name").toString();
+            foundProjects += projectName + "*";
+        }
+
+        // Remove the trailing comma and space
+//        foundProjects = foundProjects.left(foundProjects.length() - 2);
+
+        // Print the concatenated project names
+        qDebug() << "Found projects: " << foundProjects;
+        writing_feed_back(foundProjects);
+        on_sendFileBTN_clicked();
+    }
+    else
+    {
+        QString feed= "";
+        writing_feed_back(feed);
+        on_sendFileBTN_clicked();
+        // Handle query execution error
+        qDebug() << "Error executing query: " << query.lastError().text();
+    }
+}
+
 void myServer::archive_task(QString &project_id, QString &task_id)
 {
     QSqlQuery query(mydb_project);
@@ -2664,8 +2764,8 @@ void myServer::add_team_to_project(QString &project_id, QString &new_team_to_add
     QString project_id_in_data_base = project_id;  // Set the actual username
     QString team_to_add = new_team_to_add;
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    QSqlQuery selectQuery(mydb_project);
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_name = :project_id_in_data_base");
     selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 
     // CREATE TABLE "project_info_database" (
@@ -2687,8 +2787,8 @@ void myServer::add_team_to_project(QString &project_id, QString &new_team_to_add
         if (!existingteam.contains(team_to_add)) {
             list_of_team += "," + team_to_add;
 
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE project_info_database SET project_teams = :new_teams_in_project WHERE project_id = :project_id_in_data_base");
+            QSqlQuery updateQuery(mydb_project);
+            updateQuery.prepare("UPDATE project_info_database SET project_teams = :new_teams_in_project WHERE project_name = :project_id_in_data_base");
             updateQuery.bindValue(":new_teams_in_project", list_of_team);
             updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 

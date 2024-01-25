@@ -35,6 +35,7 @@ public slots:
     void update_HomeProjectListLayout_bottons();
     void update_projects_in_organization();
     void onProjecsInOrganizationButtonClicked();
+    void add_person_to_team(QString& person_name);
 
     void update_projects_of_team();
     void onProjectTeamButtonClicked();
@@ -48,8 +49,10 @@ public slots:
 
     void update_members_of_team();
 
+    void onProjectSearchButtonClicked();
 
-
+    void onPersonSearchButtonClicked();
+    void add_project_to_team(QString& project_name);
 
     void on_HomeNewPProjectBotton_clicked();
 
@@ -117,6 +120,12 @@ private slots:
     void on_HomeNewPPCreatBotton_clicked();
 
     void on_HomeNewOrgCreatBotton_clicked();
+
+    void on_search_for_project_clicked();
+
+    void on_TeamChangeNameBotton_clicked();
+
+    void on_searchForUserNameToAddToTeam_clicked();
 
 private:
     Ui::Dashboard *ui;
