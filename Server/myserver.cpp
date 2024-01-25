@@ -152,6 +152,16 @@ void myServer::choose_funtion(QString &instruction_from_socket)
     if(main_instruction == "get_projects_of_organization"){
         get_projects_of_organization(fields[1]);
     }
+    if(main_instruction == "get_members_of_team"){
+        getting_persons_of_team(fields[1]);
+    }
+    if(main_instruction == "get_projects_of_team"){
+        getting_projects_of_team(fields[1]);
+    }
+    if(main_instruction == "delete_team_of_member"){
+        remove_team_from_person(fields[1],fields[2]);
+        removing_person_from_team(fields[2],fields[1]);
+    }
     else{
         qDebug() << "invalid";
     }
@@ -1005,7 +1015,7 @@ void myServer::remove_team_from_person(QString &name_in_data_base, QString &team
     QString user_name_in_data_base = name_in_data_base;  // Set the actual username
     QString remove_name_team = team_name;  // Set the team to remove
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", name_in_data_base);
 
@@ -1019,7 +1029,7 @@ void myServer::remove_team_from_person(QString &name_in_data_base, QString &team
 
             QString newListOfteams = existingTeam.join(",");
 
-            QSqlQuery updateQuery;
+            QSqlQuery updateQuery(mydb_person);
             updateQuery.prepare("UPDATE person_info_database SET teams = :new_team WHERE username = :user_in_data_base");
             updateQuery.bindValue(":new_team", newListOfteams);
             updateQuery.bindValue(":user_in_data_base", name_in_data_base);
@@ -1027,9 +1037,6 @@ void myServer::remove_team_from_person(QString &name_in_data_base, QString &team
             if (updateQuery.exec()) {
                 qDebug() << "team removed successfully.";
                 //handeling socket
-
-
-
 
             } else {
                 qDebug() << "Failed to update row." << updateQuery.lastError();
@@ -2133,8 +2140,8 @@ void myServer::removing_person_from_team(QString &team_id, QString &person_id_to
     //     "team_projects"	TEXT
     //     )
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    QSqlQuery selectQuery(mydb_team);
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
     selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -2152,8 +2159,8 @@ void myServer::removing_person_from_team(QString &team_id, QString &person_id_to
             QString newListOfperson = existingperson.join(",");
 
             // Update the row with the new list of organizations
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE team_info_database SET team_persons = :new_team_person WHERE team_id = :team_id_in_data_base");
+            QSqlQuery updateQuery(mydb_team);
+            updateQuery.prepare("UPDATE team_info_database SET team_persons = :new_team_person WHERE team_name = :team_id_in_data_base");
             updateQuery.bindValue(":new_team_person", newListOfperson);
             updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
@@ -2236,8 +2243,8 @@ QVector<QString> myServer::getting_persons_of_team(QString team_id)
     //     "team_projects"	TEXT
     //     )
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    QSqlQuery selectQuery(mydb_team);
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
     selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -2249,17 +2256,26 @@ QVector<QString> myServer::getting_persons_of_team(QString team_id)
 
         // Convert QStringList to QVector<QString>
         QVector<QString> personVector = personList.toVector();
-
+        QString members_of_socket;
         // Use teamsVector as needed
         for(int i = 0;i<personVector.size();i++){
             qDebug() <<personVector[i];
-        }
+            members_of_socket.append(personVector[i]);
+            members_of_socket.append("*");
 
+        }
+        writing_feed_back(members_of_socket);
+        on_sendFileBTN_clicked();
         qDebug() << "person  Vector: " << personVector;
         return personVector;
 
     } else {
         qDebug() << "team not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err = {""};
+        QString err1 = "";
+        writing_feed_back(err1);
+        on_sendFileBTN_clicked();
+        return err;
     }
 
 
@@ -2278,8 +2294,8 @@ QVector<QString> myServer::getting_projects_of_team(QString team_id)
     //     "team_projects"	TEXT
     //     )
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    QSqlQuery selectQuery(mydb_team);
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
     selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -2291,17 +2307,26 @@ QVector<QString> myServer::getting_projects_of_team(QString team_id)
 
         // Convert QStringList to QVector<QString>
         QVector<QString> projectVector = projectList.toVector();
-
+        QString projects_of_team;
         // Use teamsVector as needed
         for(int i = 0;i<projectVector.size();i++){
             qDebug() <<projectVector[i];
+            projects_of_team.append(projectVector[i]);
+            projects_of_team.append("*");
         }
+        writing_feed_back(projects_of_team);
+        on_sendFileBTN_clicked();
 
         qDebug() << "project  Vector: " << projectVector;
         return projectVector;
 
     } else {
         qDebug() << "team not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> x = {""};
+        QString feed = "";
+        writing_feed_back(feed);
+        on_sendFileBTN_clicked();
+        return x;
     }
 }
 

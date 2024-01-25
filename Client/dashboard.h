@@ -19,12 +19,15 @@ class Dashboard : public QDialog
 public:
     QString CurrentUserName;
     QString CurrentOrganizationName;
+    QString CurrentTeamName;
     explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");
     ~Dashboard();
 public slots:
     void set_name_loged_in(QString& name);
     void clearLayout(QLayout* layout);
     void set_current_organization_name(const QString& organization_name);
+    void set_cuurrent_team_name(const QString& team_name);
+    void onMemberTeamButtonClicked();
     //updating HomeOrgListLayout
     void onTeamsInOrganizationButtonClicked();
     void update_HomeOrgListLayout_bottons();
@@ -33,12 +36,20 @@ public slots:
     void update_projects_in_organization();
     void onProjecsInOrganizationButtonClicked();
 
+    void update_projects_of_team();
+    void onProjectTeamButtonClicked();
+
     void onOrganizationButtonClicked();
     void onTeamButtonClicked();
     void onProjectButtonClicked();
 
     void update_teams_in_organization();
     void update_profile_of_user();
+
+    void update_members_of_team();
+
+
+
 
     void on_HomeNewPProjectBotton_clicked();
 
