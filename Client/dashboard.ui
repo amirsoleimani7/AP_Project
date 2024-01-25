@@ -27,7 +27,7 @@
        <item>
         <widget class="QStackedWidget" name="ProjectSideStack">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="ProjectSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -488,7 +488,7 @@
        <item>
         <widget class="QStackedWidget" name="OneOrgSideStack">
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="OneOrgSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -628,7 +628,7 @@
             <widget class="QLineEdit" name="OrgSearchNewMemberLineEdit"/>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="pushButton_search_for_new_member_for_org">
              <property name="text">
               <string>Search</string>
              </property>
@@ -831,20 +831,6 @@
        <item>
         <layout class="QVBoxLayout" name="OrgSearchListLayout">
          <item>
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Members Name</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_32">
-           <property name="text">
-            <string>New Member User name</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <spacer name="horizontalSpacer_10">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -856,6 +842,12 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_search_for_new_membr_for_organization"/>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_members_of_organization"/>
          </item>
         </layout>
        </item>
@@ -982,7 +974,7 @@
        <item>
         <widget class="QStackedWidget" name="TeamSideStack">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="TeamSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1474,7 +1466,7 @@
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>3</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">

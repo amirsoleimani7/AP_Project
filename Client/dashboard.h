@@ -37,6 +37,9 @@ public slots:
     void onProjecsInOrganizationButtonClicked();
     void add_person_to_team(QString& person_name);
 
+    //void add_person_to_organization(QString& person_name);
+    void onMemberInOrganizationButtonClicked();
+    void onMemberSearchButtonClicked();
     void update_projects_of_team();
     void onProjectTeamButtonClicked();
 
@@ -48,11 +51,13 @@ public slots:
     void update_profile_of_user();
 
     void update_members_of_team();
-
+    void add_person_to_organization(QString& person_name);
     void onProjectSearchButtonClicked();
 
     void onPersonSearchButtonClicked();
     void add_project_to_team(QString& project_name);
+
+    void update_members_of_organization();
 
     void on_HomeNewPProjectBotton_clicked();
 
@@ -128,6 +133,22 @@ private slots:
     void on_searchForUserNameToAddToTeam_clicked();
 
     void on_TeamDeletingMemberBotton_clicked();
+
+    void on_TeamChangeAdminBotton_clicked();
+
+    void on_CreateNewTeamBotton_clicked();
+
+    void on_OrgChangeNameBotton_clicked();
+
+    void on_pushButton_search_for_new_member_for_org_clicked();
+
+    void on_OrgDeleteMemberBotton_clicked();
+
+    void on_OrgChangeOwnerBotton_clicked();
+
+    void on_HomeOrgFilterBotton_clicked();
+
+    void on_HomeTeamFilterBotton_clicked();
 
 private:
     Ui::Dashboard *ui;

@@ -190,6 +190,44 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         remove_team_from_person(fields[2],fields[1]);
         removing_person_from_team(fields[1],fields[2]);
     }
+    if(main_instruction == "change_admin"){
+        change_admin_of_the_team(fields[1],fields[2]);
+    }
+    if(main_instruction == "add_new_team_to_organization"){
+        //org team
+        adding_teams_to_organization(fields[1],fields[2]);
+
+    }
+    if(main_instruction =="change_name_of_organization"){
+        //org old // org new;
+        chnage_name_of_organization(fields[1],fields[2]);
+        change_organization_name_in_all_person(fields[1],fields[2]);
+    }
+    if(main_instruction=="get_members_of_organization"){
+        get_person_of_organization(fields[1]);
+    }
+    if(main_instruction == "search_for_members"){
+        search_for_persons(fields[1]);
+    }
+    if(main_instruction == "add_person_to_organization"){
+        //org person
+        add_organizations_to_person(fields[2],fields[1]);
+        adding_person_to_organization(fields[1],fields[2]);
+    }
+    if(main_instruction == "remove_member_from_organization"){
+        //org member
+        remove_organization_from_person(fields[2],fields[1]);
+        removing_person_from_organization(fields[1],fields[2]);
+    }
+    if(main_instruction == "change_organization_owner"){
+        chnage_owner_of_organization(fields[1],fields[2]);
+    }
+    if(main_instruction == "get_organizations_owed"){
+        get_organization_of_person_as_owner(fields[1]);
+    }
+    if(main_instruction == "get_team_admin"){
+        get_teams_of_person_as_admin(fields[1]);
+    }
     else{
         qDebug() << "invalid";
     }
@@ -339,6 +377,74 @@ void myServer::reading_instructions_from_sokcet(QString& instruction_on_socket)
     //QStringList fields= instruction_on_socket.split("*");
     choose_funtion(instruction_on_socket);
 }
+
+
+void myServer::get_organization_of_person_as_owner(QString &person_name)
+{
+    // Prepare the SQL query
+    QString queryStr = "SELECT organization_name FROM organization_info_database WHERE organization_owner = :person_name";
+    QSqlQuery query(mydb_organization);
+    query.prepare(queryStr);
+    query.bindValue(":person_name", person_name);
+
+    // Execute the query
+    if (query.exec())
+    {
+        // Collect organization names separated by '*'
+        QStringList organizationNames;
+        while (query.next())
+        {
+            organizationNames << query.value(0).toString();
+        }
+
+        // Create a single string with organization names separated by '*'
+        QString owner_organizations_on_socket = organizationNames.join('*')+ "*";
+        writing_feed_back(owner_organizations_on_socket);
+        on_sendFileBTN_clicked();
+
+        // Print or use the result as needed
+        qDebug() << "Organizations owned by " << person_name << ": " << owner_organizations_on_socket;
+    }
+    else
+    {
+        qDebug() << "Error executing SQL query: " << query.lastError().text();
+    }
+}
+
+void myServer::get_teams_of_person_as_admin(QString &person_name)
+{
+
+    QString queryStr = "SELECT team_name FROM team_info_database WHERE team_admin = :person_name";
+    QSqlQuery query(mydb_team);
+    query.prepare(queryStr);
+    query.bindValue(":person_name", person_name);
+
+    // Execute the query
+    if (query.exec())
+    {
+        // Collect organization names separated by '*'
+        QStringList teamNames;
+        while (query.next())
+        {
+            teamNames << query.value(0).toString();
+        }
+        // Create a single string with organization names separated by '*'
+        QString admin_teams_on_socket = teamNames.join('*') + "*";
+        writing_feed_back(admin_teams_on_socket);
+        on_sendFileBTN_clicked();
+
+        // Print or use the result as needed
+        qDebug() << "Organizations owned by " << person_name << ": " << admin_teams_on_socket;
+    }
+    else
+    {
+        qDebug() << "Error executing SQL query: " << query.lastError().text();
+    }
+
+}
+
+
+
 
 void myServer::search_for_persons(QString &person_search)
 {
@@ -880,13 +986,9 @@ void myServer::add_organizations_to_person(QString &name_in_data_base, QString &
                 qDebug() << "Row updated successfully.";
                 //feed back for updating the row
 
-
-
             } else {
                 qDebug() << "Failed to update row." << updateQuery.lastError();
                 //fail
-
-
             }
         } else {
             qDebug() << "Organization already exists in the list.";
@@ -1028,7 +1130,7 @@ void myServer::remove_organization_from_person(QString &name_in_data_base, QStri
     QString user_name_in_data_base = name_in_data_base;  // Set the actual username
     QString remove_name_organization = organizations_name;  // Set the organization to remove
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", name_in_data_base);
 
@@ -1047,7 +1149,7 @@ void myServer::remove_organization_from_person(QString &name_in_data_base, QStri
             QString newListOfOrganizations = existingOrganizations.join(",");
 
             // Update the row with the new list of organizations
-            QSqlQuery updateQuery;
+            QSqlQuery updateQuery(mydb_person);
             updateQuery.prepare("UPDATE person_info_database SET organizations = :new_organizations WHERE username = :user_in_data_base");
             updateQuery.bindValue(":new_organizations", newListOfOrganizations);
             updateQuery.bindValue(":user_in_data_base", name_in_data_base);
@@ -1055,12 +1157,8 @@ void myServer::remove_organization_from_person(QString &name_in_data_base, QStri
             if (updateQuery.exec()) {
                 qDebug() << "Organization removed successfully.";
                 //should hande feedback
-
-
-
             } else {
                 qDebug() << "Failed to update row." << updateQuery.lastError();
-
                 //should handle feedback
             }
         } else {
@@ -1246,6 +1344,8 @@ QVector<QString> myServer::teams_of_person(QString &name_in_data_base)
 
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err ={""};
+        return err;
     }
 }
 
@@ -1284,6 +1384,8 @@ QVector<QString> myServer::organizations_of_person(QString &name_in_data_base)
 
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err = {""};
+        return err;
     }
 }
 
@@ -1316,6 +1418,8 @@ QVector<QString> myServer::task_of_person(QString &name_in_data_base)
 
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err;
+        return err;
     }
 
 }
@@ -1347,9 +1451,12 @@ QVector<QString> myServer::projects_of_person(QString &name_in_data_base)
         on_sendFileBTN_clicked();
 
         qDebug() << "project  Vector: " << projectVector;
+        return projectVector;
 
     } else {
         qDebug() << "User not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err = {""};
+        return err;
     }
 }
 
@@ -1466,7 +1573,7 @@ void myServer::chnage_name_of_organization(QString &organization_id, QString &ne
     //     "organization_person"	TEXT
     //     )
 
-    QSqlQuery checkQuery;
+    QSqlQuery checkQuery(mydb_organization);
 
     checkQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     checkQuery.bindValue(":organization_id_in_data_base", new_name_for_organization);
@@ -1480,6 +1587,9 @@ void myServer::chnage_name_of_organization(QString &organization_id, QString &ne
         updateQuery.prepare("UPDATE organization_info_database SET organization_name = :new_organization_name WHERE organization_name = :organization_id_in_data_base");
         updateQuery.bindValue(":new_organization_name", new_name);
         updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
+
+
+
 
         if (updateQuery.exec()) {
             qDebug() << "organization name updated successfully.";
@@ -1504,9 +1614,9 @@ void myServer::chnage_owner_of_organization(QString &organization_id, QString &n
 
     QString organization_id_in_data_base = organization_id;
     QString name_of_new_owner  = new_owner_for_organization;
-    QSqlQuery updateQuery;
+    QSqlQuery updateQuery(mydb_organization);
 
-    updateQuery.prepare("UPDATE organization_info_database SET organization_owner = :new_organization_owner_name WHERE organization_id = :organization_id_in_data_base");
+    updateQuery.prepare("UPDATE organization_info_database SET organization_owner = :new_organization_owner_name WHERE organization_name = :organization_id_in_data_base");
     updateQuery.bindValue(":new_organization_owner_name", name_of_new_owner);
     updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
@@ -1515,7 +1625,6 @@ void myServer::chnage_owner_of_organization(QString &organization_id, QString &n
 
         // You can add additional logic or feedback here
         //feed back should be handled here
-
 
     } else {
         qDebug() << "Could not update organization owner." << updateQuery.lastError();
@@ -1532,8 +1641,8 @@ void myServer::adding_teams_to_organization(QString &organization_id, QString &i
     QString organization_id_in_data_base = organization_id;  // Set the actual username
     QString team_to_add = id_of_team_to_add;
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    QSqlQuery selectQuery(mydb_organization);
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
 
@@ -1545,8 +1654,8 @@ void myServer::adding_teams_to_organization(QString &organization_id, QString &i
         if (!existingteam.contains(team_to_add)) {
             list_of_team += "," + team_to_add;
 
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE organization_info_database SET organization_team = :new_teams WHERE organization_id = :organization_id_in_data_base");
+            QSqlQuery updateQuery(mydb_organization);
+            updateQuery.prepare("UPDATE organization_info_database SET organization_team = :new_teams WHERE organization_name = :organization_id_in_data_base");
             updateQuery.bindValue(":new_teams", list_of_team);
             updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
@@ -1554,12 +1663,10 @@ void myServer::adding_teams_to_organization(QString &organization_id, QString &i
             {
                 qDebug() << "Row updated successfully.";
                 //
-
             }
             else {
                 qDebug() << "Failed to update row." << updateQuery.lastError();
                 //should hnadle the feedback
-
             }
         } else {
             qDebug() << "team already exists in the list.";
@@ -1579,9 +1686,9 @@ void myServer::adding_person_to_organization(QString &organization_id, QString &
     QString person_to_add = id_of_person_to_add;
 
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_organization);
 
-    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
 
@@ -1593,8 +1700,8 @@ void myServer::adding_person_to_organization(QString &organization_id, QString &
         if (!existingperson.contains(person_to_add)) {
             list_of_person += "," + person_to_add;
 
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE organization_info_database SET organization_person = :new_person WHERE organization_id = :organization_id_in_data_base");
+            QSqlQuery updateQuery(mydb_organization);
+            updateQuery.prepare("UPDATE organization_info_database SET organization_person = :new_person WHERE organization_name = :organization_id_in_data_base");
             updateQuery.bindValue(":new_person", list_of_person);
             updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
@@ -1765,8 +1872,8 @@ void myServer::removing_person_from_organization(QString& organization_id,QStrin
     QString organization_id_in_data_base = organization_id;  // Set the actual username
     QString remove_person_from_organization = id_of_person_to_remove;
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    QSqlQuery selectQuery(mydb_organization);
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -1784,8 +1891,8 @@ void myServer::removing_person_from_organization(QString& organization_id,QStrin
             QString newListOfperson = existingperson.join(",");
 
             // Update the row with the new list of organizations
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE organization_info_database SET organization_person = :new_organization_person WHERE organization_id = :organization_id_in_data_base");
+            QSqlQuery updateQuery(mydb_organization);
+            updateQuery.prepare("UPDATE organization_info_database SET organization_person = :new_organization_person WHERE organization_name = :organization_id_in_data_base");
             updateQuery.bindValue(":new_organization_person", newListOfperson);
             updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
@@ -1890,8 +1997,8 @@ QVector<QString> myServer::get_team_of_organization(QString &organization_id)
 QVector<QString> myServer::get_person_of_organization(QString &organization_id)
 {
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    QSqlQuery selectQuery(mydb_organization);
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     selectQuery.bindValue(":organization_id_in_data_base", organization_id);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -1902,17 +2009,23 @@ QVector<QString> myServer::get_person_of_organization(QString &organization_id)
 
         // Convert QStringList to QVector<QString>
         QVector<QString> personVector = personList.toVector();
-
+        QString members_fly_on_sokcet;
         // Use teamsVector as needed
         for(int i = 0;i<personVector.size();i++){
             qDebug() <<personVector[i];
+            members_fly_on_sokcet.append(personVector[i]);
+            members_fly_on_sokcet.append("*");
         }
+        writing_feed_back(members_fly_on_sokcet);
+        on_sendFileBTN_clicked();
 
         qDebug() << "person  Vector: " << personVector;
         return personVector;
 
     } else {
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err ={""};
+        return err;
     }
 }
 
@@ -2090,8 +2203,8 @@ void myServer::change_admin_of_the_team(QString &team_id, QString &new_name)
     QString team_id_in_data_base = team_id;
     QString new_admin  = new_name;
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE team_info_database SET team_admin = :new_team_admin WHERE team_id = :team_id_in_data_base");
+    QSqlQuery updateQuery(mydb_team);
+    updateQuery.prepare("UPDATE team_info_database SET team_admin = :new_team_admin WHERE team_name = :team_id_in_data_base");
     updateQuery.bindValue(":new_team_admin", new_admin);
     updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
@@ -2106,7 +2219,6 @@ void myServer::change_admin_of_the_team(QString &team_id, QString &new_name)
         // You can handle the error or provide feedback here
         //feedback should be handled here
     }
-
 }
 //----------------------------------------
 void myServer::add_person_to_team(QString &team_id, QString& new_person)
@@ -2438,6 +2550,8 @@ QString myServer::getting_info_of_team(QString team_id)
     }
     else {
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
+        QString err = "";
+        return err;
     }
 }
 
@@ -3062,8 +3176,9 @@ QVector<QString> myServer::getting_teams_of_project(QString &project_id)
 
     } else {
         qDebug() << "project not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err ={""};
+        return err;
     }
-
 }
 //--------------------
 QVector<QString> myServer::getting_tasks_of_project(QString &project_id)
@@ -3104,6 +3219,8 @@ QVector<QString> myServer::getting_tasks_of_project(QString &project_id)
 
     } else {
         qDebug() << "project not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err = {""};
+        return err;
     }
 }
 
@@ -3579,6 +3696,8 @@ QVector<QString> myServer::getting_persons_of_task(QString &task_id)
 
     } else {
         qDebug() << "task not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err = {""};
+        return err;
     }
 }
 
@@ -3835,5 +3954,7 @@ QString myServer::getting_info_of_comment(QString &comment_id)
     }
     else {
         qDebug() << "comment not found or an error occurred." << selectQuery.lastError();
+        QString err = "";
+        return err;
     }
 }

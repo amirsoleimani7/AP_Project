@@ -274,6 +274,8 @@ void Dashboard::onOrganizationButtonClicked(){
         set_current_organization_name(organizationName);
         ui->MainStack->setCurrentWidget(ui->OneOrgPage);
         ui->OneOrgName->setText(CurrentOrganizationName);
+
+        update_members_of_organization();
         update_teams_in_organization();
         update_projects_in_organization();
         //here we should go to the page of organizations with the given organization name
@@ -521,10 +523,7 @@ void Dashboard::on_TeamDeleteTeamBotton_clicked()
     socket->witing_instructions(instruction);
     socket->delay();
     QMessageBox::information(this,"remove team","team removed");
-    //update_HomeTeamListLayout_bottons();
-
-
-
+    update_HomeTeamListLayout_bottons();
     // update_members_of_team();
     // update_teams_in_organization();
     // update_HomeTeamListLayout_bottons();
@@ -775,5 +774,253 @@ void Dashboard::on_TeamDeletingMemberBotton_clicked()
     socket->witing_instructions(instruction);
     socket->delay();
     update_members_of_team();
+}
+
+
+void Dashboard::on_TeamChangeAdminBotton_clicked()
+{
+    QString new_admin = ui->TeamNewAdminLineEdit->text();
+    QString instruction = "change_admin*"+CurrentTeamName+"*"+new_admin;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QMessageBox::information(this,"new admin","admin updated!");
+}
+
+
+void Dashboard::on_CreateNewTeamBotton_clicked()
+{
+    QString team_name_to_add_to_organization = ui->NewTeamLineEdit->text();
+    QString instruction = "add_new_team_to_organization*"+CurrentOrganizationName+"*"+team_name_to_add_to_organization;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_teams_in_organization();
+    QMessageBox::information(this,"this","team added to organization");
+}
+
+
+void Dashboard::on_OrgChangeNameBotton_clicked()
+{
+    QString new_name_for_organization = ui->OrgNewNameLineEdit->text();
+    QString instruction = "change_name_of_organization*"+CurrentOrganizationName+"*"+new_name_for_organization;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QMessageBox::information(this,"changing organization name","organization name updated");
+}
+
+void Dashboard::update_members_of_organization()
+{
+    clearLayout(ui->verticalLayout_members_of_organization);
+    qDebug() << "current org name is :" +CurrentOrganizationName;
+    QString instruction = "get_members_of_organization*"+ CurrentOrganizationName;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QString feed_back =socket->reading_feed_back();
+
+    qDebug() << "feed back for teams os org : "<<feed_back;
+    QStringList list_of_members_in_organization = feed_back.split("*");
+    QVBoxLayout* existingLayout = ui->verticalLayout_members_of_organization;
+
+    if(list_of_members_in_organization.size() != 0){
+        if (!existingLayout) {
+            // If there is no existing layout, create a new one
+            existingLayout = new QVBoxLayout();
+            //ui->widget_dynamic->setLayout(existingLayout);
+        }
+
+        for (int i = 0;i<list_of_members_in_organization.size()-1;i++)
+        {
+            if(list_of_members_in_organization[i]!=""){
+                QString name_of_member_in_org = list_of_members_in_organization[i];
+                QPushButton *push_button_of_member_in_org = new QPushButton(this);
+                push_button_of_member_in_org->setText(name_of_member_in_org);
+                existingLayout->addWidget(push_button_of_member_in_org);
+                connect(push_button_of_member_in_org, &QPushButton::clicked, this, &Dashboard::onMemberInOrganizationButtonClicked);
+            }
+
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+}
+
+void Dashboard::onMemberInOrganizationButtonClicked()
+{
+    QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
+    if (senderButton) {
+        // Handle the button click event
+        QString member_name_in_organization = senderButton->text();
+        qDebug() << member_name_in_organization;
+        //here we should go to the page of organizations with the given organization name
+    }
+
+}
+
+void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
+{
+
+    QString search_member_for_org = ui->OrgSearchNewMemberLineEdit->text();
+
+    clearLayout(ui->verticalLayout_search_for_new_membr_for_organization);
+
+    QString search_for_member_to_add = ui->OrgSearchNewMemberLineEdit->text();
+    QString instruction ="search_for_person*"+search_for_member_to_add;
+    socket->witing_instructions(instruction);
+    socket->delay();
+
+    QString feed_back =socket->reading_feed_back();
+    qDebug() <<feed_back;
+    QStringList list_of_member_search_reualt = feed_back.split("*");
+    QVBoxLayout* existingLayout = ui->verticalLayout_search_for_new_membr_for_organization;
+
+    if(list_of_member_search_reualt.size() != 0){
+        if (!existingLayout) {
+            // If there is no existing layout, create a new one
+            existingLayout = new QVBoxLayout();
+            //ui->widget_dynamic->setLayout(existingLayout);
+        }
+
+        for (int i = 0;i<list_of_member_search_reualt.size()-1;i++)
+        {
+            if(list_of_member_search_reualt[i]!=""){
+
+                QString name_of_member_search = list_of_member_search_reualt[i];
+                QPushButton *push_button_of_membr_search = new QPushButton(this);
+                push_button_of_membr_search->setText(name_of_member_search);
+                existingLayout->addWidget(push_button_of_membr_search);
+                connect(push_button_of_membr_search, &QPushButton::clicked, this, &Dashboard::onMemberSearchButtonClicked);
+            }
+
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+}
+
+
+void Dashboard::onMemberSearchButtonClicked()
+{
+    QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
+    if (senderButton) {
+        // Handle the button click event
+        QString member_name_searched_in_organization = senderButton->text();
+        qDebug() << member_name_searched_in_organization;
+        add_person_to_organization(member_name_searched_in_organization);
+        //here we should go to the page of organizations with the given organization name
+    }
+    clearLayout(ui->verticalLayout_search_for_new_membr_for_organization);
+    clearLayout(ui->verticalLayout_members_of_organization);
+    update_members_of_organization();
+    qDebug() << "raeched here:";
+}
+void Dashboard::add_person_to_organization(QString &person_name)
+{
+    QString instruction = "add_person_to_organization*"+CurrentOrganizationName+"*"+person_name;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    //update_members_of_organization();
+    QMessageBox::information(this,"adding person","person added");
+}
+
+void Dashboard::on_OrgDeleteMemberBotton_clicked()
+{
+    QString member_remove_from_organization = ui->OrgSearchDeleteMember->text();
+    QString instruction = "remove_member_from_organization*"+CurrentOrganizationName+"*"+member_remove_from_organization;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_members_of_organization();
+}
+
+
+void Dashboard::on_OrgChangeOwnerBotton_clicked()
+{
+    QString organization_new_owner = ui->OrgNewOwnerLineEdit->text();
+    QString instruvtion = "change_organization_owner*"+CurrentOrganizationName+"*"+organization_new_owner;
+    socket->witing_instructions(instruvtion);
+    socket->delay();
+    QMessageBox::information(this,"organization","organization owner changed");
+}
+
+void Dashboard::on_HomeOrgFilterBotton_clicked()
+{
+
+    if(ui->HomeOrgTypeComboBox->currentText() == "Owner"){
+        clearLayout(ui->HomeOrgListLayout_organization);
+        QString instruction = "get_organizations_owed*"+CurrentUserName;
+        socket->witing_instructions(instruction);
+        socket->delay();
+        QString feed_back =socket->reading_feed_back();
+        qDebug() <<feed_back;
+        QStringList list_of_organizations = feed_back.split("*");
+        QVBoxLayout* existingLayout = ui->HomeOrgListLayout_organization;
+        if(list_of_organizations.size() != 0){
+            if (!existingLayout) {
+                // If there is no existing layout, create a new one
+                existingLayout = new QVBoxLayout();
+                //ui->widget_dynamic->setLayout(existingLayout);
+            }
+            for (int i = 0;i<list_of_organizations.size()-1;i++)
+            {
+                if(list_of_organizations[i] != ""){
+                    QString name_of_organization = list_of_organizations[i];
+                    QPushButton *push_button_of_organization = new QPushButton(this);
+                    push_button_of_organization->setText(name_of_organization);
+                    existingLayout->addWidget(push_button_of_organization);
+                    connect(push_button_of_organization, &QPushButton::clicked, this, &Dashboard::onOrganizationButtonClicked);
+                }
+
+            }
+            existingLayout->addStretch();
+        }
+        else{
+            existingLayout->addStretch();
+        }
+    }
+    else{
+        update_HomeOrgListLayout_bottons();
+    }
+}
+
+void Dashboard::on_HomeTeamFilterBotton_clicked()
+{
+    if(ui->HomeTeamTypeComboBox->currentText() == "Admin"){
+        clearLayout(ui->HomeTeamsListLayout_team);
+        QString instruction = "get_team_admin*"+CurrentUserName;
+        socket->witing_instructions(instruction);
+        socket->delay();
+        QString feed_back =socket->reading_feed_back();
+        qDebug() <<feed_back;
+        QStringList list_of_teams = feed_back.split("*");
+        QVBoxLayout* existingLayout = ui->HomeTeamsListLayout_team;
+        if(list_of_teams.size() != 0){
+            if (!existingLayout) {
+                // If there is no existing layout, create a new one
+                existingLayout = new QVBoxLayout();
+                //ui->widget_dynamic->setLayout(existingLayout);
+            }
+
+            for (int i = 0;i<list_of_teams.size()-1;i++)
+            {
+                if(list_of_teams[i]!=""){
+                    QString name_of_team = list_of_teams[i];
+                    QPushButton *push_button_of_team = new QPushButton(this);
+                    push_button_of_team->setText(name_of_team);
+                    existingLayout->addWidget(push_button_of_team);
+                    connect(push_button_of_team, &QPushButton::clicked, this, &Dashboard::onTeamButtonClicked);
+                }
+
+            }
+            existingLayout->addStretch();
+        }
+        else{
+            existingLayout->addStretch();
+        }
+    }
+    else{
+        update_HomeTeamListLayout_bottons();
+    }
 }
 

@@ -47,6 +47,11 @@ private slots:
     void reading_instructions_from_sokcet(QString& instruction_on_socket);
 
     //function for person ---------------- //sould work with id
+    void get_organization_of_person_as_owner(QString& person_name);
+    void get_teams_of_person_as_admin(QString& person_name);
+
+
+
     void search_for_persons(QString& person_search);
     void change_organization_name_in_all_person(QString& organization_old_name,QString& organization_new_name);
     void change_team_name_in_all_person(QString& team_old_name,QString& team_new_name);
