@@ -185,6 +185,11 @@ void myServer::choose_funtion(QString &instruction_from_socket)
     if(main_instruction == "search_for_person"){
         search_for_persons(fields[1]);
     }
+    if(main_instruction == "remove_member_from_team"){
+        //team person
+        remove_team_from_person(fields[2],fields[1]);
+        removing_person_from_team(fields[1],fields[2]);
+    }
     else{
         qDebug() << "invalid";
     }

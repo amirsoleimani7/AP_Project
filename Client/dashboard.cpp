@@ -767,3 +767,13 @@ void Dashboard::onPersonSearchButtonClicked(){
         //here we should go to the page of organizations with the given organization name
     }
 }
+
+void Dashboard::on_TeamDeletingMemberBotton_clicked()
+{
+    QString member_to_remove_from_team = ui->TeamDeletingMemberLineEdit->text();
+    QString instruction = "remove_member_from_team*"+CurrentTeamName+"*"+member_to_remove_from_team;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_members_of_team();
+}
+

@@ -127,6 +127,8 @@ private slots:
 
     void on_searchForUserNameToAddToTeam_clicked();
 
+    void on_TeamDeletingMemberBotton_clicked();
+
 private:
     Ui::Dashboard *ui;
     socket_connection* socket;
