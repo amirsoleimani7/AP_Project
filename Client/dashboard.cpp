@@ -465,8 +465,14 @@ void Dashboard::on_OneOrgAddNewTeamBotton_clicked()
 void Dashboard::on_OneOrgDeleteOrgBotton_clicked()
 {
     ui->MainStack->setCurrentWidget(ui->Homepage);
-}
 
+    QString instruction = "delete_organization_of_member*"+CurrentUserName+"*"+CurrentOrganizationName;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QMessageBox::information(this,"remove org","organization removed");
+    update_HomeOrgListLayout_bottons();
+
+}
 
 void Dashboard::on_OrgEditPageBackBotton_clicked()
 {

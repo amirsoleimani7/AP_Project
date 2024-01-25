@@ -228,6 +228,11 @@ void myServer::choose_funtion(QString &instruction_from_socket)
     if(main_instruction == "get_team_admin"){
         get_teams_of_person_as_admin(fields[1]);
     }
+    if(main_instruction =="delete_organization_of_member"){
+        //user org
+        remove_organization_from_person(fields[1],fields[2]);
+        removing_person_from_organization(fields[2],fields[1]);
+    }
     else{
         qDebug() << "invalid";
     }
@@ -1908,7 +1913,6 @@ void myServer::removing_person_from_organization(QString& organization_id,QStrin
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
     }
 }
-
 //
 
 QString myServer::getting_info_of_organizatios(QString &organization_id)
