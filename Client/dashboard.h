@@ -8,6 +8,7 @@
 #include <vector>
 #include <QDebug>
 #include "myclient.h"
+#include "custombutton.h"
 namespace Ui {
 class Dashboard;
 }
