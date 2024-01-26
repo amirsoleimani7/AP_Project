@@ -1,6 +1,7 @@
 #ifndef DASHBOARD_H
 #define DASHBOARD_H
 
+#include <algorithm>
 #include <QDialog>
 #include "socket_connection.h"
 #include <QString>
