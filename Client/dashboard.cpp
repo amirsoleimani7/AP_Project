@@ -98,8 +98,6 @@ void Dashboard::update_projects_of_team()
         existingLayout->addStretch();
     }
 }
-
-
 void Dashboard::onProjectTeamButtonClicked()
 {
     QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
@@ -109,8 +107,8 @@ void Dashboard::onProjectTeamButtonClicked()
         //here we should go to the page of organizations with the given organization name
         qDebug() << project_name_in_team ;
     }
-
 }
+
 void Dashboard::update_members_of_team()
 {
     clearLayout(ui->verticalLayout_members_of_team);
@@ -1040,5 +1038,15 @@ void Dashboard::on_HomeTeamFilterBotton_clicked()
     else{
         update_HomeTeamListLayout_bottons();
     }
+}
+
+void Dashboard::on_pushButton_create_new_project_clicked()
+{
+    QString new_project_for_team=ui->lineEdit_create_new_project_for_team->text();
+    QString instruction ="add_new_project_to_team*"+CurrentTeamName+"*"+new_project_for_team;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QMessageBox::information(this,"adding new project","new project added");
+    update_projects_of_team();
 }
 

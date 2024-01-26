@@ -150,6 +150,8 @@ private slots:
 
     void on_HomeTeamFilterBotton_clicked();
 
+    void on_pushButton_create_new_project_clicked();
+
 private:
     Ui::Dashboard *ui;
     socket_connection* socket;

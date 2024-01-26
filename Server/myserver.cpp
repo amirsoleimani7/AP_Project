@@ -251,6 +251,13 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         remove_organization_from_person(fields[1],fields[2]);
         removing_person_from_organization(fields[2],fields[1]);
     }
+    if(main_instruction == "add_new_project_to_team"){
+        //QString instruction ="add_new_project_to_team*"+CurrentTeamName+"*"+new_project_for_team;
+        QString projec_to_add = "add*id*"+fields[2]+"*team";
+        add_project_to_data_base(projec_to_add);
+        add_project_to_team(fields[1],fields[2]);
+        add_team_to_project(fields[2],fields[1]);
+    }
     else{
         qDebug() << "invalid";
     }
@@ -2779,6 +2786,7 @@ void myServer::archive_task(QString &project_id, QString &task_id)
 
 void myServer::add_project_to_data_base(QString &project_data)
 {
+    qDebug() << "add project to data base";
     QString data_recieved_by_socket_to_add_to_project = project_data;
     QStringList fields = data_recieved_by_socket_to_add_to_project.split("*");
 
@@ -3631,7 +3639,7 @@ QString myServer::getting_info_of_tasks(QString &task_id)
     QString task_id_in_data_base = task_id;
     QString task_info;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_task);
     selectQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :task_id_in_data_base");
     selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
