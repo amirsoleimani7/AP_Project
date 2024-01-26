@@ -106,6 +106,9 @@ void Dashboard::onProjectTeamButtonClicked()
         QString project_name_in_team = senderButton->text();
         //here we should go to the page of organizations with the given organization name
         qDebug() << project_name_in_team ;
+        CurrentProjectName = project_name_in_team;
+        ui->MainStack->setCurrentWidget(ui->ProjectPage);
+        update_ProjectTaskListLayout_objects();
     }
 }
 
@@ -193,6 +196,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
 
 void Dashboard::update_ProjectTaskListLayout_objects()
 {
+    clearLayout(ui->verticalLayout_update_tasks_in_ptoject);
     QString instruction = "get_Tasks*" + CurrentProjectName;
     socket->witing_instructions(instruction);
     socket->delay();
@@ -200,10 +204,15 @@ void Dashboard::update_ProjectTaskListLayout_objects()
     qDebug() <<feed_back;
     QVector <QStringList> ListOfTasks;
     QStringList list_of_Task = feed_back.split("|");
+    qDebug() << list_of_Task;
+
     for(int i = 0;i<list_of_Task.size()-1;i++){
-        ListOfTasks.push_back(list_of_Task[i].split("*"));
+        if(list_of_Task[i] != ""){
+            ListOfTasks.push_back(list_of_Task[i].split("*"));
+
+        }
     }
-    QVBoxLayout* existingLayout = ui->TasksList;
+    QVBoxLayout* existingLayout = ui->verticalLayout_update_tasks_in_ptoject;
     if(ListOfTasks.size() != 0){
         for (auto index:ListOfTasks)
         {
@@ -211,6 +220,7 @@ void Dashboard::update_ProjectTaskListLayout_objects()
             QCheckBox *taskCheckBox = new QCheckBox (index[1],this);
             if (index[5] == "1")
                 taskCheckBox->setChecked(true);
+
             QHBoxLayout *Horizbox = new QHBoxLayout(this);
             QLabel *Priority = new QLabel(index[6],this);
             QLabel *Person = new QLabel(index[3],this);
@@ -218,12 +228,31 @@ void Dashboard::update_ProjectTaskListLayout_objects()
             QPushButton *EditPushButton = new QPushButton ("Edit",this);
             connect(CommentPushButton, &QPushButton::clicked, this, &Dashboard::onCommentButtonClicked);
             connect(EditPushButton, &QPushButton::clicked, this, &Dashboard::onEditTaskButtonClicked);
+
+
             Horizbox->addWidget(Person);
             Horizbox->addWidget(Priority);
             Horizbox->addWidget(CommentPushButton);
             Horizbox->addWidget(EditPushButton);
             existingLayout->addWidget(taskCheckBox);
-            existingLayout->addItem(Horizbox);
+            existingLayout->addLayout(Horizbox);
+
+            connect(taskCheckBox, &QCheckBox::stateChanged, this, [=](int state) {
+                if (state == Qt::Checked) {
+                    qDebug() << "Checkbox for " << index[1] << " is checked.";
+                    QString intruction = "change_is_done_task*"+index[1]+"*1";
+                    socket->witing_instructions(intruction);
+                    socket->delay();
+                    // Do something when the checkbox is checked
+                } else {
+                    qDebug() << "Checkbox for " << index[1] << " is unchecked.";
+                    QString intruction = "change_is_done_task*"+index[1]+"*0";
+                    socket->witing_instructions(intruction);
+                    socket->delay();
+                    // Do something when the checkbox is unchecked
+                }
+            });
+
         }
         existingLayout->addStretch();
     }
@@ -355,6 +384,9 @@ void Dashboard::onProjectButtonClicked(){
         // Handle the button click event
         QString projectName = senderButton->text();
         qDebug() << projectName;
+        CurrentProjectName = projectName;
+        ui->MainStack->setCurrentWidget(ui->ProjectPage);
+        update_ProjectTaskListLayout_objects();
         //here we should go to the page of organizations with the given organization name
     }
 }
@@ -405,9 +437,13 @@ void Dashboard::onProjecsInOrganizationButtonClicked(){
         // Handle the button click event
         QString project_name_in_organization = senderButton->text();
         qDebug() << project_name_in_organization;
+        CurrentProjectName = project_name_in_organization;
+        ui->MainStack->setCurrentWidget(ui->ProjectPage);
+        update_ProjectTaskListLayout_objects();
         //here we should go to the page of organizations with the given organization name
     }
 }
+
 void Dashboard::update_teams_in_organization()
 {
     clearLayout(ui->OrgTeamsListLayout_layout);
@@ -452,6 +488,12 @@ void Dashboard::onTeamsInOrganizationButtonClicked()
         // Handle the button click event
         QString team_name_in_organization = senderButton->text();
         qDebug() << team_name_in_organization;
+        CurrentTeamName = team_name_in_organization;
+        ui->TeamLabel->setText(team_name_in_organization);
+        set_cuurrent_team_name(team_name_in_organization);
+        ui->MainStack->setCurrentWidget(ui->TeamPage);
+        update_members_of_team();
+        update_projects_of_team();
         //here we should go to the page of organizations with the given organization name
     }
 }
@@ -1099,5 +1141,26 @@ void Dashboard::on_pushButton_create_new_project_clicked()
     socket->delay();
     QMessageBox::information(this,"adding new project","new project added");
     update_projects_of_team();
+}
+//-----------------------------------projecs and tasks
+
+void Dashboard::on_pushButton_6_clicked()
+{
+
+}
+
+
+void Dashboard::on_pushButton_submit_clicked()
+{
+    QString task_title = ui->lineEdit_task_title->text();
+    QString task_content = ui->lineEdit_task_content->text();
+    QString priority = ui->ProjectNewTaskPriorityComboBox->currentText();
+    QDate date = ui->dateEdit_data_for_task->date();
+    QString  task_date = date.toString();
+    QString instruction = "add_task_to_project*"+CurrentProjectName+"*"+task_title+"*"+task_content+"*"+priority+"*"+task_date;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    QMessageBox::information(this,"add task","task added");
+    update_ProjectTaskListLayout_objects();
 }
 

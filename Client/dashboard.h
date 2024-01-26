@@ -159,6 +159,10 @@ private slots:
 
     void on_pushButton_create_new_project_clicked();
 
+    void on_pushButton_6_clicked();
+
+    void on_pushButton_submit_clicked();
+
 private:
     Ui::Dashboard *ui;
     socket_connection* socket;

@@ -258,6 +258,22 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         add_project_to_team(fields[1],fields[2]);
         add_team_to_project(fields[2],fields[1]);
     }
+    if(main_instruction == "get_Tasks"){
+        QStringList list_of_tasks = getting_tasks_of_project(fields[1]);
+        QString x = getting_each_task_information(list_of_tasks);
+        qDebug() << "x is :" << x;
+        writing_feed_back(x);
+        on_sendFileBTN_clicked();
+    }if(main_instruction =="change_is_done_task"){
+        changing_is_done_of_task(fields[1],fields[2]);
+
+    }
+    if(main_instruction == "add_task_to_project"){
+        //QString instruction = "add_task_to_project*"+CurrentProjectName+"*"+task_title+"*"+task_content+"*"+priority+"*"+task_date;
+        add_task_to_data_task(instruction_from_socket);
+        add_task_to_project(fields[1],fields[2]);
+
+   }
     else{
         qDebug() << "invalid";
     }
@@ -3031,8 +3047,8 @@ void myServer::add_task_to_project(QString &project_id, QString &new_task_to_add
     QString project_id_in_data_base = project_id;  // Set the actual username
     QString task_to_add = new_task_to_add;
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    QSqlQuery selectQuery(mydb_project);
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_name = :project_id_in_data_base");
     selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 
     // CREATE TABLE "project_info_database" (
@@ -3053,8 +3069,8 @@ void myServer::add_task_to_project(QString &project_id, QString &new_task_to_add
         if (!existingtasks.contains(task_to_add)) {
             list_of_tasks += "," + task_to_add;
 
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE project_info_database SET project_tasks = :new_task_in_project WHERE project_id = :project_id_in_data_base");
+            QSqlQuery updateQuery(mydb_project);
+            updateQuery.prepare("UPDATE project_info_database SET project_tasks = :new_task_in_project WHERE project_name = :project_id_in_data_base");
             updateQuery.bindValue(":new_task_in_project", list_of_tasks);
             updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 
@@ -3062,7 +3078,6 @@ void myServer::add_task_to_project(QString &project_id, QString &new_task_to_add
             {
                 qDebug() << "Row updated successfully.";
                 //feedback
-
 
 
             }
@@ -3292,8 +3307,8 @@ QVector<QString> myServer::getting_tasks_of_project(QString &project_id)
     //     "project_tasks"	TEXT
     // )
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    QSqlQuery selectQuery(mydb_project);
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_name = :project_id_in_data_base");
     selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -3310,7 +3325,6 @@ QVector<QString> myServer::getting_tasks_of_project(QString &project_id)
         for(int i = 0;i<tasksVector.size();i++){
             qDebug() <<tasksVector[i];
         }
-
         qDebug() << "teams  Vector: " << tasksVector;
         return tasksVector;
 
@@ -3319,6 +3333,18 @@ QVector<QString> myServer::getting_tasks_of_project(QString &project_id)
         QVector<QString> err = {""};
         return err;
     }
+}
+
+QString myServer::getting_each_task_information(QStringList lst)
+{
+    QString infos_of_task = "|";
+    for(int i = 0 ;i<lst.size();i++){
+        qDebug() << "task name is : " <<lst[i];
+        QString to_add= getting_info_of_tasks(lst[i]);
+        infos_of_task.append(to_add);
+        infos_of_task.append("|");
+    }
+    return infos_of_task;
 }
 
 //------------------------
@@ -3336,13 +3362,15 @@ void myServer::add_task_to_data_task(QString &task_data)
     //     "task_priority"	INTEGER,
     //     "task_date"	TEXT)
 
+    //QString instruction = "add_task_to_project*"+CurrentProjectName+"*"+task_title+"*"+task_content+"*"+priority+"*"+task_date;
+
     QString data_recieved_by_socket_to_add_to_task =  task_data;
     QStringList fields = data_recieved_by_socket_to_add_to_task.split("*");
     QString id_task_to_database = fields[1];
 
-    QSqlQuery checkQuery;
+    QSqlQuery checkQuery(mydb_task);
 
-    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :id_task_to_database");
+    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :id_task_to_database");
     checkQuery.bindValue(":id_task_to_database", id_task_to_database);
 
     if (checkQuery.exec() && checkQuery.next()) {
@@ -3350,19 +3378,19 @@ void myServer::add_task_to_data_task(QString &task_data)
     }
     else {
 
-        QSqlQuery insertQuery;
+        QSqlQuery insertQuery(mydb_task);
 
-        insertQuery.prepare("INSERT INTO tasks_info_database (tasks_id,task_text, task_project, task_person,tasks_persons,tasks_isdone,task_priority,task_date) VALUES (?, ?, ?, ?,?,?, ?,?)");
+        insertQuery.prepare("INSERT INTO tasks_info_database (tasks_id,task_text, task_project,tasks_isdone,task_priority,task_date) VALUES (?,?, ?, ?, ?,?)");
 
         // Bind values for the insertion
-        insertQuery.addBindValue(fields[1]); //tasks_id
+        insertQuery.addBindValue(fields[2]); //tasks_id
         insertQuery.addBindValue(fields[2]); //task_text
-        insertQuery.addBindValue(fields[3]); //task_project
-        insertQuery.addBindValue(fields[4]); //task_person
-        insertQuery.addBindValue(fields[5]); //tasks_persons
-        insertQuery.addBindValue(fields[6]); //tasks_isdone
-        insertQuery.addBindValue(fields[7]); //task_priority
-        insertQuery.addBindValue(fields[8]); //task_priority
+        insertQuery.addBindValue(fields[1]); //task_project
+        QString is_done = "0";
+        insertQuery.addBindValue(is_done);        //task_person
+        insertQuery.addBindValue(fields[4]); //task_project
+        insertQuery.addBindValue(fields[5]); //task_project
+
 
         // Execute the insertion query
         if (insertQuery.exec()) {
@@ -3569,8 +3597,8 @@ void myServer::changing_is_done_of_task(QString &task_id, QString &new_id_done)
     //     "tasks_isdone"	TEXT
     //     , "task_priority"	INTEGER)
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE tasks_info_database SET tasks_isdone = :new_is_done WHERE tasks_id = :task_id_in_data_base");
+    QSqlQuery updateQuery(mydb_task);
+    updateQuery.prepare("UPDATE tasks_info_database SET tasks_isdone = :new_is_done WHERE task_text = :task_id_in_data_base");
     updateQuery.bindValue(":new_is_done", new_is_done);
     updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
@@ -3584,9 +3612,6 @@ void myServer::changing_is_done_of_task(QString &task_id, QString &new_id_done)
         // You can handle the error or provide feedback here
         //feedback should be handled here
     }
-
-
-
 }
 //-------------------
 
@@ -3672,7 +3697,7 @@ QString myServer::getting_info_of_tasks(QString &task_id)
     QString task_info;
 
     QSqlQuery selectQuery(mydb_task);
-    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :task_id_in_data_base");
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :task_id_in_data_base");
     selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -3691,11 +3716,14 @@ QString myServer::getting_info_of_tasks(QString &task_id)
         task_info = QString("%1*%2*%3*%4*%5*%6*%7*%8")
                         .arg(id, text, project, person, persons,is_done,priority,date);
 
-        qDebug() << task_info;
+        qDebug() << "task info is : "<<task_info;
         return task_info;
         //socket_handle
     }
     else {
+        qDebug() << "error";
+        QString err = "";
+        return err;
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
     }
 }

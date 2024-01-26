@@ -141,6 +141,9 @@ private slots:
     //-------------------------
 
     //tasks function
+
+    QString getting_each_task_information(QStringList lst);
+
     void add_task_to_data_task(QString& task_data);
     void changing_task_id(QString& task_id ,QString& task_new_id);
     void changing_text_of_task(QString& task_id,QString& new_text);
