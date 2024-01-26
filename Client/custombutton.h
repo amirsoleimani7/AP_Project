@@ -3,13 +3,11 @@
 #include <QPushButton>
 #include <QString>
 #include <QWidget>
-
 class CustomButton :public QPushButton
 {
 public:
     QString parent;
-    QPushButton *Button;
-    CustomButton(QWidget *Prnt,QString inParent,QString inButton);
+    CustomButton(QWidget *prnt,QString& task_id,QString& inbotton);
 };
 
 #endif // CUSTOMBUTTON_H
