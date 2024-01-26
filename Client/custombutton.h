@@ -12,4 +12,5 @@ public:
     CustomButton(QWidget *Prnt,QString inParent,QString inButton);
 };
 
+
 #endif // CUSTOMBUTTON_H
