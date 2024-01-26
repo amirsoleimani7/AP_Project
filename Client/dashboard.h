@@ -22,6 +22,7 @@ public:
     QString CurrentUserName;
     QString CurrentOrganizationName;
     QString CurrentTeamName;
+    QString CurrentProjectName;
     explicit Dashboard(QWidget *parent = nullptr,const QString& RefrenceUserName = "");
     ~Dashboard();
 public slots:
@@ -38,7 +39,6 @@ public slots:
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
     void update_HomeProjectListLayout_bottons();
-    void update_ProjectTaskListLayout_bottons();
     void update_projects_in_organization();
     void onProjecsInOrganizationButtonClicked();
     void add_person_to_team(QString& person_name);
