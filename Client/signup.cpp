@@ -66,8 +66,7 @@ void Signup::on_pushButton_signup_clicked()
                 }
             }
             if(flag_lower_case && flag_upper_case){
-                QString user_to_add ="add_person*id*"+input_user_name+"*"+input_user_pass+"*"+input_user_personal_name+"*"+input_user_email+"*"+input_user_animal_recovery+"*"+input_user_color_recovery+"*"+input_user_city_recovery
-                    +"*"+"default_org"+"*"+"default_teams"+"*"+"default_projects"+"*"+"default_tasks";
+                QString user_to_add ="add_person*id*"+input_user_name+"*"+input_user_pass+"*"+input_user_personal_name+"*"+input_user_email+"*"+input_user_animal_recovery+"*"+input_user_color_recovery+"*"+input_user_city_recovery;
                 socket->witing_instructions(user_to_add);
                 socket->delay();
                 QString x = socket->reading_feed_back();
