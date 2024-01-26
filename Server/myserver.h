@@ -49,7 +49,7 @@ private slots:
     //function for person ---------------- //sould work with id
     void get_organization_of_person_as_owner(QString& person_name);
     void get_teams_of_person_as_admin(QString& person_name);
-
+    QString check_if_person_is_admin_of_team(QString& team_name,QString& person_name);
 
 
     void search_for_persons(QString& person_search);
@@ -57,6 +57,8 @@ private slots:
     void change_team_name_in_all_person(QString& team_old_name,QString& team_new_name);
     void change_task_name_in_person(QString& task_old_name,QString& task_new_name);
     void change_project_name_in_all_person(QString& project_old_name,QString& project_new_name);
+
+    QString check_if_user_name_is_the_owner_of_org(QString& person_name,QString& organization_name);
 
     void change_user_info_all_once(QString& changed_data_from_socket);
 

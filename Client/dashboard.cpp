@@ -786,10 +786,15 @@ void Dashboard::on_TeamDeletingMemberBotton_clicked()
 void Dashboard::on_TeamChangeAdminBotton_clicked()
 {
     QString new_admin = ui->TeamNewAdminLineEdit->text();
-    QString instruction = "change_admin*"+CurrentTeamName+"*"+new_admin;
+    QString instruction = "change_admin*"+CurrentTeamName+"*"+CurrentUserName+"*"+new_admin;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"new admin","admin updated!");
+    QString feed = socket->reading_feed_back();
+    if(feed != "access denied"){
+        QMessageBox::information(this,"new admin","admin updated!");
+    }else{
+        QMessageBox::information(this,"new admin","access denied");
+    }
 }
 
 
@@ -944,10 +949,17 @@ void Dashboard::on_OrgDeleteMemberBotton_clicked()
 void Dashboard::on_OrgChangeOwnerBotton_clicked()
 {
     QString organization_new_owner = ui->OrgNewOwnerLineEdit->text();
-    QString instruvtion = "change_organization_owner*"+CurrentOrganizationName+"*"+organization_new_owner;
+    QString instruvtion = "change_organization_owner*"+CurrentOrganizationName+"*"+CurrentUserName+"*"+organization_new_owner;
     socket->witing_instructions(instruvtion);
     socket->delay();
-    QMessageBox::information(this,"organization","organization owner changed");
+    QString feed_back = socket->reading_feed_back();
+    if(feed_back != "access denied"){
+        QMessageBox::information(this,"organization","organization owner changed");
+    }
+    else{
+        QMessageBox::warning(this,"organization","access denied");
+
+    }
 }
 
 void Dashboard::on_HomeOrgFilterBotton_clicked()

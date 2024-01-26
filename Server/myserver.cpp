@@ -191,8 +191,17 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         removing_person_from_team(fields[1],fields[2]);
     }
     if(main_instruction == "change_admin"){
-        change_admin_of_the_team(fields[1],fields[2]);
+        //    QString instruction = "change_admin*"+CurrentTeamName+"*"+CurrentUserName+"*"+new_admin;
+        if(check_if_person_is_admin_of_team(fields[1],fields[2]) == "true"){
+            change_admin_of_the_team(fields[1],fields[3]);
+
+        }else{
+            QString feed ="access denied";
+            writing_feed_back(feed);
+            on_sendFileBTN_clicked();
+        }
     }
+
     if(main_instruction == "add_new_team_to_organization"){
         //org team
         adding_teams_to_organization(fields[1],fields[2]);
@@ -220,7 +229,16 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         removing_person_from_organization(fields[1],fields[2]);
     }
     if(main_instruction == "change_organization_owner"){
-        chnage_owner_of_organization(fields[1],fields[2]);
+        //QString instruvtion = "change_organization_owner*"+CurrentOrganizationName+"*"+CurrentUserName+"*"+organization_new_owner;
+        if(check_if_user_name_is_the_owner_of_org(fields[2],fields[1]) == "true"){
+            qDebug() << "u have access";
+            chnage_owner_of_organization(fields[1],fields[3]);
+        }
+        else{
+            QString feed = "access denied";
+            writing_feed_back(feed);
+            on_sendFileBTN_clicked();
+        }
     }
     if(main_instruction == "get_organizations_owed"){
         get_organization_of_person_as_owner(fields[1]);
@@ -448,6 +466,22 @@ void myServer::get_teams_of_person_as_admin(QString &person_name)
 
 }
 
+QString myServer::check_if_person_is_admin_of_team(QString &team_name, QString &person_name)
+{
+    QString team_info = getting_info_of_team(team_name);
+    QStringList info = team_info.split("*");
+    QString admin = info[2];
+    if(admin == person_name){
+        QString feed = "true";
+        return feed;
+    }
+    else{
+        QString feed = "false";
+        return feed;
+    }
+
+}
+
 
 
 
@@ -652,6 +686,23 @@ void myServer::change_project_name_in_all_person(QString &project_old_name, QStr
     } else {
         qDebug() << "Error in selecting records:" << selectQuery.lastError();
         // Feedback for error in selecting records
+    }
+}
+
+QString myServer::check_if_user_name_is_the_owner_of_org(QString &person_name, QString &organization_name)
+{
+    QString org_info =  getting_info_of_organizatios(organization_name);
+    QStringList info = org_info.split("*");
+    QString owner = info[2];
+    if(person_name == owner){
+        QString x = "true";
+        return x;
+        qDebug() << "true";
+    }
+    else{
+        QString y = "false";
+        return y;
+        qDebug() <<"false";
     }
 }
 
@@ -1920,8 +1971,8 @@ QString myServer::getting_info_of_organizatios(QString &organization_id)
 
     QString organization_info;
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    QSqlQuery selectQuery(mydb_organization);
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     selectQuery.bindValue(":organization_id_in_data_base", organization_id);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -1945,6 +1996,8 @@ QString myServer::getting_info_of_organizatios(QString &organization_id)
 
     }
     else {
+        QString err;
+        return err;
         qDebug() << "organization not found or an error occurred." << selectQuery.lastError();
     }
 }
@@ -2529,8 +2582,8 @@ QString myServer::getting_info_of_team(QString team_id)
     QString team_id_in_data_base = team_id;
     QString team_info;
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    QSqlQuery selectQuery(mydb_team);
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
     selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
