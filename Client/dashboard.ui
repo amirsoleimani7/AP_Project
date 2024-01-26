@@ -867,6 +867,7 @@ font-size: 19px;
         <widget class="QStackedWidget" name="OneOrgSideStack">
          <property name="currentIndex">
           <number>1</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="OneOrgSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -1148,6 +1149,13 @@ font-size: 19px;
            </item>
            <item>
             <widget class="QLineEdit" name="SearchForNewTeamMemberLineEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="SearchForNewTeamMemberPushButton">
+             <property name="text">
+              <string>Search</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_34">
@@ -1842,7 +1850,7 @@ font-size: 19px;
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>2</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">

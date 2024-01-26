@@ -74,7 +74,7 @@ void Dashboard::update_projects_of_team()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_projects_in_teams = feed_back.split("*");
-
+    std::sort(list_of_projects_in_teams.begin(), list_of_projects_in_teams.end());
     QVBoxLayout* existingLayout = ui->verticalLayout_projects_of_team;
     if(list_of_projects_in_teams.size() != 0){
         if (!existingLayout) {
@@ -123,7 +123,7 @@ void Dashboard::update_members_of_team()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_members_in_teams = feed_back.split("*");
-
+    std::sort(list_of_members_in_teams.begin(), list_of_members_in_teams.end());
     QVBoxLayout* existingLayout = ui->verticalLayout_members_of_team;
     if(list_of_members_in_teams.size() != 0){
         if (!existingLayout) {
@@ -169,6 +169,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_organizations = feed_back.split("*");
+    std::sort(list_of_organizations.begin(), list_of_organizations.end());
     QVBoxLayout* existingLayout = ui->HomeOrgListLayout_organization;
     if(list_of_organizations.size() != 0){
         if (!existingLayout) {
@@ -328,6 +329,7 @@ void Dashboard::update_HomeProjectListLayout_bottons()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_project = feed_back.split("*");
+    std::sort(list_of_project.begin(), list_of_project.end());
     QVBoxLayout* existingLayout = ui->HomePProjectsListLayout_project;
 
     if(list_of_project.size() != 0){
@@ -417,6 +419,7 @@ void Dashboard::update_projects_in_organization(){
 
     qDebug() << "feed back for teams os org : "<<feed_back;
     QStringList list_of_projects_in_organization = feed_back.split("*");
+    std::sort(list_of_projects_in_organization.begin(), list_of_projects_in_organization.end());
     QVBoxLayout* existingLayout = ui->OrgProjectListLayout_layout;
 
     if(list_of_projects_in_organization.size() != 0){
@@ -468,6 +471,7 @@ void Dashboard::update_teams_in_organization()
 
     qDebug() << "feed back for teams os org : "<<feed_back;
     QStringList list_of_teams_in_organization = feed_back.split("*");
+    std::sort(list_of_teams_in_organization.begin(), list_of_teams_in_organization.end());
     QVBoxLayout* existingLayout = ui->OrgTeamsListLayout_layout;
     if(list_of_teams_in_organization.size() != 0){
         if (!existingLayout) {
@@ -809,6 +813,14 @@ void Dashboard::on_pushButton_clicked()
 
 void Dashboard::on_HomeProfileChangeButton_clicked()
 {
+    if ((ui->ProfileNewNameLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Personal Name Is Empty");
+    else if ((ui->ProfileNewEmail->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Email Is Empty");
+    else if ((ui->ProfileNewPassLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Password Is Empty");
+    else
+    {
     QString new_personal_name = ui->ProfileNewNameLineEdit->text();
     QString new_email = ui->ProfileNewEmail->text();
     QString new_pass = ui->ProfileNewPassLineEdit->text();
@@ -817,28 +829,37 @@ void Dashboard::on_HomeProfileChangeButton_clicked()
     socket->delay();
     QMessageBox::information(this,"this","info updated!!");
     update_profile_of_user();
+    }
 }
 
 
 void Dashboard::on_HomeNewPPCreatBotton_clicked()
 {
-    QString new_personal_project = ui->HomeNewPPNameLineEdit->text();
-    QString instruction = "add_to_personal_project*"+CurrentUserName+"*"+new_personal_project+"*personal";
-    socket->witing_instructions(instruction);
-    socket->delay();
-    QMessageBox::information(this,"this","added updated!!");
-    update_HomeProjectListLayout_bottons();
+    if (!(ui->HomeNewPPNameLineEdit->text().isEmpty())){
+        QString new_personal_project = ui->HomeNewPPNameLineEdit->text();
+        QString instruction = "add_to_personal_project*"+CurrentUserName+"*"+new_personal_project+"*personal";
+        socket->witing_instructions(instruction);
+        socket->delay();
+        QMessageBox::information(this,"this","added updated!!");
+        update_HomeProjectListLayout_bottons();
+    }
+    else
+        QMessageBox::warning(this,"Empty Field","New Personal Project Name Is Empty");
 }
 
 
 void Dashboard::on_HomeNewOrgCreatBotton_clicked()
 {
+    if (!(ui->NewOrgNameLineEdit->text().isEmpty())){
     QString new_organization_name = ui->NewOrgNameLineEdit->text();
     QString owner_name = CurrentUserName;
     QString instruction = "add_to_organizations*"+new_organization_name+"*"+owner_name;
     socket->witing_instructions(instruction);
     socket->delay();
     update_HomeOrgListLayout_bottons();
+    }
+    else
+        QMessageBox::warning(this,"Empty Field","New Organization Name Is Empty");
 }
 
 void Dashboard::on_search_for_project_clicked()
@@ -1004,22 +1025,30 @@ void Dashboard::on_TeamChangeAdminBotton_clicked()
 
 void Dashboard::on_CreateNewTeamBotton_clicked()
 {
+    if ((ui->NewTeamLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Team Name Is Empty");
+    else{
     QString team_name_to_add_to_organization = ui->NewTeamLineEdit->text();
     QString instruction = "add_new_team_to_organization*"+CurrentOrganizationName+"*"+team_name_to_add_to_organization;
     socket->witing_instructions(instruction);
     socket->delay();
     update_teams_in_organization();
     QMessageBox::information(this,"this","team added to organization");
+    }
 }
 
 
 void Dashboard::on_OrgChangeNameBotton_clicked()
 {
+    if ((ui->OrgNewNameLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","Organization New Name Is Empty");
+    else{
     QString new_name_for_organization = ui->OrgNewNameLineEdit->text();
     QString instruction = "change_name_of_organization*"+CurrentOrganizationName+"*"+new_name_for_organization;
     socket->witing_instructions(instruction);
     socket->delay();
     QMessageBox::information(this,"changing organization name","organization name updated");
+    }
 }
 
 void Dashboard::update_members_of_organization()
@@ -1075,8 +1104,10 @@ void Dashboard::onMemberInOrganizationButtonClicked()
 void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
 {
 
-    QString search_member_for_org = ui->OrgSearchNewMemberLineEdit->text();
-
+    //QString search_member_for_org = ui->OrgSearchNewMemberLineEdit->text();
+    if ((ui->OrgSearchNewMemberLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","Search For New Member Is Empty");
+    else{
     clearLayout(ui->verticalLayout_search_for_new_membr_for_organization);
 
     QString search_for_member_to_add = ui->OrgSearchNewMemberLineEdit->text();
@@ -1087,6 +1118,7 @@ void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_member_search_reualt = feed_back.split("*");
+    std::sort(list_of_member_search_reualt.begin(), list_of_member_search_reualt.end());
     QVBoxLayout* existingLayout = ui->verticalLayout_search_for_new_membr_for_organization;
 
     if(list_of_member_search_reualt.size() != 0){
@@ -1112,6 +1144,7 @@ void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
     }
     else{
         existingLayout->addStretch();
+    }
     }
 }
 
@@ -1142,16 +1175,23 @@ void Dashboard::add_person_to_organization(QString &person_name)
 
 void Dashboard::on_OrgDeleteMemberBotton_clicked()
 {
+    if ((ui->OrgSearchDeleteMember->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Organization Owner Name Is Empty");
+    else{
     QString member_remove_from_organization = ui->OrgSearchDeleteMember->text();
     QString instruction = "remove_member_from_organization*"+CurrentOrganizationName+"*"+member_remove_from_organization;
     socket->witing_instructions(instruction);
     socket->delay();
     update_members_of_organization();
+    }
 }
 
 
 void Dashboard::on_OrgChangeOwnerBotton_clicked()
 {
+    if ((ui->OrgNewOwnerLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Organization Owner Name Is Empty");
+    else{
     QString organization_new_owner = ui->OrgNewOwnerLineEdit->text();
     QString instruvtion = "change_organization_owner*"+CurrentOrganizationName+"*"+CurrentUserName+"*"+organization_new_owner;
     socket->witing_instructions(instruvtion);
@@ -1163,6 +1203,7 @@ void Dashboard::on_OrgChangeOwnerBotton_clicked()
     else{
         QMessageBox::warning(this,"organization","access denied");
 
+    }
     }
 }
 
@@ -1177,6 +1218,7 @@ void Dashboard::on_HomeOrgFilterBotton_clicked()
         QString feed_back =socket->reading_feed_back();
         qDebug() <<feed_back;
         QStringList list_of_organizations = feed_back.split("*");
+        std::sort(list_of_organizations.begin(), list_of_organizations.end());
         QVBoxLayout* existingLayout = ui->HomeOrgListLayout_organization;
         if(list_of_organizations.size() != 0){
             if (!existingLayout) {
@@ -1216,6 +1258,7 @@ void Dashboard::on_HomeTeamFilterBotton_clicked()
         QString feed_back =socket->reading_feed_back();
         qDebug() <<feed_back;
         QStringList list_of_teams = feed_back.split("*");
+        std::sort(list_of_teams.begin(), list_of_teams.end());
         QVBoxLayout* existingLayout = ui->HomeTeamsListLayout_team;
         if(list_of_teams.size() != 0){
             if (!existingLayout) {
