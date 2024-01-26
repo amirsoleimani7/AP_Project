@@ -124,8 +124,8 @@ private slots:
 
     void search_for_projects(QString& project_search);
 
-
     void archive_task(QString& project_id,QString& task_id);
+    void unarchive_task(QString& project_id,QString task_id);
 
     void add_project_to_data_base(QString& project_data);
     void changing_name_of_project(QString& project_id ,QString& new_project_name);
@@ -142,7 +142,6 @@ private slots:
     //-------------------------
 
     //tasks function
-
     void add_task_to_data_task(QString& task_data);
     void changing_task_id(QString& task_id ,QString& task_new_id);
     void changing_text_of_task(QString& task_id,QString& new_text);

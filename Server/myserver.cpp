@@ -2744,7 +2744,7 @@ void myServer::archive_task(QString &project_id, QString &task_id)
     QSqlQuery query(mydb_project);
 
     // Fetch the current value of "project_tasks" for the given project_id
-    query.prepare("SELECT project_tasks FROM project_info_database WHERE project_id = :project_id");
+    query.prepare("SELECT project_tasks FROM project_info_database WHERE project_name = :project_id");
     query.bindValue(":project_id", project_id);
 
     if (query.exec() && query.next()) {
@@ -2760,7 +2760,7 @@ void myServer::archive_task(QString &project_id, QString &task_id)
         currentTasks.replace(task_id, task_id + "$");
 
         // Update the "project_tasks" column in the database with the modified value
-        query.prepare("UPDATE project_info_database SET project_tasks = :newTasks WHERE project_id = :project_id");
+        query.prepare("UPDATE project_info_database SET project_tasks = :newTasks WHERE project_name = :project_id");
         query.bindValue(":newTasks", currentTasks);
         query.bindValue(":project_id", project_id);
 
@@ -2775,11 +2775,43 @@ void myServer::archive_task(QString &project_id, QString &task_id)
         // Handle errors if necessary
         qDebug() << "Error fetching project_tasks:" << query.lastError().text();
     }
-
 }
 
+void myServer::unarchive_task(QString &project_id, QString task_id)
+{
+    QSqlQuery query(mydb_project);
+    // Fetch the current value of "project_tasks" for the given project_id
+    query.prepare("SELECT project_tasks FROM project_info_database WHERE project_name = :project_id");
+    query.bindValue(":project_id", project_id);
 
+    if (query.exec() && query.next()) {
+        QString currentTasks = query.value(0).toString();
 
+        // Check if the task is already unarchived
+        if (!currentTasks.contains(task_id + "$")) {
+            qDebug() << "Task is not archived.";
+            return;  // Do nothing if the task is not archived
+        }
+
+        // Find and replace the archived version of task_id with the original version
+        currentTasks.replace(task_id + "$", task_id);
+
+        // Update the "project_tasks" column in the database with the modified value
+        query.prepare("UPDATE project_info_database SET project_tasks = :newTasks WHERE project_name = :project_id");
+        query.bindValue(":newTasks", currentTasks);
+        query.bindValue(":project_id", project_id);
+
+        if (!query.exec()) {
+            // Handle errors if necessary
+            qDebug() << "Error updating project_tasks:" << query.lastError().text();
+        } else {
+            qDebug() << "Task unarchived!";
+        }
+    } else {
+        // Handle errors if necessary
+        qDebug() << "Error fetching project_tasks:" << query.lastError().text();
+    }
+}
 //-------------------------------
 
 //project functions

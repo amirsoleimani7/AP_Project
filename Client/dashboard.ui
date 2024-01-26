@@ -20,7 +20,7 @@
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="ProjectPage">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -974,7 +974,7 @@
        <item>
         <widget class="QStackedWidget" name="TeamSideStack">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="TeamSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1492,7 +1492,7 @@
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">
