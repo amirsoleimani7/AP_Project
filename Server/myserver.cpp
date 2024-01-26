@@ -20,7 +20,7 @@ myServer::myServer(QWidget *parent)
 
     QFile::copy(":/data/person_database.db", "person_database.db");
     mydb_person= QSqlDatabase::addDatabase("QSQLITE","person_info_database");
-    mydb_person.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/person_database.db");
+    mydb_person.setDatabaseName("C:/Users/JDJ/Desktop/AP_Project/Server/person_database.db");
     mydb_person.setConnectOptions("QSQLITE_OPEN_READWRITE");
 
     if(!mydb_person.open()){
@@ -33,7 +33,7 @@ myServer::myServer(QWidget *parent)
     //for database organization
     QFile::copy(":/data/organization_database.db", "organization_database.db");
     mydb_organization = QSqlDatabase::addDatabase("QSQLITE", "organization_info_database");
-    mydb_organization.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/organization_database.db");
+    mydb_organization.setDatabaseName("C:/Users/JDJ/Desktop/AP_Project/Server/organization_database.db");
 
     if (!mydb_organization.open()) {
         qDebug() << "Error opening organization database:" << mydb_organization.lastError().text();
@@ -44,7 +44,7 @@ myServer::myServer(QWidget *parent)
     //for database team
     QFile::copy(":/data/team_database.db", "team_database.db");
     mydb_team = QSqlDatabase::addDatabase("QSQLITE", "team_info_database");
-    mydb_team.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/team_database.db");
+    mydb_team.setDatabaseName("C:/Users/JDJ/Desktop/AP_Project/Server/team_database.db");
 
     if (!mydb_team.open()) {
         qDebug() << "Error opening team database:" << mydb_team.lastError().text();
@@ -55,7 +55,7 @@ myServer::myServer(QWidget *parent)
     //for database project
     QFile::copy(":/data/project_database.db", "project_database.db");
     mydb_project = QSqlDatabase::addDatabase("QSQLITE", "projet_info_databse");
-    mydb_project.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/project_database.db");
+    mydb_project.setDatabaseName("C:/Users/JDJ/Desktop/AP_Project/Server/project_database.db");
 
     if (!mydb_project.open()) {
         qDebug() << "Error opening project database:" << mydb_project.lastError().text();
@@ -66,7 +66,7 @@ myServer::myServer(QWidget *parent)
     //for database task
     QFile::copy(":/data/task_database.db", "task_database.db");
     mydb_task = QSqlDatabase::addDatabase("QSQLITE", "task_info_database");
-    mydb_task.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/task_database.db");
+    mydb_task.setDatabaseName("C:/Users/JDJ/Desktop/AP_Project/Server/task_database.db");
 
     if (!mydb_task.open()) {
         qDebug() << "Error opening task database:" << mydb_task.lastError().text();
@@ -79,7 +79,7 @@ myServer::myServer(QWidget *parent)
     QFile::copy(":/data/comment_database.db", "comment_database.db");
 
     mydb_comment = QSqlDatabase::addDatabase("QSQLITE", "comment_info_database");
-    mydb_comment.setDatabaseName("C:/Users/amir_1/Desktop/AP_Project/Server/comment_database.db");
+    mydb_comment.setDatabaseName("C:/Users/JDJ/Desktop/AP_Project/Server/comment_database.db");
 
     if (!mydb_comment.open()) {
         qDebug() << "Error opening comment database:" << mydb_comment.lastError().text();
