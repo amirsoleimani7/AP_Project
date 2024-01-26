@@ -109,6 +109,7 @@ void Dashboard::onProjectTeamButtonClicked()
         CurrentProjectName = project_name_in_team;
         ui->MainStack->setCurrentWidget(ui->ProjectPage);
         update_ProjectTaskListLayout_objects();
+        update_archived_tasks_in_peojet();
     }
 }
 
@@ -192,8 +193,6 @@ void Dashboard::update_HomeOrgListLayout_bottons()
         existingLayout->addStretch();
     }
 }
-
-
 void Dashboard::update_ProjectTaskListLayout_objects()
 {
     clearLayout(ui->verticalLayout_update_tasks_in_ptoject);
@@ -201,7 +200,7 @@ void Dashboard::update_ProjectTaskListLayout_objects()
     socket->witing_instructions(instruction);
     socket->delay();
     QString feed_back =socket->reading_feed_back();
-    qDebug() <<feed_back;
+    qDebug() << "feed back for unarchived is : "<< feed_back;
     QVector <QStringList> ListOfTasks;
     QStringList list_of_Task = feed_back.split("|");
     qDebug() << list_of_Task;
@@ -216,22 +215,30 @@ void Dashboard::update_ProjectTaskListLayout_objects()
     if(ListOfTasks.size() != 0){
         for (auto index:ListOfTasks)
         {
-            QString TaskTitel = index [0];
+            QString TaskTitel = index [1];
             QCheckBox *taskCheckBox = new QCheckBox (index[1],this);
             if (index[5] == "1")
                 taskCheckBox->setChecked(true);
 
             QHBoxLayout *Horizbox = new QHBoxLayout(this);
             QLabel *Priority = new QLabel(index[6],this);
+            QLabel *Date = new QLabel(index[7],this);
             QLabel *Person = new QLabel(index[3],this);
             QPushButton *CommentPushButton = new QPushButton ("Comment",this);
             QPushButton *EditPushButton = new QPushButton ("Edit",this);
-            connect(CommentPushButton, &QPushButton::clicked, this, &Dashboard::onCommentButtonClicked);
-            connect(EditPushButton, &QPushButton::clicked, this, &Dashboard::onEditTaskButtonClicked);
 
+            connect(CommentPushButton, &QPushButton::clicked, this, [=]() {
+                onCommentButtonClicked(TaskTitel);
+            });
+
+            connect(EditPushButton, &QPushButton::clicked, this, [=]() {
+                onEditTaskButtonClicked(TaskTitel);
+            });
 
             Horizbox->addWidget(Person);
             Horizbox->addWidget(Priority);
+            Horizbox->addWidget(Date);
+
             Horizbox->addWidget(CommentPushButton);
             Horizbox->addWidget(EditPushButton);
             existingLayout->addWidget(taskCheckBox);
@@ -261,14 +268,20 @@ void Dashboard::update_ProjectTaskListLayout_objects()
     }
 }
 
-void Dashboard::onCommentButtonClicked()
+void Dashboard::onCommentButtonClicked(const QString& taskTitle)
 {
-
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectCommentPage);
+    currentTask = taskTitle;
+    qDebug() << "CURRENT TASK IS : "<<currentTask;
+    update_comments_of_task();
 }
 
-void Dashboard::onEditTaskButtonClicked()
+void Dashboard::onEditTaskButtonClicked(const QString& taskTitle)
 {
-
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectTaskEditPage);
+    currentTask = taskTitle;
+    qDebug() << "CURRENT TASK IS : "<<currentTask;
+    // Perform any other actions you need when the Edit button is clicked
 }
 
 void Dashboard::update_HomeTeamListLayout_bottons()
@@ -688,11 +701,111 @@ void Dashboard::on_SomeProjectButton_14_clicked()
 }
 
 
+void Dashboard::update_archived_tasks_in_peojet()
+{
+    QString instruction ="get_archived_tasks*"+CurrentProjectName;
+    clearLayout(ui->verticalLayout_24);
+
+    socket->witing_instructions(instruction);
+    socket->delay();
+
+    QString feed_back =socket->reading_feed_back();
+    qDebug() <<feed_back;
+
+    QVector <QStringList> ListOfTasks;
+    QStringList list_of_Task = feed_back.split("|");
+    qDebug() << list_of_Task;
+
+    for(int i = 0;i<list_of_Task.size()-1;i++){
+        if(list_of_Task[i] != ""){
+            ListOfTasks.push_back(list_of_Task[i].split("*"));
+
+        }
+    }
+
+    QVBoxLayout* existingLayout = ui->verticalLayout_24;
+    if(ListOfTasks.size() != 0){
+        for (auto index:ListOfTasks)
+        {
+            QString TaskTitel = index [1];
+            QCheckBox *taskCheckBox = new QCheckBox (index[1],this);
+            if (index[5] == "1")
+                taskCheckBox->setChecked(true);
+
+            QHBoxLayout *Horizbox = new QHBoxLayout(this);
+            QLabel *Priority = new QLabel(index[6],this);
+            QLabel *Date = new QLabel(index[7],this);
+            QLabel *Person = new QLabel(index[3],this);
+            QPushButton *CommentPushButton_archived = new QPushButton ("Comment",this);
+            QPushButton *EditPushButton_archived= new QPushButton ("Edit",this);
+            //connect(CommentPushButton_archived, &QPushButton::clicked, this, &Dashboard::onCommentButtonClicked_archived);
+
+            connect(CommentPushButton_archived, &QPushButton::clicked, this, [=]() {
+                onCommentButtonClicked_archived(TaskTitel);
+            });
+
+            connect(EditPushButton_archived, &QPushButton::clicked, this, [=]() {
+                onEditButtonClicked_archived(TaskTitel);
+            });
+
+            Horizbox->addWidget(Person);
+            Horizbox->addWidget(Priority);
+            Horizbox->addWidget(Date);
+
+            Horizbox->addWidget(CommentPushButton_archived);
+            Horizbox->addWidget(EditPushButton_archived);
+            existingLayout->addWidget(taskCheckBox);
+            existingLayout->addLayout(Horizbox);
+
+            connect(taskCheckBox, &QCheckBox::stateChanged, this, [=](int state) {
+                if (state == Qt::Checked) {
+                    qDebug() << "Checkbox for " << index[1] << " is checked.";
+                    QString intruction = "change_is_done_task*"+index[1]+"*1";
+                    socket->witing_instructions(intruction);
+                    socket->delay();
+                    // Do something when the checkbox is checked
+                } else {
+                    qDebug() << "Checkbox for " << index[1] << " is unchecked.";
+                    QString intruction = "change_is_done_task*"+index[1]+"*0";
+                    socket->witing_instructions(intruction);
+                    socket->delay();
+                    // Do something when the checkbox is unchecked
+                }
+            });
+
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+}
+
+void Dashboard::onCommentButtonClicked_archived(const QString& taskTile)
+{
+    currentTask = taskTile;
+    qDebug() << currentTask;
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectCommentPage);
+    update_comments_of_task();
+
+}
+void Dashboard::onEditButtonClicked_archived(const QString& taskTitle)
+{
+    ui->ProjectSideStack->setCurrentWidget(ui->EditForunArchived);
+    currentTask = taskTitle;
+    qDebug() << currentTask;
+}
+
+
 void Dashboard::on_pushButton_clicked()
 {
    // update_HomeOrgListLayout_bottons();
+    QString name_of_task_to_archive = "add_to_archive*"+CurrentProjectName+"*"+currentTask;
+    socket->witing_instructions(name_of_task_to_archive);
+    socket->delay();
+    update_archived_tasks_in_peojet();
+    update_ProjectTaskListLayout_objects();
 }
-
 
 void Dashboard::on_HomeProfileChangeButton_clicked()
 {
@@ -1146,21 +1259,157 @@ void Dashboard::on_pushButton_create_new_project_clicked()
 
 void Dashboard::on_pushButton_6_clicked()
 {
-
+    QString instruction = "remove_task_from_project*"+CurrentProjectName+"*"+currentTask;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_archived_tasks_in_peojet();
 }
 
 
 void Dashboard::on_pushButton_submit_clicked()
 {
-    QString task_title = ui->lineEdit_task_title->text();
     QString task_content = ui->lineEdit_task_content->text();
     QString priority = ui->ProjectNewTaskPriorityComboBox->currentText();
     QDate date = ui->dateEdit_data_for_task->date();
     QString  task_date = date.toString();
-    QString instruction = "add_task_to_project*"+CurrentProjectName+"*"+task_title+"*"+task_content+"*"+priority+"*"+task_date;
+    QString instruction = "add_task_to_project*"+CurrentProjectName+"*"+task_content+"*"+task_content+"*"+priority+"*"+task_date;
     socket->witing_instructions(instruction);
     socket->delay();
     QMessageBox::information(this,"add task","task added");
     update_ProjectTaskListLayout_objects();
+}
+
+void Dashboard::on_pushButton_change_task_info_clicked()
+{
+    QString new_task_content = ui->lineEdit_new_task_conent->text();
+    QString new_priority = ui->ProjectNewTaskPriorityComboBox_2->currentText();
+    QDate new_date_1 = ui->dateEdit_new_date->date();
+    QString new_date = new_date_1.toString();
+    QString person_to_assign = ui->lineEdit_person_to_assign->text();
+    QString instruction = "change_info_of_task*"+currentTask+"*"+new_task_content+"*"+new_priority+"*"+new_date+"*"+person_to_assign;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_ProjectTaskListLayout_objects();
+    QMessageBox::information(this,"this","task info updated!!");
+}
+
+void Dashboard::on_ProjectNewTaskBackButton_2_clicked()
+{
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
+}
+
+
+void Dashboard::on_ProjectNewTaskBackButton_3_clicked()
+{
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
+}
+
+
+void Dashboard::on_pushButton_change_task_info_2_clicked()
+{
+    QString new_task_content = ui->lineEdit_new_task_conent_2->text();
+    QString new_priority = ui->ProjectNewTaskPriorityComboBox_3->currentText();
+    QDate new_date_1 = ui->dateEdit_new_date_2->date();
+    QString new_date = new_date_1.toString();
+    QString person_to_assign = ui->lineEdit_person_to_assign_2->text();
+
+    QString instruction = "change_info_of_task*"+currentTask+"*"+new_task_content+"*"+new_priority+"*"+new_date+"*"+person_to_assign;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_archived_tasks_in_peojet();
+    QMessageBox::information(this,"this","task info updated!!");
+}
+
+void Dashboard::on_pushButton_8_clicked()
+{
+    ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
+
+}
+
+void Dashboard::on_pushButton_4_clicked()
+{
+    QString comment = ui->lineEdit->text();
+    QString instruction = "add_comment*"+currentTask+"*"+comment;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_comments_of_task();
+    QMessageBox::information(this,"comments","commments added");
+    // horizontalSpacer_for_comment
+}
+
+void Dashboard::update_comments_of_task()
+{
+
+    clearLayout(ui->verticalLayout_8);
+
+    QString instruction ="get_comments_of_task*"+currentTask;
+    socket->witing_instructions(instruction);
+    socket->delay();
+
+    QString feed_back =socket->reading_feed_back();
+    qDebug() <<feed_back;
+    QStringList list_of_comments = feed_back.split("*");
+    QVBoxLayout* existingLayout = ui->verticalLayout_8;
+
+    if(list_of_comments.size() != 0){
+        if (!existingLayout) {
+            // If there is no existing layout, create a new one
+            existingLayout = new QVBoxLayout();
+            //ui->widget_dynamic->setLayout(existingLayout);
+        }
+
+        for (int i = 0;i<list_of_comments.size()-1;i++)
+        {
+            if(list_of_comments[i]!=""){
+
+                QString name_of_member_search = list_of_comments[i];
+                QPushButton *push_button_of_comment = new QPushButton(this);
+                push_button_of_comment->setText(name_of_member_search);
+                existingLayout->addWidget(push_button_of_comment);
+                connect(push_button_of_comment, &QPushButton::clicked, this, &Dashboard::oncommentButtonClicked);
+            }
+
+        }
+        existingLayout->addStretch();
+    }
+    else{
+        existingLayout->addStretch();
+    }
+}
+
+void Dashboard::oncommentButtonClicked()
+{
+    QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
+    if (senderButton) {
+        // Handle the button click event
+        QString coomment = senderButton->text();
+        qDebug() << coomment;
+        QString insdtruin = "remove_comment*"+currentTask+"*"+coomment;
+        socket->witing_instructions(insdtruin);
+        socket->delay();
+        update_comments_of_task();
+        QMessageBox::information(this,"comment","comment removed");
+        //here we should go to the page of organizations with the given organization name
+    }
+}
+
+void Dashboard::on_pushButton_unarchive_clicked()
+{
+    QString instruction = "unarchive*"+CurrentProjectName+"*"+currentTask;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_archived_tasks_in_peojet();
+    update_ProjectTaskListLayout_objects();
+
+}
+
+
+void Dashboard::on_pushButton_5_clicked()
+{
+    QString instruction = "unarchive*"+CurrentProjectName+"*"+currentTask;
+    socket->witing_instructions(instruction);
+    socket->delay();
+    update_ProjectTaskListLayout_objects();
+    update_archived_tasks_in_peojet();
 }
 

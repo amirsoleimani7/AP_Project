@@ -204,6 +204,7 @@ void myServer::choose_funtion(QString &instruction_from_socket)
 
     if(main_instruction == "add_new_team_to_organization"){
         //org team
+        add_team_to_data_base(instruction_from_socket);
         adding_teams_to_organization(fields[1],fields[2]);
 
     }
@@ -259,11 +260,12 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         add_team_to_project(fields[2],fields[1]);
     }
     if(main_instruction == "get_Tasks"){
-        QStringList list_of_tasks = getting_tasks_of_project(fields[1]);
+        QStringList list_of_tasks = get_unarchived_tasks(fields[1]);
         QString x = getting_each_task_information(list_of_tasks);
-        qDebug() << "x is :" << x;
+        qDebug() << "x unarchived  is :" << x;
         writing_feed_back(x);
         on_sendFileBTN_clicked();
+
     }if(main_instruction =="change_is_done_task"){
         changing_is_done_of_task(fields[1],fields[2]);
 
@@ -274,6 +276,44 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         add_task_to_project(fields[1],fields[2]);
 
    }
+    if(main_instruction == "change_info_of_task"){
+        // QString instruction = "change_info_of_task*"+currentTask+"*"+new_task_content+"*"+new_priority+"*"+new_date+"*"+person_to_assign;
+        changing_task_id(fields[1],fields[2]);
+        changing_text_of_task(fields[1],fields[2]);
+        change_task_name_in_all_projects(fields[1],fields[2]);
+        changing_priority_of_task(fields[2],fields[3]);
+        chaning_date_of_task(fields[2],fields[4]);
+        changing_person_of_task(fields[2],fields[5]);
+        add_task_to_person(fields[5],fields[2]);
+   }
+    if(main_instruction == "add_to_archive"){
+       //QString name_of_task_to_archive = "add_to_archive*"+CurrentProjectName+"*"+currentTask;
+        archive_task(fields[1],fields[2]);
+
+    }
+    if(main_instruction == "get_archived_tasks"){
+        QStringList list_of_tasks = get_archived_tasks(fields[1]);
+        QString x = getting_each_task_information(list_of_tasks);
+        qDebug() << "x archived is :" << x;
+        writing_feed_back(x);
+        on_sendFileBTN_clicked();
+    }
+    if(main_instruction == "add_comment"){
+        adding_comment_to_task(fields[1],fields[2]);
+    }
+    if(main_instruction == "get_comments_of_task"){
+        getting_comments_of_task(fields[1]);
+    }
+    if(main_instruction == "remove_comment"){
+        remove_comment_from_task(fields[1],fields[2]);
+    }
+    if(main_instruction == "unarchive"){
+        unarchive_task(fields[1],fields[2]);
+    }
+    if(main_instruction == "remove_task_from_project"){
+        //    QString instruction = "remove_task_from_project*"+CurrentProjectName+"*"+currentTask;
+        remove_task_from_project(fields[1],fields[2]);
+    }
     else{
         qDebug() << "invalid";
     }
@@ -1169,7 +1209,7 @@ void myServer::add_task_to_person(QString &name_in_data_base, QString &task_name
     QString user_name_in_data_base = name_in_data_base;  // Set the actual username
     QString task_to_add = task_name;
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", user_name_in_data_base);
 
@@ -1181,7 +1221,7 @@ void myServer::add_task_to_person(QString &name_in_data_base, QString &task_name
         if (!existingTask.contains(task_to_add)) {
             list_of_task += "," + task_to_add;
 
-            QSqlQuery updateQuery;
+            QSqlQuery updateQuery(mydb_person);
             updateQuery.prepare("UPDATE person_info_database SET tasks = :new_task WHERE username = :user_in_data_base");
             updateQuery.bindValue(":new_task", list_of_task);
             updateQuery.bindValue(":user_in_data_base", user_name_in_data_base);
@@ -2197,9 +2237,9 @@ void myServer::add_team_to_data_base(QString &team_data)
     QStringList fields = data_recieved_by_socket_to_add_to_team.split("*");
     QString id_team_to_database = fields[1];
 
-    QSqlQuery checkQuery;
+    QSqlQuery checkQuery(mydb_team);
 
-    checkQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :id_team_to_database");
+    checkQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :id_team_to_database");
     checkQuery.bindValue(":id_team_to_database", id_team_to_database);
 
     if (checkQuery.exec() && checkQuery.next()) {
@@ -2208,17 +2248,12 @@ void myServer::add_team_to_data_base(QString &team_data)
 
     else {
 
-        QSqlQuery insertQuery;
+        QSqlQuery insertQuery(mydb_team);
 
-        insertQuery.prepare("INSERT INTO team_info_database (team_id,team_name, team_admin, team_persons,team_projects) VALUES (?, ?, ?, ?, ?)");
+        insertQuery.prepare("INSERT INTO team_info_database (team_name) VALUES (?)");
 
         // Bind values for the insertion
-        insertQuery.addBindValue(fields[1]); //team_id
-        insertQuery.addBindValue(fields[2]); //team_name
-        insertQuery.addBindValue(fields[3]); //team_admin
-        insertQuery.addBindValue(fields[4]); //team_persons
-        insertQuery.addBindValue(fields[5]); //team_projects
-
+        insertQuery.addBindValue(fields[2]); //team_id
 
         // Execute the insertion query
         if (insertQuery.exec()) {
@@ -2684,14 +2719,14 @@ void myServer::change_task_name_in_all_projects(QString &old_task_name, QString 
 
     if (selectQuery.exec()) {
         while (selectQuery.next()) {
-            QString list_of_tasks = selectQuery.value("project_tasks").toString();
+            QString list_of_tasks = selectQuery.value("project_tasks").toString().trimmed();
             QStringList existingTasks = list_of_tasks.split(",");
 
-            if (existingTasks.contains(old_task_name)) {
+            if (existingTasks.contains(old_task_name.trimmed())) {
                 // Replace old task name with new one
                 for (int i = 0; i < existingTasks.size(); ++i) {
-                    if (existingTasks.at(i) == old_task_name) {
-                        existingTasks.replace(i, new_task_name);
+                    if (existingTasks.at(i) == old_task_name.trimmed()) {
+                        existingTasks.replace(i, new_task_name.trimmed());
                         break;
                     }
                 }
@@ -2716,6 +2751,7 @@ void myServer::change_task_name_in_all_projects(QString &old_task_name, QString 
         // Feedback for error in selecting records
     }
 }
+
 
 void myServer::search_for_projects(QString &project_search)
 {
@@ -2758,7 +2794,6 @@ void myServer::search_for_projects(QString &project_search)
 void myServer::archive_task(QString &project_id, QString &task_id)
 {
     QSqlQuery query(mydb_project);
-
     // Fetch the current value of "project_tasks" for the given project_id
     query.prepare("SELECT project_tasks FROM project_info_database WHERE project_name = :project_id");
     query.bindValue(":project_id", project_id);
@@ -2827,6 +2862,72 @@ void myServer::unarchive_task(QString &project_id, QString task_id)
         // Handle errors if necessary
         qDebug() << "Error fetching project_tasks:" << query.lastError().text();
     }
+}
+
+QVector<QString> myServer::get_archived_tasks(QString &project_id)
+{
+    QVector<QString> archivedTasksVector;
+
+    QSqlQuery query(mydb_project);
+
+    // Fetch the current value of "project_tasks" for the given project_id
+    query.prepare("SELECT project_tasks FROM project_info_database WHERE project_name = :project_id");
+    query.bindValue(":project_id", project_id);
+
+    if (query.exec() && query.next()) {
+        QString currentTasks = query.value(0).toString();
+
+        // Extract archived tasks
+        QStringList archivedTasks;
+        QStringList tasksList = currentTasks.split(',', Qt::SkipEmptyParts);
+        for (const QString &task : tasksList) {
+            if (task.endsWith('$')) {
+                // Remove the trailing '$' and add to archivedTasks list
+                archivedTasks << task.left(task.length() - 1);
+            }
+        }
+
+        // Assign the extracted tasks to the QVector
+        archivedTasksVector = archivedTasks;
+    } else {
+        // Handle errors if necessary
+        qDebug() << "Error fetching project_tasks:" << query.lastError().text();
+    }
+
+    return archivedTasksVector;
+}
+
+QVector<QString> myServer::get_unarchived_tasks(QString &project_id)
+{
+    QVector<QString> unarchivedTasksVector;
+
+    QSqlQuery query(mydb_project);
+
+    // Fetch the current value of "project_tasks" for the given project_id
+    query.prepare("SELECT project_tasks FROM project_info_database WHERE project_name = :project_id");
+    query.bindValue(":project_id", project_id);
+
+    if (query.exec() && query.next()) {
+        QString currentTasks = query.value(0).toString();
+
+        // Extract unarchived tasks
+        QStringList unarchivedTasks;
+        QStringList tasksList = currentTasks.split(',', Qt::SkipEmptyParts);
+        for (const QString &task : tasksList) {
+            if (!task.endsWith('$')) {
+                // Add unarchived tasks to the list
+                unarchivedTasks << task;
+            }
+        }
+
+        // Assign the extracted unarchived tasks to the QVector
+        unarchivedTasksVector = unarchivedTasks;
+    } else {
+        // Handle errors if necessary
+        qDebug() << "Error fetching project_tasks:" << query.lastError().text();
+    }
+
+    return unarchivedTasksVector;
 }
 //-------------------------------
 
@@ -3155,8 +3256,8 @@ void myServer::remove_team_from_project(QString &project_id, QString &team_id_to
 
 void myServer::remove_task_from_project(QString &project_id, QString &tasks_id_to_remove)
 {
-    QString project_id_in_data_base = "3";  // Set the actual username
-    QString remove_tasks_from_project = "project_tasks";
+    QString project_id_in_data_base = project_id;  // Set the actual username
+    QString remove_tasks_from_project = tasks_id_to_remove;
 
     // CREATE TABLE "project_info_database" (
     //     "project_id"	TEXT,
@@ -3167,9 +3268,9 @@ void myServer::remove_task_from_project(QString &project_id, QString &tasks_id_t
     //     "project_tasks"	TEXT
     // )
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_project);
 
-    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_id = :project_id_in_data_base");
+    selectQuery.prepare("SELECT * FROM project_info_database WHERE project_name = :project_id_in_data_base");
     selectQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -3187,8 +3288,8 @@ void myServer::remove_task_from_project(QString &project_id, QString &tasks_id_t
             QString newListOftasks = existingtasks.join(",");
 
             // Update the row with the new list of organizations
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE project_info_database SET project_tasks = :new_tasks_project WHERE project_id = :project_id_in_data_base");
+            QSqlQuery updateQuery(mydb_project);
+            updateQuery.prepare("UPDATE project_info_database SET project_tasks = :new_tasks_project WHERE project_name = :project_id_in_data_base");
             updateQuery.bindValue(":new_tasks_project", newListOftasks);
             updateQuery.bindValue(":project_id_in_data_base", project_id_in_data_base);
 
@@ -3422,7 +3523,7 @@ void myServer::changing_task_id(QString &task_id, QString &task_new_id)
 
     QSqlQuery checkQuery(mydb_task);
 
-    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :id_task_to_database");
+    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :id_task_to_database");
     checkQuery.bindValue(":id_task_to_database", task_new_id);
 
     if (checkQuery.exec() && checkQuery.next()) {
@@ -3433,7 +3534,7 @@ void myServer::changing_task_id(QString &task_id, QString &task_new_id)
     else{
 
         QSqlQuery updateQuery(mydb_task);
-        updateQuery.prepare("UPDATE tasks_info_database SET task_id = :new_task_text WHERE tasks_id = :task_id_in_data_base");
+        updateQuery.prepare("UPDATE tasks_info_database SET task_id = :new_task_text WHERE task_text = :task_id_in_data_base");
         updateQuery.bindValue(":new_task_text", task_new_id);
         updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
@@ -3457,7 +3558,8 @@ void myServer::changing_text_of_task(QString &task_id, QString &new_text)
 {
     QString task_id_in_data_base = task_id;
     QString new_task_text  = new_text;
-
+    qDebug() << "task is " << task_id;
+    qDebug() << "new task is :" << new_text;
 
     // CREATE TABLE "tasks_info_database" (
     //     "tasks_id"	TEXT,
@@ -3479,8 +3581,55 @@ void myServer::changing_text_of_task(QString &task_id, QString &new_text)
     }
     else{
 
-        QSqlQuery updateQuery;
-        updateQuery.prepare("UPDATE tasks_info_database SET task_text = :new_task_text WHERE tasks_id = :task_id_in_data_base");
+        QSqlQuery updateQuery(mydb_task);
+        updateQuery.prepare("UPDATE tasks_info_database SET task_text = :new_task_text WHERE task_text = :task_id_in_data_base");
+        updateQuery.bindValue(":new_task_text", new_task_text);
+        updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+        if (updateQuery.exec()) {
+            qDebug() << "tasks text updated successfully.";
+            // You can add additional logic or feedback here
+            //feed back should be handled here
+
+        } else {
+            qDebug() << "Could not update  task text." << updateQuery.lastError();
+            // You can handle the error or provide feedback here
+            //feedback should be handled here
+        }
+
+    }
+
+}
+
+void myServer::changing_person_of_task(QString &task_id, QString new_person)
+{
+    QString task_id_in_data_base = task_id;
+    QString new_task_text  = new_person;
+    qDebug() << "task is " << task_id;
+    qDebug() << "new task is :" << new_person;
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     "task_priority"	INTEGER,
+    //     "task_date"	TEXT)
+
+    QSqlQuery checkQuery(mydb_task);
+
+    checkQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :id_task_to_database");
+    checkQuery.bindValue(":id_task_to_database", new_person);
+
+    if (checkQuery.exec() && checkQuery.next()) {
+        qDebug() << "task with the same id already exists in the database.";
+    }
+    else{
+
+        QSqlQuery updateQuery(mydb_task);
+        updateQuery.prepare("UPDATE tasks_info_database SET task_person = :new_task_text WHERE task_text = :task_id_in_data_base");
         updateQuery.bindValue(":new_task_text", new_task_text);
         updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
@@ -3534,10 +3683,10 @@ void myServer::changing_project_of_task(QString &task_id, QString &new_project)
 
 void myServer::adding_person_to_task(QString &task_id, QString &person_to_add)
 {
-    QString task_id_in_data_base =task_id ;  // Set the actual username
+    QString task_id_in_data_base = task_id ;  // Set the actual username
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE tasks_id = :task_id_in_data_base");
+    QSqlQuery selectQuery(mydb_task);
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :task_id_in_data_base");
     selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
     // CREATE TABLE "tasks_info_database" (
@@ -3556,11 +3705,57 @@ void myServer::adding_person_to_task(QString &task_id, QString &person_to_add)
 
         QStringList existingperson = list_of_persons.split(",");
 
-        if (!existingperson.contains(person_to_add)) {
-            list_of_persons += "," + person_to_add;
 
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE tasks_info_database SET tasks_persons = :new_tasks_persons WHERE tasks_id = :task_id_in_data_base");
+        QSqlQuery updateQuery(mydb_task);
+        updateQuery.prepare("UPDATE tasks_info_database SET tasks_persons = :new_tasks_persons WHERE task_text = :task_id_in_data_base");
+        updateQuery.bindValue(":new_tasks_persons", list_of_persons);
+        updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+        if (updateQuery.exec())
+        {
+            qDebug() << "Row updated successfully.";
+        }
+        else {
+            qDebug() << "Failed to update row." << updateQuery.lastError();
+        }
+
+
+    } else {
+        qDebug() << "task not found or an error occurred." << selectQuery.lastError();
+    }
+}
+
+void myServer::adding_comment_to_task(QString &task_id, QString &comment)
+{
+    QString task_id_in_data_base = task_id ;  // Set the actual username
+
+    QSqlQuery selectQuery(mydb_task);
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :task_id_in_data_base");
+    selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT,
+    //     "task_priority"	TEXT,
+    //     "task_date"	TEXT
+    //     , "task_comment"	TEXT)
+
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString list_of_persons = selectQuery.value("task_comment").toString();
+
+        QStringList existingperson = list_of_persons.split(",");
+
+        if (!existingperson.contains(comment)) {
+            list_of_persons += "," + comment;
+
+            QSqlQuery updateQuery(mydb_task);
+            updateQuery.prepare("UPDATE tasks_info_database SET task_comment = :new_tasks_persons WHERE task_text = :task_id_in_data_base");
             updateQuery.bindValue(":new_tasks_persons", list_of_persons);
             updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
@@ -3631,8 +3826,8 @@ void myServer::changing_priority_of_task(QString &task_id, QString &new_priority
     //     "tasks_isdone"	TEXT
     //     , "task_priority"	INTEGER)
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE tasks_info_database SET task_priority = :new_task_priority WHERE tasks_id = :task_id_in_data_base");
+    QSqlQuery updateQuery(mydb_task);
+    updateQuery.prepare("UPDATE tasks_info_database SET task_priority = :new_task_priority WHERE task_text = :task_id_in_data_base");
     updateQuery.bindValue(":new_task_priority", new_task_priority);
     updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
@@ -3653,7 +3848,6 @@ void myServer::chaning_date_of_task(QString& task_name,QString &new_task_date)
 {
     QString task_id_in_data_base = task_name;
 
-
     // CREATE TABLE "tasks_info_database" (
     //     "tasks_id"	TEXT,
     //     "task_text"	TEXT,
@@ -3663,8 +3857,8 @@ void myServer::chaning_date_of_task(QString& task_name,QString &new_task_date)
     //     "tasks_isdone"	TEXT
     //     , "task_priority"	INTEGER)
 
-    QSqlQuery updateQuery;
-    updateQuery.prepare("UPDATE tasks_info_database SET task_date = :new_task_date WHERE tasks_id = :task_id_in_data_base");
+    QSqlQuery updateQuery(mydb_task);
+    updateQuery.prepare("UPDATE tasks_info_database SET task_date = :new_task_date WHERE task_text = :task_id_in_data_base");
     updateQuery.bindValue(":new_task_date", new_task_date);
     updateQuery.bindValue(":task_id_in_data_base", task_id_in_data_base);
 
@@ -3783,6 +3977,59 @@ void myServer::removing_person_from_task(QString &task_id, QString &person_id)
     }
 
 }
+
+void myServer::remove_comment_from_task(QString &task_id, QString &comment_id)
+{
+    QString task_id_in_data_base_1 = task_id;  // Set the actual username
+    QString remove_person_from_task = comment_id;
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+
+    QSqlQuery selectQuery(mydb_task);
+
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :task_id_in_data_base");
+    selectQuery.bindValue(":task_id_in_data_base", task_id_in_data_base_1);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+        QString list_of_persons = selectQuery.value("task_comment").toString();
+
+        // Split the existing organizations
+        QStringList existingpersons = list_of_persons.split(",");
+
+        // Check if the organization to remove exists
+        if (existingpersons.contains(remove_person_from_task)) {
+            // Remove the organization
+            existingpersons.removeAll(remove_person_from_task);
+
+            // Join the organizations back into a string
+            QString newListOfperson = existingpersons.join(",");
+
+            // Update the row with the new list of organizations
+            QSqlQuery updateQuery(mydb_task);
+            updateQuery.prepare("UPDATE tasks_info_database SET task_comment = :new_tasks_persons WHERE task_text = :task_id_in_data_base_1");
+            updateQuery.bindValue(":new_tasks_persons", newListOfperson);
+            updateQuery.bindValue(":task_id_in_data_base_1", task_id_in_data_base_1);
+
+            if (updateQuery.exec()) {
+                qDebug() << "person removed successfully.";
+            } else {
+                qDebug() << "Failed to update row." << updateQuery.lastError();
+            }
+        } else {
+            qDebug() << "person not found in the list.";
+        }
+    } else {
+        qDebug() << "task not found or an error occurred." << selectQuery.lastError();
+    }
+}
 //---------------------------
 QVector<QString> myServer::getting_persons_of_task(QString &task_id)
 {
@@ -3826,6 +4073,50 @@ QVector<QString> myServer::getting_persons_of_task(QString &task_id)
     }
 }
 
+QVector<QString> myServer::getting_comments_of_task(QString &task_id)
+{
+    QString tasks_id_in_data_base = task_id;  // Set the actual username
+
+    // CREATE TABLE "tasks_info_database" (
+    //     "tasks_id"	TEXT,
+    //     "task_text"	TEXT,
+    //     "task_project"	TEXT,
+    //     "task_person"	TEXT,
+    //     "tasks_persons"	TEXT,
+    //     "tasks_isdone"	TEXT
+    //     , "task_priority"	INTEGER)
+
+    QSqlQuery selectQuery(mydb_task);
+    selectQuery.prepare("SELECT * FROM tasks_info_database WHERE task_text = :tasks_id_in_data_base");
+    selectQuery.bindValue(":tasks_id_in_data_base", tasks_id_in_data_base);
+
+    if (selectQuery.exec() && selectQuery.next()) {
+
+        QString personString = selectQuery.value("task_comment").toString();
+
+        // Split the teams using the comma delimiter
+        QStringList personList = personString.split(",");
+
+        // Convert QStringList to QVector<QString>
+        QVector<QString> personVector = personList.toVector();
+        QString cooments_of_socket;
+        // Use teamsVector as needed
+        for(int i = 0;i<personVector.size();i++){
+            cooments_of_socket.append(personVector[i]);
+            cooments_of_socket.append("*");
+            qDebug() <<personVector[i];
+        }
+        writing_feed_back(cooments_of_socket);
+        on_sendFileBTN_clicked();
+
+        qDebug() << "persons  Vector: " << personVector;
+        return personVector;
+    } else {
+        qDebug() << "task not found or an error occurred." << selectQuery.lastError();
+        QVector<QString> err = {""};
+        return err;
+    }
+}
 //----------------------------
 void myServer::adding_comment_to_data_base(QString &comment_data)
 {
