@@ -74,7 +74,7 @@ void Dashboard::update_projects_of_team()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_projects_in_teams = feed_back.split("*");
-
+    std::sort(list_of_projects_in_teams.begin(), list_of_projects_in_teams.end());
     QVBoxLayout* existingLayout = ui->verticalLayout_projects_of_team;
     if(list_of_projects_in_teams.size() != 0){
         if (!existingLayout) {
@@ -119,7 +119,7 @@ void Dashboard::update_members_of_team()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_members_in_teams = feed_back.split("*");
-
+    std::sort(list_of_members_in_teams.begin(), list_of_members_in_teams.end());
     QVBoxLayout* existingLayout = ui->verticalLayout_members_of_team;
     if(list_of_members_in_teams.size() != 0){
         if (!existingLayout) {
@@ -165,6 +165,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_organizations = feed_back.split("*");
+    std::sort(list_of_organizations.begin(), list_of_organizations.end());
     QVBoxLayout* existingLayout = ui->HomeOrgListLayout_organization;
     if(list_of_organizations.size() != 0){
         if (!existingLayout) {
@@ -290,6 +291,7 @@ void Dashboard::update_HomeProjectListLayout_bottons()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_project = feed_back.split("*");
+    std::sort(list_of_project.begin(), list_of_project.end());
     QVBoxLayout* existingLayout = ui->HomePProjectsListLayout_project;
 
     if(list_of_project.size() != 0){
@@ -376,6 +378,7 @@ void Dashboard::update_projects_in_organization(){
 
     qDebug() << "feed back for teams os org : "<<feed_back;
     QStringList list_of_projects_in_organization = feed_back.split("*");
+    std::sort(list_of_projects_in_organization.begin(), list_of_projects_in_organization.end());
     QVBoxLayout* existingLayout = ui->OrgProjectListLayout_layout;
 
     if(list_of_projects_in_organization.size() != 0){
@@ -423,6 +426,7 @@ void Dashboard::update_teams_in_organization()
 
     qDebug() << "feed back for teams os org : "<<feed_back;
     QStringList list_of_teams_in_organization = feed_back.split("*");
+    std::sort(list_of_teams_in_organization.begin(), list_of_teams_in_organization.end());
     QVBoxLayout* existingLayout = ui->OrgTeamsListLayout_layout;
 
     if(list_of_teams_in_organization.size() != 0){
@@ -964,6 +968,7 @@ void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
     QString feed_back =socket->reading_feed_back();
     qDebug() <<feed_back;
     QStringList list_of_member_search_reualt = feed_back.split("*");
+    std::sort(list_of_member_search_reualt.begin(), list_of_member_search_reualt.end());
     QVBoxLayout* existingLayout = ui->verticalLayout_search_for_new_membr_for_organization;
 
     if(list_of_member_search_reualt.size() != 0){
@@ -1063,6 +1068,7 @@ void Dashboard::on_HomeOrgFilterBotton_clicked()
         QString feed_back =socket->reading_feed_back();
         qDebug() <<feed_back;
         QStringList list_of_organizations = feed_back.split("*");
+        std::sort(list_of_organizations.begin(), list_of_organizations.end());
         QVBoxLayout* existingLayout = ui->HomeOrgListLayout_organization;
         if(list_of_organizations.size() != 0){
             if (!existingLayout) {
@@ -1102,6 +1108,7 @@ void Dashboard::on_HomeTeamFilterBotton_clicked()
         QString feed_back =socket->reading_feed_back();
         qDebug() <<feed_back;
         QStringList list_of_teams = feed_back.split("*");
+        std::sort(list_of_teams.begin(), list_of_teams.end());
         QVBoxLayout* existingLayout = ui->HomeTeamsListLayout_team;
         if(list_of_teams.size() != 0){
             if (!existingLayout) {
