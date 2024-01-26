@@ -1,6 +1,7 @@
 #include "custombutton.h"
 
-CustomButton::CustomButton(QWidget *Prnt, QString inParent, QString inButton):QPushButton(inButton,Prnt)
-{
-    this->parent = inParent;
+CustomButton::CustomButton(QWidget *prnt,QString& task_id,QString& inbotton):QPushButton(inbotton,prnt){
+
+    this->parent = task_id;
+
 }

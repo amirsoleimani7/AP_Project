@@ -8,7 +8,7 @@
 #include <vector>
 #include <QDebug>
 #include "myclient.h"
-#include "custombutton.h"
+#include <custombutton.h>
 namespace Ui {
 class Dashboard;
 }
@@ -20,13 +20,12 @@ class Dashboard : public QDialog
 public:
     QString currentTask;
     QString CurrentUserName;
-    explicit Dashboard(QWidget *parent = nullptr,QString& RefrenceUserName = "");
-    ~Dashboard();
-public slots:
     QString CurrentOrganizationName;
     QString CurrentTeamName;
-    explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");
+    explicit Dashboard(QWidget *parent = nullptr,const QString& RefrenceUserName = "");
     ~Dashboard();
+public slots:
+    //explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");
 public slots:
     void set_name_loged_in(QString& name);
     void clearLayout(QLayout* layout);
@@ -34,6 +33,7 @@ public slots:
     void set_cuurrent_team_name(const QString& team_name);
     void onMemberTeamButtonClicked();
     //updating HomeOrgListLayout
+    void update_ProjectTaskListLayout_objects();
     void onTeamsInOrganizationButtonClicked();
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
