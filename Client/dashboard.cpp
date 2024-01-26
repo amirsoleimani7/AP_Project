@@ -1,7 +1,7 @@
 #include "dashboard.h"
 #include "ui_dashboard.h"
 
-Dashboard::Dashboard(QWidget *parent, const QString RefrenceUserName)
+Dashboard::Dashboard(QWidget *parent, const QString &RefrenceUserName)
     : QDialog(parent)
     , ui(new Ui::Dashboard)
 {
@@ -215,22 +215,33 @@ void Dashboard::update_ProjectTaskListLayout_objects()
             QHBoxLayout *Horizbox = new QHBoxLayout(this);
             QLabel *Priority = new QLabel(index[6],this);
             QLabel *Person = new QLabel(index[3],this);
-            CustomButton *CommentPushButton (this,TaskTitel,"Comment");
-            CustomButton *EditPushButton (this,TaskTitel,"Edit");
-            connect(CommentPushButton, &CustomButton::clicked, this, &Dashboard::onCommentButtonClicked);
-            connect(EditPushButton, &CustomButton::clicked, this, &Dashboard::onEditTaskButtonClicked);
+            QPushButton *CommentPushButton = new QPushButton ("Comment",this);
+            QPushButton *EditPushButton = new QPushButton ("Edit",this);
+            connect(CommentPushButton, &QPushButton::clicked, this, &Dashboard::onCommentButtonClicked);
+            connect(EditPushButton, &QPushButton::clicked, this, &Dashboard::onEditTaskButtonClicked);
             Horizbox->addWidget(Person);
             Horizbox->addWidget(Priority);
             Horizbox->addWidget(CommentPushButton);
             Horizbox->addWidget(EditPushButton);
             existingLayout->addWidget(taskCheckBox);
-            existingLayout->addWidget(Horizbox);
+            existingLayout->addItem(Horizbox);
         }
         existingLayout->addStretch();
     }
     else{
         existingLayout->addStretch();
     }
+}
+
+
+void Dashboard::onCommentButtonClicked()
+{
+
+}
+
+void Dashboard::onEditTaskButtonClicked()
+{
+
 }
 
 
@@ -413,16 +424,6 @@ void Dashboard::update_teams_in_organization()
     qDebug() << "feed back for teams os org : "<<feed_back;
     QStringList list_of_teams_in_organization = feed_back.split("*");
     QVBoxLayout* existingLayout = ui->OrgTeamsListLayout_layout;
-
-void Dashboard::onCommentButtonClicked()
-{
-
-}
-
-void Dashboard::onEditTaskButtonClicked()
-{
-
-}
 
     if(list_of_teams_in_organization.size() != 0){
         if (!existingLayout) {

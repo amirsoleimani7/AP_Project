@@ -126,7 +126,7 @@ void myServer::choose_funtion(QString &instruction_from_socket)
 
     if(main_instruction == "update_person_all_at_once"){
         if(fields[2] != ""){
-        change_user_personal_name_1(fields[1],fields[2]);
+            change_user_personal_name_1(fields[1],fields[2]);
         }
         if(fields[3] !=""){
             change_user_email(fields[1],fields[3]);
@@ -367,14 +367,14 @@ void myServer::on_sendFileBTN_clicked()
 {
     QString filePath = QCoreApplication::applicationDirPath() + '/' + "feedBack.txt";
 
-        QString receiverId = ui->clientListCombo->currentText();
-        foreach (QTcpSocket* sockettemp, clientList)
+    QString receiverId = ui->clientListCombo->currentText();
+    foreach (QTcpSocket* sockettemp, clientList)
+    {
+        if (sockettemp->socketDescriptor() == receiverId.toLongLong())
         {
-            if (sockettemp->socketDescriptor() == receiverId.toLongLong())
-            {
             sendFile(sockettemp,filePath);
-            }
         }
+    }
 }
 
 void myServer::writing_feed_back(QString &feed_back)
@@ -774,7 +774,7 @@ void myServer::sendFile(QTcpSocket *socket, QString fileName)
             {
                 qDebug()<<"file not open";
             }
-}
+        }
         else
         {
             qDebug()<<"clien socket not open";
@@ -2722,7 +2722,7 @@ void myServer::search_for_projects(QString &project_search)
         }
 
         // Remove the trailing comma and space
-//        foundProjects = foundProjects.left(foundProjects.length() - 2);
+        //        foundProjects = foundProjects.left(foundProjects.length() - 2);
 
         // Print the concatenated project names
         qDebug() << "Found projects: " << foundProjects;
