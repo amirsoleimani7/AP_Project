@@ -1,7 +1,7 @@
 #include "dashboard.h"
 #include "ui_dashboard.h"
 
-Dashboard::Dashboard(QWidget *parent, QString RefrenceUserName)
+Dashboard::Dashboard(QWidget *parent, const QString RefrenceUserName)
     : QDialog(parent)
     , ui(new Ui::Dashboard)
 {
@@ -232,6 +232,8 @@ void Dashboard::update_ProjectTaskListLayout_objects()
         existingLayout->addStretch();
     }
 }
+
+
 
 void Dashboard::update_HomeTeamListLayout_bottons()
 {
