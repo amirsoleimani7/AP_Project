@@ -1,7 +1,7 @@
 #include "dashboard.h"
 #include "ui_dashboard.h"
 
-Dashboard::Dashboard(QWidget *parent, const QString RefrenceUserName)
+Dashboard::Dashboard(QWidget *parent, const QString& RefrenceUserName)
     : QDialog(parent)
     , ui(new Ui::Dashboard)
 {
@@ -194,43 +194,43 @@ void Dashboard::update_HomeOrgListLayout_bottons()
 void Dashboard::update_ProjectTaskListLayout_objects()
 {
 
-    QString instruction = "get_Tasks*" + CurrentProjectName;
-    socket->witing_instructions(instruction);
-    socket->delay();
-    QString feed_back =socket->reading_feed_back();
-    qDebug() <<feed_back;
-    QVector <QStringList> ListOfTasks;
-    QStringList list_of_Task = feed_back.split("|");
-    for(int i = 0;i<list_of_Task.size()-1;i++){
-        ListOfTasks.push_back(list_of_Task[i].split("*"));
-    }
-    QVBoxLayout* existingLayout = ui->TasksList;
-    if(ListOfTasks.size() != 0){
-        for (auto index:ListOfTasks)
-        {
-            QString TaskTitel = index [0];
-            QCheckBox *taskCheckBox = new QCheckBox (index[1],this);
-            if (index[5] == "1")
-                taskCheckBox->setChecked(true);
-            QHBoxLayout *Horizbox = new QHBoxLayout(this);
-            QLabel *Priority = new QLabel(index[6],this);
-            QLabel *Person = new QLabel(index[3],this);
-            CustomButton *CommentPushButton (this,TaskTitel,"Comment");
-            CustomButton *EditPushButton (this,TaskTitel,"Edit");
-            connect(CommentPushButton, &CustomButton::clicked, this, &Dashboard::onCommentButtonClicked);
-            connect(EditPushButton, &CustomButton::clicked, this, &Dashboard::onEditTaskButtonClicked);
-            Horizbox->addWidget(Person);
-            Horizbox->addWidget(Priority);
-            Horizbox->addWidget(CommentPushButton);
-            Horizbox->addWidget(EditPushButton);
-            existingLayout->addWidget(taskCheckBox);
-            existingLayout->addWidget(Horizbox);
-        }
-        existingLayout->addStretch();
-    }
-    else{
-        existingLayout->addStretch();
-    }
+    // QString instruction = "get_Tasks*" + CurrentProjectName;
+    // socket->witing_instructions(instruction);
+    // socket->delay();
+    // QString feed_back =socket->reading_feed_back();
+    // qDebug() <<feed_back;
+    // QVector <QStringList> ListOfTasks;
+    // QStringList list_of_Task = feed_back.split("|");
+    // for(int i = 0;i<list_of_Task.size()-1;i++){
+    //     ListOfTasks.push_back(list_of_Task[i].split("*"));
+    // }
+    // QVBoxLayout* existingLayout = ui->TasksList;
+    // if(ListOfTasks.size() != 0){
+    //     for (auto index:ListOfTasks)
+    //     {
+    //         QString TaskTitel = index [0];
+    //         QCheckBox *taskCheckBox = new QCheckBox (index[1],this);
+    //         if (index[5] == "1")
+    //             taskCheckBox->setChecked(true);
+    //         QHBoxLayout *Horizbox = new QHBoxLayout(this);
+    //         QLabel *Priority = new QLabel(index[6],this);
+    //         QLabel *Person = new QLabel(index[3],this);
+    //         CustomButton *CommentPushButton (this,TaskTitel,"Comment");
+    //         CustomButton *EditPushButton (this,TaskTitel,"Edit");
+    //         connect(CommentPushButton, &CustomButton::clicked, this, &Dashboard::onCommentButtonClicked);
+    //         connect(EditPushButton, &CustomButton::clicked, this, &Dashboard::onEditTaskButtonClicked);
+    //         Horizbox->addWidget(Person);
+    //         Horizbox->addWidget(Priority);
+    //         Horizbox->addWidget(CommentPushButton);
+    //         Horizbox->addWidget(EditPushButton);
+    //         existingLayout->addWidget(taskCheckBox);
+    //         existingLayout->addWidget(Horizbox);
+    //     }
+    //     existingLayout->addStretch();
+    // }
+    // else{
+    //     existingLayout->addStretch();
+    // }
 }
 
 
@@ -414,15 +414,15 @@ void Dashboard::update_teams_in_organization()
     QStringList list_of_teams_in_organization = feed_back.split("*");
     QVBoxLayout* existingLayout = ui->OrgTeamsListLayout_layout;
 
-void Dashboard::onCommentButtonClicked()
-{
+// void Dashboard::onCommentButtonClicked()
+// {
 
-}
+// }
 
-void Dashboard::onEditTaskButtonClicked()
-{
+// void Dashboard::onEditTaskButtonClicked()
+// {
 
-}
+// }
 
     if(list_of_teams_in_organization.size() != 0){
         if (!existingLayout) {

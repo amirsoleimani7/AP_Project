@@ -8,7 +8,6 @@
 #include <vector>
 #include <QDebug>
 #include "myclient.h"
-#include <custombutton.h>
 namespace Ui {
 class Dashboard;
 }
@@ -27,6 +26,7 @@ public:
 public slots:
     //explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");
 public slots:
+
     void set_name_loged_in(QString& name);
     void clearLayout(QLayout* layout);
     void set_current_organization_name(const QString& organization_name);
@@ -38,11 +38,10 @@ public slots:
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
     void update_HomeProjectListLayout_bottons();
-    void update_ProjectTaskListLayout_bottons();
+    //void update_ProjectTaskListLayout_bottons();
     void update_projects_in_organization();
     void onProjecsInOrganizationButtonClicked();
     void add_person_to_team(QString& person_name);
-
     //void add_person_to_organization(QString& person_name);
     void onMemberInOrganizationButtonClicked();
     void onMemberSearchButtonClicked();
@@ -52,8 +51,8 @@ public slots:
     void onOrganizationButtonClicked();
     void onTeamButtonClicked();
     void onProjectButtonClicked();
-    void onCommentButtonClicked();
-    void onEditTaskButtonClicked();
+    //void onCommentButtonClicked();
+    //void onEditTaskButtonClicked();
 
     void update_teams_in_organization();
     void update_profile_of_user();
