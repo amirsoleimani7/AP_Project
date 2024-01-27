@@ -107,6 +107,7 @@ void Dashboard::onProjectTeamButtonClicked()
         //here we should go to the page of organizations with the given organization name
         qDebug() << project_name_in_team ;
         CurrentProjectName = project_name_in_team;
+        ui->ProjectNameLabel->setText(project_name_in_team);
         ui->MainStack->setCurrentWidget(ui->ProjectPage);
         update_ProjectTaskListLayout_objects();
         update_archived_tasks_in_peojet();
@@ -338,7 +339,7 @@ void Dashboard::update_HomeProjectListLayout_bottons()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_project.size()-1;i++)
+        for (int i = 0;i<list_of_project.size();i++)
         {
             if(list_of_project[i]!=""){
                 QString name_of_project = list_of_project[i];
@@ -400,7 +401,10 @@ void Dashboard::onProjectButtonClicked(){
         qDebug() << projectName;
         CurrentProjectName = projectName;
         ui->MainStack->setCurrentWidget(ui->ProjectPage);
+        ui->ProjectNameLabel->setText(CurrentProjectName);
+        //ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
         update_ProjectTaskListLayout_objects();
+        update_archived_tasks_in_peojet();
         //here we should go to the page of organizations with the given organization name
     }
 }
@@ -454,7 +458,10 @@ void Dashboard::onProjecsInOrganizationButtonClicked(){
         qDebug() << project_name_in_organization;
         CurrentProjectName = project_name_in_organization;
         ui->MainStack->setCurrentWidget(ui->ProjectPage);
+        ui->ProjectNameLabel->setText(CurrentProjectName);
         update_ProjectTaskListLayout_objects();
+        update_archived_tasks_in_peojet();
+
         //here we should go to the page of organizations with the given organization name
     }
 }
@@ -670,6 +677,7 @@ void Dashboard::on_SomeTeamButton_12_clicked()
 
 void Dashboard::on_ProjectNewTaskBackButton_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 }
 
@@ -1337,12 +1345,14 @@ void Dashboard::on_pushButton_change_task_info_clicked()
 
 void Dashboard::on_ProjectNewTaskBackButton_2_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 }
 
 
 void Dashboard::on_ProjectNewTaskBackButton_3_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 }
 
@@ -1364,6 +1374,8 @@ void Dashboard::on_pushButton_change_task_info_2_clicked()
 
 void Dashboard::on_pushButton_8_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
+
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 
 }

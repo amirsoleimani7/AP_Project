@@ -41,7 +41,7 @@ font-size: 19px;
        <item>
         <widget class="QStackedWidget" name="ProjectSideStack">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="ProjectSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -866,7 +866,6 @@ font-size: 19px;
        <item>
         <widget class="QStackedWidget" name="OneOrgSideStack">
          <property name="currentIndex">
-          <number>1</number>
           <number>2</number>
          </property>
          <widget class="QWidget" name="OneOrgSideMainPage">
