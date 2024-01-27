@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
-    <height>381</height>
+    <width>660</width>
+    <height>437</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,7 @@
   border-radius: 3px;
   cursor: pointer;
   font-size: 14px;
+font-weight: bold;
 }
 QPushButton:hover {
   background-color: #2980b9;
@@ -29,6 +30,7 @@ QPushButton:hover {
 QLabel{
   font-family: 'Arial', sans-serif;
   background-color: #2c3e50;
+font-weight: bold;
   color: #ecf0f1;
   padding: 10px;
   text-align: center;
@@ -37,20 +39,24 @@ QLabel{
 QLineEdit{
   border-radius: 3px;
   border: none;
+font-weight: bold;
   Hight: 20px
 }
 QDialog
 {
 background-color: #2c3e50;
+font-weight: bold;
 }
 QMainWindow{
   background-color: #2c3e50;
 }
 QMessageBox{
 	 background-color: #2c3e50;
+font-weight: bold;
 }
 QCombobox{
   background-color: #2c3e50;
+font-weight: bold;
   color: #ecf0f1;
   padding: 10px 20px;
   border: none;
@@ -159,6 +165,13 @@ QCombobox{
                 <height>25</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>10</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
              </widget>
             </item>
             <item>
@@ -169,6 +182,16 @@ QCombobox{
                 <height>25</height>
                </size>
               </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>10</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
              </widget>
             </item>
            </layout>
@@ -177,8 +200,17 @@ QCombobox{
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_Login">
+          <property name="font">
+           <font>
+            <pointsize>-1</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
            <string>Login</string>
+          </property>
+          <property name="shortcut">
+           <string>Return</string>
           </property>
          </widget>
         </item>
@@ -208,6 +240,12 @@ QCombobox{
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_forgot">
+              <property name="font">
+               <font>
+                <pointsize>-1</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string>Forgot</string>
               </property>
@@ -224,6 +262,12 @@ QCombobox{
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_signup">
+                <property name="font">
+                 <font>
+                  <pointsize>-1</pointsize>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Sign up</string>
                 </property>

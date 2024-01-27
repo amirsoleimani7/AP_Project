@@ -583,7 +583,7 @@ void Dashboard::on_OneOrgDeleteOrgBotton_clicked()
     QString instruction = "delete_organization_of_member*"+CurrentUserName+"*"+CurrentOrganizationName;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"remove org","organization removed");
+    QMessageBox::information(this,"Removing","Organization Removed");
     update_HomeOrgListLayout_bottons();
 
 }
@@ -642,7 +642,7 @@ void Dashboard::on_TeamDeleteTeamBotton_clicked()
     QString instruction = "delete_team_of_member*"+CurrentUserName+"*"+CurrentTeamName;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"remove team","team removed");
+    QMessageBox::information(this,"Removing","Team Removed");
     update_HomeTeamListLayout_bottons();
     // update_members_of_team();
     // update_teams_in_organization();
@@ -834,7 +834,7 @@ void Dashboard::on_HomeProfileChangeButton_clicked()
     QString instruction = "update_person_all_at_once*"+CurrentUserName+"*"+new_personal_name+"*"+new_email+"*"+new_pass;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"this","info updated!!");
+    QMessageBox::information(this,"Information","Information Updated");
     update_profile_of_user();
     }
 }
@@ -847,7 +847,7 @@ void Dashboard::on_HomeNewPPCreatBotton_clicked()
         QString instruction = "add_to_personal_project*"+CurrentUserName+"*"+new_personal_project+"*personal";
         socket->witing_instructions(instruction);
         socket->delay();
-        QMessageBox::information(this,"this","added updated!!");
+        QMessageBox::information(this,"Added","Personal Peroject Added");
         update_HomeProjectListLayout_bottons();
     }
     else
@@ -913,7 +913,7 @@ void Dashboard::add_project_to_team(QString& project_name)
     QString instruction = "add_project_to_team*"+CurrentTeamName+"*"+project_name;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"adding project","project added");
+    QMessageBox::information(this,"Adding Project","Project Added");
     update_projects_of_team();
 }
 void Dashboard::onProjectSearchButtonClicked(){
@@ -931,16 +931,16 @@ void Dashboard::onProjectSearchButtonClicked(){
 
 void Dashboard::on_TeamChangeNameBotton_clicked()
 {
-    QString new_team_name = ui->TeamNewNameLineEdit->text();
+    //QString new_team_name = ui->TeamNewNameLineEdit->text();
     if(ui->TeamNewNameLineEdit->text().isEmpty()){
-        QMessageBox::warning(this,"new name","enter a new name");
+        QMessageBox::warning(this,"New Name","Enter A New Name");
     }
     else{
         QString new_team_name = ui->TeamNewNameLineEdit->text();
         QString instruction ="change_team_name*"+CurrentTeamName+"*"+new_team_name;
         socket->witing_instructions(instruction);
         socket->delay();
-        QMessageBox::information(this,"changing name","name chnaged");
+        QMessageBox::information(this,"Changing Name","Name Chnaged");
     }
 
     //update_HomeTeamListLayout_bottons();
@@ -988,7 +988,7 @@ void Dashboard::add_person_to_team(QString& person_name)
     QString instruction = "add_person_to_team*"+CurrentTeamName+"*"+person_name;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"adding project","person added");
+    QMessageBox::information(this,"Adding Member","Member Added");
     update_members_of_team();
 }
 
@@ -1023,9 +1023,9 @@ void Dashboard::on_TeamChangeAdminBotton_clicked()
     socket->delay();
     QString feed = socket->reading_feed_back();
     if(feed != "access denied"){
-        QMessageBox::information(this,"new admin","admin updated!");
+        QMessageBox::information(this,"New Admin","Admin updated!");
     }else{
-        QMessageBox::information(this,"new admin","access denied");
+        QMessageBox::information(this,"New Admin","Access denied");
     }
 }
 
@@ -1040,7 +1040,7 @@ void Dashboard::on_CreateNewTeamBotton_clicked()
     socket->witing_instructions(instruction);
     socket->delay();
     update_teams_in_organization();
-    QMessageBox::information(this,"this","team added to organization");
+    QMessageBox::information(this,"Adding Team","Team Added");
     }
 }
 
@@ -1054,7 +1054,7 @@ void Dashboard::on_OrgChangeNameBotton_clicked()
     QString instruction = "change_name_of_organization*"+CurrentOrganizationName+"*"+new_name_for_organization;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"changing organization name","organization name updated");
+    QMessageBox::information(this,"Changing Organization Name","Organization Name Updated");
     }
 }
 
@@ -1177,7 +1177,7 @@ void Dashboard::add_person_to_organization(QString &person_name)
     socket->witing_instructions(instruction);
     socket->delay();
     //update_members_of_organization();
-    QMessageBox::information(this,"adding person","person added");
+    QMessageBox::information(this,"Adding Person","Member Added");
 }
 
 void Dashboard::on_OrgDeleteMemberBotton_clicked()
@@ -1205,10 +1205,10 @@ void Dashboard::on_OrgChangeOwnerBotton_clicked()
     socket->delay();
     QString feed_back = socket->reading_feed_back();
     if(feed_back != "access denied"){
-        QMessageBox::information(this,"organization","organization owner changed");
+        QMessageBox::information(this,"Organization Owner","Owner Changed");
     }
     else{
-        QMessageBox::warning(this,"organization","access denied");
+        QMessageBox::warning(this,"Organization Owner","Access Denied");
 
     }
     }
@@ -1302,7 +1302,7 @@ void Dashboard::on_pushButton_create_new_project_clicked()
     QString instruction ="add_new_project_to_team*"+CurrentTeamName+"*"+new_project_for_team;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"adding new project","new project added");
+    QMessageBox::information(this,"Adding New Project","New Project Added");
     update_projects_of_team();
 }
 //-----------------------------------projecs and tasks
@@ -1326,7 +1326,7 @@ void Dashboard::on_pushButton_submit_clicked()
     QString instruction = "add_task_to_project*"+CurrentProjectName+"*"+task_content+"*"+task_content+"*"+priority+"*"+task_date;
     socket->witing_instructions(instruction);
     socket->delay();
-    QMessageBox::information(this,"add task","task added");
+    QMessageBox::information(this,"Adding Task","Task Added");
     update_ProjectTaskListLayout_objects();
 }
 
@@ -1341,7 +1341,7 @@ void Dashboard::on_pushButton_change_task_info_clicked()
     socket->witing_instructions(instruction);
     socket->delay();
     update_ProjectTaskListLayout_objects();
-    QMessageBox::information(this,"this","task info updated!!");
+    QMessageBox::information(this,"Updating Task","Task Updated");
 }
 
 void Dashboard::on_ProjectNewTaskBackButton_2_clicked()
@@ -1370,7 +1370,7 @@ void Dashboard::on_pushButton_change_task_info_2_clicked()
     socket->witing_instructions(instruction);
     socket->delay();
     update_archived_tasks_in_peojet();
-    QMessageBox::information(this,"this","task info updated!!");
+    QMessageBox::information(this,"Updating Task","Task Updated");
 }
 
 void Dashboard::on_pushButton_8_clicked()
@@ -1388,7 +1388,7 @@ void Dashboard::on_pushButton_4_clicked()
     socket->witing_instructions(instruction);
     socket->delay();
     update_comments_of_task();
-    QMessageBox::information(this,"comments","commments added");
+    QMessageBox::information(this,"Comments","Commments Added");
     // horizontalSpacer_for_comment
 }
 
@@ -1443,7 +1443,7 @@ void Dashboard::oncommentButtonClicked()
         socket->witing_instructions(insdtruin);
         socket->delay();
         update_comments_of_task();
-        QMessageBox::information(this,"comment","comment removed");
+        QMessageBox::information(this,"Comment","Comment Removed");
         //here we should go to the page of organizations with the given organization name
     }
 }
@@ -1466,5 +1466,11 @@ void Dashboard::on_pushButton_5_clicked()
     socket->delay();
     update_ProjectTaskListLayout_objects();
     update_archived_tasks_in_peojet();
+}
+
+
+void Dashboard::on_QuitBottonCH_clicked()
+{
+    this->close();
 }
 

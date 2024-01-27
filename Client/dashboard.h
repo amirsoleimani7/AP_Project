@@ -187,6 +187,8 @@ private slots:
 
     void on_pushButton_5_clicked();
 
+    void on_QuitBottonCH_clicked();
+
 private:
     Ui::Dashboard *ui;
     socket_connection* socket;

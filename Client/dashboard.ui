@@ -6,25 +6,87 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1031</width>
-    <height>687</height>
+    <width>1160</width>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QComboBox{
-  background-color: #2c3e50;
+   <string notr="true">QPushButton{
+  background-color: #3498db;
   color: #ecf0f1;
   padding: 10px 20px;
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  font-size: 14px;
+font-weight: bold;
+}
+QPushButton:hover {
+  background-color: #2980b9;
+}
+QDateEdit{font-family: 'Arial', sans-serif;
+  background-color: #2c3e50;
+font-weight: bold;
+  color: #ecf0f1;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;}
+QComboBox{
+ font-family: 'Arial', sans-serif;
+  background-color: #2c3e50;
+font-weight: bold;
+  color: #ecf0f1;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+QCheckBox{
+  font-family: 'Arial', sans-serif;
+  background-color: #2c3e50;
+  font-weight: bold;
+  color: #ecf0f1;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
 }
 QLabel{
-font-family: 'Times New Roman', Times, serif;
-font-size: 19px;
+  font-family: 'Arial', sans-serif;
+  background-color: #2c3e50;
+  font-weight: bold;
+  color: #ecf0f1;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+QLineEdit{
+  border-radius: 3px;
+  border: none;
+font-weight: bold;
+  Hight: 20px
+}
+QDialog
+{
+background-color: #2c3e50;
+font-weight: bold;
+}
+QMainWindow{
+  background-color: #2c3e50;
+}
+QMessageBox{
+	 background-color: #2c3e50;
+font-weight: bold;
+}
+QCombobox{
+  background-color: #2c3e50;
+font-weight: bold;
+  color: #ecf0f1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -34,14 +96,14 @@ font-size: 19px;
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="ProjectPage">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QStackedWidget" name="ProjectSideStack">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="ProjectSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -64,6 +126,9 @@ font-size: 19px;
               <widget class="QPushButton" name="ProjectHomeButton">
                <property name="text">
                 <string>Home</string>
+               </property>
+               <property name="shortcut">
+                <string>Esc</string>
                </property>
               </widget>
              </item>
@@ -167,7 +232,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_task_content"/>
+            <widget class="QLineEdit" name="lineEdit_task_content">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_4">
@@ -288,6 +360,9 @@ font-size: 19px;
              <property name="text">
               <string>Submit</string>
              </property>
+             <property name="shortcut">
+              <string>Return</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -334,6 +409,9 @@ font-size: 19px;
              <property name="text">
               <string>Back</string>
              </property>
+             <property name="shortcut">
+              <string>Backspace</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -368,7 +446,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_new_task_conent"/>
+            <widget class="QLineEdit" name="lineEdit_new_task_conent">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_46">
@@ -453,7 +538,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_person_to_assign"/>
+            <widget class="QLineEdit" name="lineEdit_person_to_assign">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_57">
@@ -472,6 +564,9 @@ font-size: 19px;
             <widget class="QPushButton" name="pushButton_change_task_info">
              <property name="text">
               <string>Change</string>
+             </property>
+             <property name="shortcut">
+              <string>Return</string>
              </property>
             </widget>
            </item>
@@ -526,6 +621,9 @@ font-size: 19px;
              <property name="text">
               <string>Delete</string>
              </property>
+             <property name="shortcut">
+              <string>Del</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -559,6 +657,9 @@ font-size: 19px;
              <property name="text">
               <string>Back</string>
              </property>
+             <property name="shortcut">
+              <string>Backspace</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -580,7 +681,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_new_task_conent_2"/>
+            <widget class="QLineEdit" name="lineEdit_new_task_conent_2">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="label_29">
@@ -639,7 +747,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_person_to_assign_2"/>
+            <widget class="QLineEdit" name="lineEdit_person_to_assign_2">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_53">
@@ -658,6 +773,9 @@ font-size: 19px;
             <widget class="QPushButton" name="pushButton_change_task_info_2">
              <property name="text">
               <string>Change</string>
+             </property>
+             <property name="shortcut">
+              <string>Return</string>
              </property>
             </widget>
            </item>
@@ -686,6 +804,9 @@ font-size: 19px;
              <property name="text">
               <string>Delete</string>
              </property>
+             <property name="shortcut">
+              <string>Del</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -705,6 +826,9 @@ font-size: 19px;
             <widget class="QPushButton" name="ProjectNewTaskBackButton_3">
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="shortcut">
+              <string>Backspace</string>
              </property>
             </widget>
            </item>
@@ -749,12 +873,22 @@ font-size: 19px;
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit"/>
+              <widget class="QLineEdit" name="lineEdit">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QPushButton" name="pushButton_4">
                <property name="text">
                 <string>Add Comment</string>
+               </property>
+               <property name="shortcut">
+                <string>Return</string>
                </property>
               </widget>
              </item>
@@ -771,6 +905,9 @@ font-size: 19px;
             <widget class="QPushButton" name="pushButton_8">
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="shortcut">
+              <string>Backspace</string>
              </property>
             </widget>
            </item>
@@ -866,7 +1003,8 @@ font-size: 19px;
        <item>
         <widget class="QStackedWidget" name="OneOrgSideStack">
          <property name="currentIndex">
-          <number>2</number>
+
+          <number>0</number>
          </property>
          <widget class="QWidget" name="OneOrgSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -896,6 +1034,9 @@ font-size: 19px;
               <widget class="QPushButton" name="OneOrgHomeBotton">
                <property name="text">
                 <string>Home</string>
+               </property>
+               <property name="shortcut">
+                <string>Esc</string>
                </property>
               </widget>
              </item>
@@ -932,6 +1073,9 @@ font-size: 19px;
             <widget class="QPushButton" name="OneOrgDeleteOrgBotton">
              <property name="text">
               <string>Delete Organization</string>
+             </property>
+             <property name="shortcut">
+              <string>Del</string>
              </property>
             </widget>
            </item>
@@ -973,7 +1117,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="OrgNewNameLineEdit"/>
+            <widget class="QLineEdit" name="OrgNewNameLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="OrgChangeNameBotton">
@@ -1003,7 +1154,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="OrgSearchNewMemberLineEdit"/>
+            <widget class="QLineEdit" name="OrgSearchNewMemberLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButton_search_for_new_member_for_org">
@@ -1033,7 +1191,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="OrgSearchDeleteMember"/>
+            <widget class="QLineEdit" name="OrgSearchDeleteMember">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="OrgDeleteMemberBotton">
@@ -1063,7 +1228,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="OrgNewOwnerLineEdit"/>
+            <widget class="QLineEdit" name="OrgNewOwnerLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="OrgChangeOwnerBotton">
@@ -1089,6 +1261,9 @@ font-size: 19px;
             <widget class="QPushButton" name="OrgEditPageBackBotton">
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="shortcut">
+              <string>Backspace</string>
              </property>
             </widget>
            </item>
@@ -1117,7 +1292,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="NewTeamLineEdit"/>
+            <widget class="QLineEdit" name="NewTeamLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="CreateNewTeamBotton">
@@ -1147,7 +1329,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="SearchForNewTeamMemberLineEdit"/>
+            <widget class="QLineEdit" name="SearchForNewTeamMemberLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="SearchForNewTeamMemberPushButton">
@@ -1199,6 +1388,9 @@ font-size: 19px;
             <widget class="QPushButton" name="OrgNewTeamBackBotton">
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="shortcut">
+              <string>Backspace</string>
              </property>
             </widget>
            </item>
@@ -1376,6 +1568,9 @@ font-size: 19px;
                <property name="text">
                 <string>Home</string>
                </property>
+               <property name="shortcut">
+                <string>Esc</string>
+               </property>
               </widget>
              </item>
              <item row="2" column="2">
@@ -1419,6 +1614,9 @@ font-size: 19px;
              <property name="text">
               <string>Delete Team</string>
              </property>
+             <property name="shortcut">
+              <string>Del</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -1459,7 +1657,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="TeamNewNameLineEdit"/>
+            <widget class="QLineEdit" name="TeamNewNameLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="TeamChangeNameBotton">
@@ -1489,7 +1694,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="TeamNewMemberLineEdit"/>
+            <widget class="QLineEdit" name="TeamNewMemberLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="searchForUserNameToAddToTeam">
@@ -1519,7 +1731,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="TeamDeletingMemberLineEdit"/>
+            <widget class="QLineEdit" name="TeamDeletingMemberLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="TeamDeletingMemberBotton">
@@ -1549,7 +1768,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="TeamNewAdminLineEdit"/>
+            <widget class="QLineEdit" name="TeamNewAdminLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="TeamChangeAdminBotton">
@@ -1575,6 +1801,9 @@ font-size: 19px;
             <widget class="QPushButton" name="TeamEditBackBotton">
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="shortcut">
+              <string>Backspace</string>
              </property>
             </widget>
            </item>
@@ -1603,12 +1832,22 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="TeamAddProjectLineEdit"/>
+            <widget class="QLineEdit" name="TeamAddProjectLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="search_for_project">
              <property name="text">
               <string>search</string>
+             </property>
+             <property name="shortcut">
+              <string>Return</string>
              </property>
             </widget>
            </item>
@@ -1656,6 +1895,9 @@ font-size: 19px;
              <property name="text">
               <string>Back</string>
              </property>
+             <property name="shortcut">
+              <string>Backspace</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -1676,12 +1918,29 @@ font-size: 19px;
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_create_new_project_for_team"/>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>New Project Name</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_create_new_project_for_team">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="pushButton_create_new_project">
              <property name="text">
               <string>create</string>
+             </property>
+             <property name="shortcut">
+              <string>Return</string>
              </property>
             </widget>
            </item>
@@ -1702,6 +1961,9 @@ font-size: 19px;
             <widget class="QPushButton" name="TeamCreatPBackButton">
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="shortcut">
+              <string>Backspace</string>
              </property>
             </widget>
            </item>
@@ -1895,7 +2157,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="ProfileNewNameLineEdit"/>
+            <widget class="QLineEdit" name="ProfileNewNameLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="label_16">
@@ -1905,7 +2174,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="ProfileNewEmail"/>
+            <widget class="QLineEdit" name="ProfileNewEmail">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="label_17">
@@ -1915,7 +2191,14 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="ProfileNewPassLineEdit"/>
+            <widget class="QLineEdit" name="ProfileNewPassLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_51">
@@ -1934,6 +2217,9 @@ font-size: 19px;
             <widget class="QPushButton" name="HomeProfileChangeButton">
              <property name="text">
               <string>Submit</string>
+             </property>
+             <property name="shortcut">
+              <string>Return</string>
              </property>
             </widget>
            </item>
@@ -1955,6 +2241,9 @@ font-size: 19px;
              <property name="text">
               <string>Back</string>
              </property>
+             <property name="shortcut">
+              <string>Backspace</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -1967,8 +2256,9 @@ font-size: 19px;
               <widget class="QLabel" name="HomeLabel">
                <property name="font">
                 <font>
-                 <family>Times New Roman</family>
+                 <family>Arial</family>
                  <pointsize>-1</pointsize>
+                 <bold>true</bold>
                 </font>
                </property>
                <property name="text">
@@ -2070,12 +2360,22 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="HomeNewPPNameLineEdit"/>
+            <widget class="QLineEdit" name="HomeNewPPNameLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="HomeNewPPCreatBotton">
              <property name="text">
               <string>Create Project</string>
+             </property>
+             <property name="shortcut">
+              <string>Return</string>
              </property>
             </widget>
            </item>
@@ -2123,6 +2423,9 @@ font-size: 19px;
              <property name="text">
               <string>Back</string>
              </property>
+             <property name="shortcut">
+              <string>Backspace</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -2150,12 +2453,22 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="NewOrgNameLineEdit"/>
+            <widget class="QLineEdit" name="NewOrgNameLineEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="HomeNewOrgCreatBotton">
              <property name="text">
               <string>Creat Organization</string>
+             </property>
+             <property name="shortcut">
+              <string>Return</string>
              </property>
             </widget>
            </item>
@@ -2202,6 +2515,9 @@ font-size: 19px;
             <widget class="QPushButton" name="HomeNewOrgBackBotton">
              <property name="text">
               <string>Back</string>
+             </property>
+             <property name="shortcut">
+              <string>Backspace</string>
              </property>
             </widget>
            </item>

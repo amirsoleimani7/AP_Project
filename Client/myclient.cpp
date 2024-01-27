@@ -239,6 +239,7 @@ void myClient::on_pushButton_Login_clicked()
     if(x  == "Correct_pass"){
         Dashboard *show_dashboard_page = new Dashboard(this,currentUserName);
         //show_dashboard_page =
+        this->hide();
         show_dashboard_page->exec();
     }
 
