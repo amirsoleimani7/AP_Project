@@ -167,7 +167,8 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         search_for_projects(fields[1]);
     }
     if(main_instruction == "add_project_to_team"){
-        //team rpoject
+        //team rpoject org
+        adding_project_to_organization(fields[3],fields[2]);
         add_project_to_team(fields[1],fields[2]);
         add_team_to_project(fields[2],fields[1]);
     }
@@ -205,8 +206,10 @@ void myServer::choose_funtion(QString &instruction_from_socket)
     if(main_instruction == "add_new_team_to_organization"){
         //org team
         add_team_to_data_base(instruction_from_socket);
+        add_person_to_team(fields[2],fields[3]);
+        add_team_to_person(fields[3],fields[2]);
+        change_admin_of_the_team(fields[2],fields[3]);
         adding_teams_to_organization(fields[1],fields[2]);
-
     }
     if(main_instruction =="change_name_of_organization"){
         //org old // org new;
@@ -258,6 +261,7 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         add_project_to_data_base(projec_to_add);
         add_project_to_team(fields[1],fields[2]);
         add_team_to_project(fields[2],fields[1]);
+        adding_project_to_organization(fields[3],fields[2]);
     }
     if(main_instruction == "get_Tasks"){
         QStringList list_of_tasks = get_unarchived_tasks(fields[1]);
@@ -278,14 +282,26 @@ void myServer::choose_funtion(QString &instruction_from_socket)
    }
     if(main_instruction == "change_info_of_task"){
         // QString instruction = "change_info_of_task*"+currentTask+"*"+new_task_content+"*"+new_priority+"*"+new_date+"*"+person_to_assign;
-        changing_task_id(fields[1],fields[2]);
-        changing_text_of_task(fields[1],fields[2]);
-        change_task_name_in_all_projects(fields[1],fields[2]);
-        changing_priority_of_task(fields[2],fields[3]);
-        chaning_date_of_task(fields[2],fields[4]);
-        changing_person_of_task(fields[2],fields[5]);
-        add_task_to_person(fields[5],fields[2]);
-   }
+        if(fields[2] == ""){
+            qDebug() << "in the change_ infor";
+            changing_priority_of_task(fields[1],fields[3]);
+            chaning_date_of_task(fields[1],fields[4]);
+            changing_person_of_task(fields[1],fields[5]);
+            add_task_to_person(fields[5],fields[1]);
+
+        }
+        else{
+            changing_task_id(fields[1],fields[2]);
+            changing_text_of_task(fields[1],fields[2]);
+            change_task_name_in_all_projects(fields[1],fields[2]);
+            changing_priority_of_task(fields[2],fields[3]);
+            chaning_date_of_task(fields[2],fields[4]);
+            changing_person_of_task(fields[2],fields[5]);
+            add_task_to_person(fields[5],fields[2]);
+        }
+
+
+    }
     if(main_instruction == "add_to_archive"){
        //QString name_of_task_to_archive = "add_to_archive*"+CurrentProjectName+"*"+currentTask;
         archive_task(fields[1],fields[2]);
@@ -316,6 +332,12 @@ void myServer::choose_funtion(QString &instruction_from_socket)
     }
     if(main_instruction == "remove_task"){
         remove_task_from_project(fields[1],fields[2]);
+    }
+    if(main_instruction == "delte_project"){
+        //QString intruction = "delte_project*"+CurrentProjectName+"*"+CurrentOrganizationName+"*"+CurrentTeamName+"*"+CurrentUserName;
+        removing_project_from_organization(fields[2],fields[1]);
+        removing_project_from_team(fields[3],fields[1]);
+        remove_project_from_person(fields[4],fields[1]);
     }
     else{
         qDebug() << "invalid";
@@ -1346,7 +1368,7 @@ void myServer::remove_project_from_person(QString &name_in_data_base_1, QString 
     QString name_in_data_base = name_in_data_base_1;  // Set the actual username
     QString remove_name_project = project_name;  // Set the organization to remove
 
-    QSqlQuery selectQuery;
+    QSqlQuery selectQuery(mydb_person);
     selectQuery.prepare("SELECT * FROM person_info_database WHERE username = :user_in_data_base");
     selectQuery.bindValue(":user_in_data_base", name_in_data_base);
 
@@ -1360,7 +1382,7 @@ void myServer::remove_project_from_person(QString &name_in_data_base_1, QString 
 
             QString newListOfproject = existingProject.join(",");
 
-            QSqlQuery updateQuery;
+            QSqlQuery updateQuery(mydb_person);
             updateQuery.prepare("UPDATE person_info_database SET projects = :new_project WHERE username = :user_in_data_base");
             updateQuery.bindValue(":new_project", newListOfproject);
             updateQuery.bindValue(":user_in_data_base", name_in_data_base);
@@ -1902,7 +1924,7 @@ void myServer::removing_project_from_organization(QString &organization_id, QStr
     selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
-        QString list_of_teams = selectQuery.value("organization_team").toString();
+        QString list_of_teams = selectQuery.value("organization_project").toString();
 
         // Split the existing organizations
         QStringList existingteams = list_of_teams.split(",");
@@ -1917,7 +1939,7 @@ void myServer::removing_project_from_organization(QString &organization_id, QStr
 
             // Update the row with the new list of organizations
             QSqlQuery updateQuery(mydb_organization);
-            updateQuery.prepare("UPDATE organization_info_database SET organization_project = :new_organization_team WHERE organization_id = :organization_id_in_data_base");
+            updateQuery.prepare("UPDATE organization_info_database SET organization_project = :new_organization_team WHERE organization_name = :organization_id_in_data_base");
             updateQuery.bindValue(":new_organization_team", newListOfproject);
             updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
@@ -2489,8 +2511,8 @@ void myServer::removing_project_from_team(QString &team_id, QString &project_id_
     //     "team_projects"	TEXT
     //     )
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_id = :team_id_in_data_base");
+    QSqlQuery selectQuery(mydb_team);
+    selectQuery.prepare("SELECT * FROM team_info_database WHERE team_name = :team_id_in_data_base");
     selectQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -2508,8 +2530,8 @@ void myServer::removing_project_from_team(QString &team_id, QString &project_id_
             QString newListOfprojects = existingprojects.join(",");
 
             // Update the row with the new list of organizations
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE team_info_database SET team_projects = :new_team_projects WHERE team_id = :team_id_in_data_base");
+            QSqlQuery updateQuery(mydb_team);
+            updateQuery.prepare("UPDATE team_info_database SET team_projects = :new_team_projects WHERE team_name = :team_id_in_data_base");
             updateQuery.bindValue(":new_team_projects", newListOfprojects);
             updateQuery.bindValue(":team_id_in_data_base", team_id_in_data_base);
 

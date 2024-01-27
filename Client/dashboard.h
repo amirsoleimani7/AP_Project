@@ -18,6 +18,7 @@ class Dashboard : public QDialog
     Q_OBJECT
 
 public:
+
     QString currentTask;
     QString CurrentUserName;
     QString CurrentOrganizationName;
@@ -188,6 +189,8 @@ private slots:
     void on_pushButton_5_clicked();
 
     void on_QuitBottonCH_clicked();
+
+    void on_pushButton_delete_project_clicked();
 
 private:
     Ui::Dashboard *ui;
