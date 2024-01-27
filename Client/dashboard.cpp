@@ -646,7 +646,7 @@ void Dashboard::on_TeamCreateProject_clicked()
 void Dashboard::on_TeamDeleteTeamBotton_clicked()
 {
     ui->MainStack->setCurrentWidget(ui->Homepage);
-    QString instruction = "delete_team_of_member*"+CurrentUserName+"*"+CurrentTeamName;
+    QString instruction = "delete_team_of_member*"+CurrentUserName+"*"+CurrentTeamName+"*"+CurrentOrganizationName;
     socket->witing_instructions(instruction);
     socket->delay();
     QMessageBox::information(this,"Removing","Team Removed");
