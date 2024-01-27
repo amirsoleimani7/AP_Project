@@ -1,0 +1,11 @@
+debug/dashboard.o
+debug/forgotpass.o
+debug/main.o
+debug/myclient.o
+debug/signup.o
+debug/socket_connection.o
+debug/moc_dashboard.o
+debug/moc_forgotpass.o
+debug/moc_myclient.o
+debug/moc_signup.o
+debug/moc_socket_connection.o
