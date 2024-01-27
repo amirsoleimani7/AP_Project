@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1109</width>
-    <height>575</height>
+    <width>1031</width>
+    <height>687</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -97,6 +97,19 @@ font-size: 19px;
             </widget>
            </item>
            <item>
+            <spacer name="verticalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <spacer name="verticalSpacer_17">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -134,16 +147,6 @@ font-size: 19px;
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Task Title</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_2"/>
-           </item>
-           <item>
             <spacer name="verticalSpacer_5">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -164,7 +167,7 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_3"/>
+            <widget class="QLineEdit" name="lineEdit_task_content"/>
            </item>
            <item>
             <spacer name="verticalSpacer_4">
@@ -187,7 +190,23 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="ProjectNewTaskPriorityComboBox"/>
+            <widget class="QComboBox" name="ProjectNewTaskPriorityComboBox">
+             <item>
+              <property name="text">
+               <string>High</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Medium</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Low</string>
+              </property>
+             </item>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_3">
@@ -210,7 +229,7 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QDateEdit" name="dateEdit_2"/>
+            <widget class="QDateEdit" name="dateEdit_data_for_task"/>
            </item>
            <item>
             <spacer name="verticalSpacer_11">
@@ -265,7 +284,7 @@ font-size: 19px;
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_6">
+            <widget class="QPushButton" name="pushButton_submit">
              <property name="text">
               <string>Submit</string>
              </property>
@@ -349,7 +368,7 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_4"/>
+            <widget class="QLineEdit" name="lineEdit_new_task_conent"/>
            </item>
            <item>
             <spacer name="verticalSpacer_46">
@@ -372,7 +391,23 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="ProjectNewTaskPriorityComboBox_2"/>
+            <widget class="QComboBox" name="ProjectNewTaskPriorityComboBox_2">
+             <item>
+              <property name="text">
+               <string>High</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Medium</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Low</string>
+              </property>
+             </item>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_45">
@@ -395,7 +430,30 @@ font-size: 19px;
             </widget>
            </item>
            <item>
-            <widget class="QDateEdit" name="dateEdit_3"/>
+            <widget class="QDateEdit" name="dateEdit_new_date"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_47">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Assign To Person </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_person_to_assign"/>
            </item>
            <item>
             <spacer name="verticalSpacer_57">
@@ -411,20 +469,7 @@ font-size: 19px;
             </spacer>
            </item>
            <item>
-            <spacer name="verticalSpacer_63">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_7">
+            <widget class="QPushButton" name="pushButton_change_task_info">
              <property name="text">
               <string>Change</string>
              </property>
@@ -459,7 +504,7 @@ font-size: 19px;
            <item>
             <widget class="QPushButton" name="pushButton">
              <property name="text">
-              <string>Toggle Archive</string>
+              <string>Archive</string>
              </property>
             </widget>
            </item>
@@ -482,19 +527,6 @@ font-size: 19px;
               <string>Delete</string>
              </property>
             </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_62">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item>
             <spacer name="verticalSpacer_61">
@@ -531,6 +563,153 @@ font-size: 19px;
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="EditForunArchived">
+          <layout class="QVBoxLayout" name="verticalLayout_25">
+           <item alignment="Qt::AlignHCenter">
+            <widget class="QLabel" name="label_28">
+             <property name="text">
+              <string>EDIT TASK</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_31">
+             <property name="text">
+              <string>Task Content</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_new_task_conent_2"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_29">
+             <property name="text">
+              <string>Priority</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="ProjectNewTaskPriorityComboBox_3">
+             <item>
+              <property name="text">
+               <string>High</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Medium</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Low</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_30">
+             <property name="text">
+              <string>Date</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDateEdit" name="dateEdit_new_date_2"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_52">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Assign To Person </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_person_to_assign_2"/>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_53">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_change_task_info_2">
+             <property name="text">
+              <string>Change</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_54">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_unarchive">
+             <property name="text">
+              <string>UnArchive</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_6">
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_55">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="ProjectNewTaskBackButton_3">
+             <property name="text">
+              <string>Back</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
          <widget class="QWidget" name="ProjectCommentPage">
           <layout class="QVBoxLayout" name="verticalLayout_19">
            <item alignment="Qt::AlignHCenter">
@@ -541,7 +720,27 @@ font-size: 19px;
             </widget>
            </item>
            <item>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <spacer name="horizontalSpacer_for_comment">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
             <layout class="QVBoxLayout" name="TaskCommentList">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_3"/>
+             </item>
              <item>
               <widget class="QLabel" name="label_21">
                <property name="text">
@@ -566,19 +765,6 @@ font-size: 19px;
                </property>
               </widget>
              </item>
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </item>
            <item>
@@ -602,74 +788,6 @@ font-size: 19px;
        <item>
         <layout class="QVBoxLayout" name="TasksList">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_17">
-             <item>
-              <widget class="QCheckBox" name="checkBox">
-               <property name="text">
-                <string>Class Diagram</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>MAmad</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Important</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="font">
-                <font>
-                 <family>Times New Roman</family>
-                 <pointsize>-1</pointsize>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>1.21.1375</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_3">
-               <property name="text">
-                <string>Comments</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_2">
-               <property name="text">
-                <string>Edit</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="Line" name="line_16">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
           <spacer name="horizontalSpacer_7">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -684,6 +802,9 @@ font-size: 19px;
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_update_tasks_in_ptoject"/>
          </item>
         </layout>
        </item>
@@ -711,7 +832,7 @@ font-size: 19px;
              </property>
             </spacer>
            </item>
-           <item alignment="Qt::AlignHCenter">
+           <item>
             <widget class="QLabel" name="label_4">
              <property name="text">
               <string>ARCHIVE</string>
@@ -733,6 +854,9 @@ font-size: 19px;
            </item>
           </layout>
          </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_24"/>
+         </item>
         </layout>
        </item>
       </layout>
@@ -742,6 +866,7 @@ font-size: 19px;
        <item>
         <widget class="QStackedWidget" name="OneOrgSideStack">
          <property name="currentIndex">
+          <number>1</number>
           <number>2</number>
          </property>
          <widget class="QWidget" name="OneOrgSideMainPage">

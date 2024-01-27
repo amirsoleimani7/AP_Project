@@ -9,7 +9,6 @@
 #include <vector>
 #include <QDebug>
 #include "myclient.h"
-#include <custombutton.h>
 namespace Ui {
 class Dashboard;
 }
@@ -24,11 +23,13 @@ public:
     QString CurrentOrganizationName;
     QString CurrentTeamName;
     QString CurrentProjectName;
+
     explicit Dashboard(QWidget *parent = nullptr,const QString& RefrenceUserName = "");
     ~Dashboard();
 public slots:
-    //explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");
+    //explicit Dashboard(QWidget *parent = nullptr,QString RefrenceUserName = "");amir
 public slots:
+    void onEditTaskButtonClicked(const QString& taskTitle);
     void set_name_loged_in(QString& name);
     void clearLayout(QLayout* layout);
     void set_current_organization_name(const QString& organization_name);
@@ -36,6 +37,9 @@ public slots:
     void onMemberTeamButtonClicked();
     //updating HomeOrgListLayout
     void update_ProjectTaskListLayout_objects();
+    void onEditButtonClicked_archived(const QString& taskTitle);
+
+
     void onTeamsInOrganizationButtonClicked();
     void update_HomeOrgListLayout_bottons();
     void update_HomeTeamListLayout_bottons();
@@ -43,7 +47,6 @@ public slots:
     void update_projects_in_organization();
     void onProjecsInOrganizationButtonClicked();
     void add_person_to_team(QString& person_name);
-
     //void add_person_to_organization(QString& person_name);
     void onMemberInOrganizationButtonClicked();
     void onMemberSearchButtonClicked();
@@ -51,13 +54,15 @@ public slots:
     void onProjectTeamButtonClicked();
 
     void onOrganizationButtonClicked();
+    void update_archived_tasks_in_peojet();
     void onTeamButtonClicked();
     void onProjectButtonClicked();
-    void onCommentButtonClicked();
-    void onEditTaskButtonClicked();
-
+    void onCommentButtonClicked(const QString& taskTile);
+    // void onEditTaskButtonClicked();
+    void update_comments_of_task();
     void update_teams_in_organization();
     void update_profile_of_user();
+    void oncommentButtonClicked();
 
     void update_members_of_team();
     void add_person_to_organization(QString& person_name);
@@ -97,6 +102,7 @@ public slots:
     void on_OneTeamButton_10_clicked();
 
     void on_TeamEditBotton_clicked();
+    void onCommentButtonClicked_archived(const QString& taskTile);
 
     void on_TeamEditBackBotton_clicked();
 
@@ -160,6 +166,26 @@ private slots:
     void on_HomeTeamFilterBotton_clicked();
 
     void on_pushButton_create_new_project_clicked();
+
+    void on_pushButton_6_clicked();
+
+    void on_pushButton_submit_clicked();
+
+    void on_pushButton_change_task_info_clicked();
+
+    void on_ProjectNewTaskBackButton_2_clicked();
+
+    void on_ProjectNewTaskBackButton_3_clicked();
+
+    void on_pushButton_change_task_info_2_clicked();
+
+    void on_pushButton_8_clicked();
+
+    void on_pushButton_4_clicked();
+
+    void on_pushButton_unarchive_clicked();
+
+    void on_pushButton_5_clicked();
 
 private:
     Ui::Dashboard *ui;
