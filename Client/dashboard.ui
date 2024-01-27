@@ -95,14 +95,14 @@ font-weight: bold;
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="ProjectPage">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QStackedWidget" name="ProjectSideStack">
          <property name="currentIndex">
-          <number>0</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="ProjectSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -154,9 +154,42 @@ font-weight: bold;
             </layout>
            </item>
            <item>
+            <spacer name="verticalSpacer_62">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
             <widget class="QPushButton" name="ProjectNewTaskButton">
              <property name="text">
               <string>New Task</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_delete_project">
+             <property name="text">
+              <string>Delete Project</string>
              </property>
             </widget>
            </item>
@@ -1320,30 +1353,6 @@ font-weight: bold;
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="NewTeamSearchMemberLabel">
-             <property name="text">
-              <string>Search For New Team Members</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="SearchForNewTeamMemberLineEdit">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>30</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="SearchForNewTeamMemberPushButton">
-             <property name="text">
-              <string>Search</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <spacer name="verticalSpacer_34">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1535,7 +1544,7 @@ font-weight: bold;
        <item>
         <widget class="QStackedWidget" name="TeamSideStack">
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="TeamSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1992,11 +2001,10 @@ font-weight: bold;
           </spacer>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_search_for_project">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_search_for_person"/>
-           </item>
-          </layout>
+          <layout class="QVBoxLayout" name="verticalLayout_search_for_person"/>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_search_for_project"/>
          </item>
         </layout>
        </item>
@@ -2109,7 +2117,7 @@ font-weight: bold;
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">

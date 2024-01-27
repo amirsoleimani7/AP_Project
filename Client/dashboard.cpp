@@ -82,7 +82,7 @@ void Dashboard::update_projects_of_team()
             existingLayout = new QVBoxLayout();
             //ui->widget_dynamic->setLayout(existingLayout);
         }
-        for (int i = 0;i<list_of_projects_in_teams.size()-1;i++)
+        for (int i = 0;i<list_of_projects_in_teams.size();i++)
         {
             if(list_of_projects_in_teams[i] != ""){
                 QString name_of_member_in_team = list_of_projects_in_teams[i];
@@ -107,6 +107,7 @@ void Dashboard::onProjectTeamButtonClicked()
         //here we should go to the page of organizations with the given organization name
         qDebug() << project_name_in_team ;
         CurrentProjectName = project_name_in_team;
+        ui->ProjectNameLabel->setText(project_name_in_team);
         ui->MainStack->setCurrentWidget(ui->ProjectPage);
         update_ProjectTaskListLayout_objects();
         update_archived_tasks_in_peojet();
@@ -131,7 +132,7 @@ void Dashboard::update_members_of_team()
             existingLayout = new QVBoxLayout();
             //ui->widget_dynamic->setLayout(existingLayout);
         }
-        for (int i = 0;i<list_of_members_in_teams.size()-1;i++)
+        for (int i = 0;i<list_of_members_in_teams.size();i++)
         {
             if(list_of_members_in_teams[i] != ""){
                 QString name_of_member_in_team = list_of_members_in_teams[i];
@@ -177,7 +178,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
             existingLayout = new QVBoxLayout();
             //ui->widget_dynamic->setLayout(existingLayout);
         }
-        for (int i = 0;i<list_of_organizations.size()-1;i++)
+        for (int i = 0;i<list_of_organizations.size();i++)
         {
             if(list_of_organizations[i] != ""){
                 QString name_of_organization = list_of_organizations[i];
@@ -206,7 +207,7 @@ void Dashboard::update_ProjectTaskListLayout_objects()
     QStringList list_of_Task = feed_back.split("|");
     qDebug() << list_of_Task;
 
-    for(int i = 0;i<list_of_Task.size()-1;i++){
+    for(int i = 0;i<list_of_Task.size();i++){
         if(list_of_Task[i] != ""){
             ListOfTasks.push_back(list_of_Task[i].split("*"));
 
@@ -287,7 +288,6 @@ void Dashboard::onEditTaskButtonClicked(const QString& taskTitle)
 
 void Dashboard::update_HomeTeamListLayout_bottons()
 {
-
     clearLayout(ui->HomeTeamsListLayout_team);
     QString instruction = "get_teams*"+CurrentUserName;
     socket->witing_instructions(instruction);
@@ -303,7 +303,7 @@ void Dashboard::update_HomeTeamListLayout_bottons()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_teams.size()-1;i++)
+        for (int i = 0;i<list_of_teams.size();i++)
         {
             if(list_of_teams[i]!=""){
                 QString name_of_team = list_of_teams[i];
@@ -339,7 +339,7 @@ void Dashboard::update_HomeProjectListLayout_bottons()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_project.size()-1;i++)
+        for (int i = 0;i<list_of_project.size();i++)
         {
             if(list_of_project[i]!=""){
                 QString name_of_project = list_of_project[i];
@@ -360,12 +360,17 @@ void Dashboard::update_HomeProjectListLayout_bottons()
 
 void Dashboard::onOrganizationButtonClicked(){
 
+
     QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
     if (senderButton) {
         // Handle the button click event
         QString organizationName = senderButton->text();
+
+        clearLayout(ui->verticalLayout_search_for_new_membr_for_organization);
+        clearLayout(ui->verticalLayout_members_of_organization);
+
         qDebug() << organizationName;
-        set_current_organization_name(organizationName);
+        CurrentOrganizationName = organizationName;
         ui->MainStack->setCurrentWidget(ui->OneOrgPage);
         ui->OneOrgName->setText(CurrentOrganizationName);
 
@@ -401,7 +406,10 @@ void Dashboard::onProjectButtonClicked(){
         qDebug() << projectName;
         CurrentProjectName = projectName;
         ui->MainStack->setCurrentWidget(ui->ProjectPage);
+        ui->ProjectNameLabel->setText(CurrentProjectName);
+        //ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
         update_ProjectTaskListLayout_objects();
+        update_archived_tasks_in_peojet();
         //here we should go to the page of organizations with the given organization name
     }
 }
@@ -429,7 +437,7 @@ void Dashboard::update_projects_in_organization(){
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_projects_in_organization.size()-1;i++)
+        for (int i = 0;i<list_of_projects_in_organization.size();i++)
         {
             if(list_of_projects_in_organization[i]!=""){
                 QString name_of_project_in_org = list_of_projects_in_organization[i];
@@ -455,7 +463,10 @@ void Dashboard::onProjecsInOrganizationButtonClicked(){
         qDebug() << project_name_in_organization;
         CurrentProjectName = project_name_in_organization;
         ui->MainStack->setCurrentWidget(ui->ProjectPage);
+        ui->ProjectNameLabel->setText(CurrentProjectName);
         update_ProjectTaskListLayout_objects();
+        update_archived_tasks_in_peojet();
+
         //here we should go to the page of organizations with the given organization name
     }
 }
@@ -480,7 +491,7 @@ void Dashboard::update_teams_in_organization()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_teams_in_organization.size()-1;i++)
+        for (int i = 0;i<list_of_teams_in_organization.size();i++)
         {
             if(list_of_teams_in_organization[i]!=""){
                 QString name_of_team_in_org = list_of_teams_in_organization[i];
@@ -542,6 +553,8 @@ void Dashboard::on_OneOrgHomeBotton_clicked()
 {
     ui->MainStack->setCurrentWidget(ui->Homepage);
     update_HomeOrgListLayout_bottons();
+    update_HomeTeamListLayout_bottons();
+    update_HomeProjectListLayout_bottons();
 }
 
 
@@ -647,7 +660,9 @@ void Dashboard::on_TeamDeleteTeamBotton_clicked()
 void Dashboard::on_TeamHomeButton_clicked()
 {
     ui->MainStack->setCurrentWidget(ui->Homepage);
+    update_HomeOrgListLayout_bottons();
     update_HomeTeamListLayout_bottons();
+    update_HomeProjectListLayout_bottons();
 }
 
 
@@ -671,6 +686,7 @@ void Dashboard::on_SomeTeamButton_12_clicked()
 
 void Dashboard::on_ProjectNewTaskBackButton_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 }
 
@@ -684,6 +700,9 @@ void Dashboard::on_ProjectNewTaskButton_clicked()
 void Dashboard::on_ProjectHomeButton_clicked()
 {
     ui->MainStack->setCurrentWidget(ui->Homepage);
+    update_HomeOrgListLayout_bottons();
+    update_HomeTeamListLayout_bottons();
+    update_HomeProjectListLayout_bottons();
 }
 
 
@@ -720,7 +739,7 @@ void Dashboard::update_archived_tasks_in_peojet()
     QStringList list_of_Task = feed_back.split("|");
     qDebug() << list_of_Task;
 
-    for(int i = 0;i<list_of_Task.size()-1;i++){
+    for(int i = 0;i<list_of_Task.size();i++){
         if(list_of_Task[i] != ""){
             ListOfTasks.push_back(list_of_Task[i].split("*"));
 
@@ -864,7 +883,9 @@ void Dashboard::on_HomeNewOrgCreatBotton_clicked()
 
 void Dashboard::on_search_for_project_clicked()
 {
-    clearLayout(ui->verticalLayout_search_for_project);
+    clearLayout(ui->verticalLayout_search_for_person);
+    clearLayout(ui->verticalLayout_search_for_project);    //clearLayout(ui->verticalLayout_search_for_project);
+
     QString search_for_project_to_add = ui->TeamAddProjectLineEdit->text();
     QString instruction ="search_for_projects*"+search_for_project_to_add;
     socket->witing_instructions(instruction);
@@ -882,7 +903,7 @@ void Dashboard::on_search_for_project_clicked()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_project_search_reualt.size()-1;i++)
+        for (int i = 0;i<list_of_project_search_reualt.size();i++)
         {
             if(list_of_project_search_reualt[i]!=""){
 
@@ -903,7 +924,7 @@ void Dashboard::on_search_for_project_clicked()
 
 void Dashboard::add_project_to_team(QString& project_name)
 {
-    QString instruction = "add_project_to_team*"+CurrentTeamName+"*"+project_name;
+    QString instruction = "add_project_to_team*"+CurrentTeamName+"*"+project_name+"*"+CurrentOrganizationName;
     socket->witing_instructions(instruction);
     socket->delay();
     QMessageBox::information(this,"Adding Project","Project Added");
@@ -942,6 +963,8 @@ void Dashboard::on_TeamChangeNameBotton_clicked()
 void Dashboard::on_searchForUserNameToAddToTeam_clicked()
 {
     clearLayout(ui->verticalLayout_search_for_person);
+    clearLayout(ui->verticalLayout_search_for_project);
+
     QString search_for_person_to_add = ui->TeamNewMemberLineEdit->text();
     QString instruction ="search_for_person*"+search_for_person_to_add;
     socket->witing_instructions(instruction);
@@ -959,7 +982,7 @@ void Dashboard::on_searchForUserNameToAddToTeam_clicked()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_person_search_reualt.size()-1;i++)
+        for (int i = 0;i<list_of_person_search_reualt.size();i++)
         {
             if(list_of_person_search_reualt[i]!=""){
 
@@ -1029,7 +1052,7 @@ void Dashboard::on_CreateNewTeamBotton_clicked()
         QMessageBox::warning(this,"Empty Field","New Team Name Is Empty");
     else{
     QString team_name_to_add_to_organization = ui->NewTeamLineEdit->text();
-    QString instruction = "add_new_team_to_organization*"+CurrentOrganizationName+"*"+team_name_to_add_to_organization;
+    QString instruction = "add_new_team_to_organization*"+CurrentOrganizationName+"*"+team_name_to_add_to_organization+"*"+CurrentUserName;
     socket->witing_instructions(instruction);
     socket->delay();
     update_teams_in_organization();
@@ -1071,7 +1094,7 @@ void Dashboard::update_members_of_organization()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_members_in_organization.size()-1;i++)
+        for (int i = 0;i<list_of_members_in_organization.size();i++)
         {
             if(list_of_members_in_organization[i]!=""){
                 QString name_of_member_in_org = list_of_members_in_organization[i];
@@ -1105,6 +1128,9 @@ void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
 {
 
     //QString search_member_for_org = ui->OrgSearchNewMemberLineEdit->text();
+    clearLayout(ui->verticalLayout_search_for_new_membr_for_organization);
+    clearLayout(ui->verticalLayout_members_of_organization);
+
     if ((ui->OrgSearchNewMemberLineEdit->text().isEmpty()))
         QMessageBox::warning(this,"Empty Field","Search For New Member Is Empty");
     else{
@@ -1128,7 +1154,7 @@ void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_member_search_reualt.size()-1;i++)
+        for (int i = 0;i<list_of_member_search_reualt.size();i++)
         {
             if(list_of_member_search_reualt[i]!=""){
 
@@ -1226,7 +1252,7 @@ void Dashboard::on_HomeOrgFilterBotton_clicked()
                 existingLayout = new QVBoxLayout();
                 //ui->widget_dynamic->setLayout(existingLayout);
             }
-            for (int i = 0;i<list_of_organizations.size()-1;i++)
+            for (int i = 0;i<list_of_organizations.size();i++)
             {
                 if(list_of_organizations[i] != ""){
                     QString name_of_organization = list_of_organizations[i];
@@ -1267,7 +1293,7 @@ void Dashboard::on_HomeTeamFilterBotton_clicked()
                 //ui->widget_dynamic->setLayout(existingLayout);
             }
 
-            for (int i = 0;i<list_of_teams.size()-1;i++)
+            for (int i = 0;i<list_of_teams.size();i++)
             {
                 if(list_of_teams[i]!=""){
                     QString name_of_team = list_of_teams[i];
@@ -1292,7 +1318,7 @@ void Dashboard::on_HomeTeamFilterBotton_clicked()
 void Dashboard::on_pushButton_create_new_project_clicked()
 {
     QString new_project_for_team=ui->lineEdit_create_new_project_for_team->text();
-    QString instruction ="add_new_project_to_team*"+CurrentTeamName+"*"+new_project_for_team;
+    QString instruction ="add_new_project_to_team*"+CurrentTeamName+"*"+new_project_for_team+"*"+CurrentOrganizationName;
     socket->witing_instructions(instruction);
     socket->delay();
     QMessageBox::information(this,"Adding New Project","New Project Added");
@@ -1302,9 +1328,10 @@ void Dashboard::on_pushButton_create_new_project_clicked()
 
 void Dashboard::on_pushButton_6_clicked()
 {
-    QString instruction = "remove_task_from_project*"+CurrentProjectName+"*"+currentTask;
+    QString instruction = "remove_task*"+CurrentProjectName+"*"+currentTask+"$";
     socket->witing_instructions(instruction);
     socket->delay();
+    update_ProjectTaskListLayout_objects();
     update_archived_tasks_in_peojet();
 }
 
@@ -1338,12 +1365,14 @@ void Dashboard::on_pushButton_change_task_info_clicked()
 
 void Dashboard::on_ProjectNewTaskBackButton_2_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 }
 
 
 void Dashboard::on_ProjectNewTaskBackButton_3_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 }
 
@@ -1365,12 +1394,17 @@ void Dashboard::on_pushButton_change_task_info_2_clicked()
 
 void Dashboard::on_pushButton_8_clicked()
 {
+    ui->ProjectNameLabel->setText(CurrentProjectName);
+
     ui->ProjectSideStack->setCurrentWidget(ui->ProjectSideMainPage);
 
 }
 
 void Dashboard::on_pushButton_4_clicked()
 {
+    if ((ui->ProfileNewNameLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Personal Name Is Empty");
+    else{
     QString comment = ui->lineEdit->text();
     QString instruction = "add_comment*"+currentTask+"*"+comment;
     socket->witing_instructions(instruction);
@@ -1378,6 +1412,7 @@ void Dashboard::on_pushButton_4_clicked()
     update_comments_of_task();
     QMessageBox::information(this,"Comments","Commments Added");
     // horizontalSpacer_for_comment
+    }
 }
 
 void Dashboard::update_comments_of_task()
@@ -1401,7 +1436,7 @@ void Dashboard::update_comments_of_task()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_comments.size()-1;i++)
+        for (int i = 0;i<list_of_comments.size();i++)
         {
             if(list_of_comments[i]!=""){
 
@@ -1449,7 +1484,7 @@ void Dashboard::on_pushButton_unarchive_clicked()
 
 void Dashboard::on_pushButton_5_clicked()
 {
-    QString instruction = "unarchive*"+CurrentProjectName+"*"+currentTask;
+    QString instruction = "remove_task*"+CurrentProjectName+"*"+currentTask;
     socket->witing_instructions(instruction);
     socket->delay();
     update_ProjectTaskListLayout_objects();
@@ -1460,5 +1495,18 @@ void Dashboard::on_pushButton_5_clicked()
 void Dashboard::on_QuitBottonCH_clicked()
 {
     this->close();
+}
+
+
+void Dashboard::on_pushButton_delete_project_clicked()
+{
+    QString intruction = "delte_project*"+CurrentProjectName+"*"+CurrentOrganizationName+"*"+CurrentTeamName+"*"+CurrentUserName;
+    socket->witing_instructions(intruction);
+    socket->delay();
+    QMessageBox::information(this,"remove","project removed");
+    update_HomeOrgListLayout_bottons();
+    update_HomeTeamListLayout_bottons();
+    update_HomeProjectListLayout_bottons();
+    ui->MainStack->setCurrentWidget(ui->Homepage);
 }
 
