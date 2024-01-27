@@ -29,7 +29,6 @@ QPushButton:hover {
 }
 QDateEdit{font-family: 'Arial', sans-serif;
 font-weight: bold;
-  color: #ecf0f1;
   padding: 10px;
   text-align: center;
   font-size: 14px;}
@@ -95,14 +94,14 @@ font-weight: bold;
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="ProjectPage">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QStackedWidget" name="ProjectSideStack">
          <property name="currentIndex">
-          <number>4</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="ProjectSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -1544,7 +1543,7 @@ font-weight: bold;
        <item>
         <widget class="QStackedWidget" name="TeamSideStack">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="TeamSideMainPage">
           <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -2117,7 +2116,7 @@ font-weight: bold;
        <item>
         <widget class="QStackedWidget" name="HomeSideStack">
          <property name="currentIndex">
-          <number>2</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="HomeProfilePage">
           <layout class="QVBoxLayout" name="verticalLayout_6">
