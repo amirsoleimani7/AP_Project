@@ -82,7 +82,7 @@ void Dashboard::update_projects_of_team()
             existingLayout = new QVBoxLayout();
             //ui->widget_dynamic->setLayout(existingLayout);
         }
-        for (int i = 0;i<list_of_projects_in_teams.size()-1;i++)
+        for (int i = 0;i<list_of_projects_in_teams.size();i++)
         {
             if(list_of_projects_in_teams[i] != ""){
                 QString name_of_member_in_team = list_of_projects_in_teams[i];
@@ -131,7 +131,7 @@ void Dashboard::update_members_of_team()
             existingLayout = new QVBoxLayout();
             //ui->widget_dynamic->setLayout(existingLayout);
         }
-        for (int i = 0;i<list_of_members_in_teams.size()-1;i++)
+        for (int i = 0;i<list_of_members_in_teams.size();i++)
         {
             if(list_of_members_in_teams[i] != ""){
                 QString name_of_member_in_team = list_of_members_in_teams[i];
@@ -177,7 +177,7 @@ void Dashboard::update_HomeOrgListLayout_bottons()
             existingLayout = new QVBoxLayout();
             //ui->widget_dynamic->setLayout(existingLayout);
         }
-        for (int i = 0;i<list_of_organizations.size()-1;i++)
+        for (int i = 0;i<list_of_organizations.size();i++)
         {
             if(list_of_organizations[i] != ""){
                 QString name_of_organization = list_of_organizations[i];
@@ -206,7 +206,7 @@ void Dashboard::update_ProjectTaskListLayout_objects()
     QStringList list_of_Task = feed_back.split("|");
     qDebug() << list_of_Task;
 
-    for(int i = 0;i<list_of_Task.size()-1;i++){
+    for(int i = 0;i<list_of_Task.size();i++){
         if(list_of_Task[i] != ""){
             ListOfTasks.push_back(list_of_Task[i].split("*"));
 
@@ -287,7 +287,6 @@ void Dashboard::onEditTaskButtonClicked(const QString& taskTitle)
 
 void Dashboard::update_HomeTeamListLayout_bottons()
 {
-
     clearLayout(ui->HomeTeamsListLayout_team);
     QString instruction = "get_teams*"+CurrentUserName;
     socket->witing_instructions(instruction);
@@ -303,7 +302,7 @@ void Dashboard::update_HomeTeamListLayout_bottons()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_teams.size()-1;i++)
+        for (int i = 0;i<list_of_teams.size();i++)
         {
             if(list_of_teams[i]!=""){
                 QString name_of_team = list_of_teams[i];
@@ -429,7 +428,7 @@ void Dashboard::update_projects_in_organization(){
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_projects_in_organization.size()-1;i++)
+        for (int i = 0;i<list_of_projects_in_organization.size();i++)
         {
             if(list_of_projects_in_organization[i]!=""){
                 QString name_of_project_in_org = list_of_projects_in_organization[i];
@@ -480,7 +479,7 @@ void Dashboard::update_teams_in_organization()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_teams_in_organization.size()-1;i++)
+        for (int i = 0;i<list_of_teams_in_organization.size();i++)
         {
             if(list_of_teams_in_organization[i]!=""){
                 QString name_of_team_in_org = list_of_teams_in_organization[i];
@@ -720,7 +719,7 @@ void Dashboard::update_archived_tasks_in_peojet()
     QStringList list_of_Task = feed_back.split("|");
     qDebug() << list_of_Task;
 
-    for(int i = 0;i<list_of_Task.size()-1;i++){
+    for(int i = 0;i<list_of_Task.size();i++){
         if(list_of_Task[i] != ""){
             ListOfTasks.push_back(list_of_Task[i].split("*"));
 
@@ -882,7 +881,7 @@ void Dashboard::on_search_for_project_clicked()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_project_search_reualt.size()-1;i++)
+        for (int i = 0;i<list_of_project_search_reualt.size();i++)
         {
             if(list_of_project_search_reualt[i]!=""){
 
@@ -959,7 +958,7 @@ void Dashboard::on_searchForUserNameToAddToTeam_clicked()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_person_search_reualt.size()-1;i++)
+        for (int i = 0;i<list_of_person_search_reualt.size();i++)
         {
             if(list_of_person_search_reualt[i]!=""){
 
@@ -1071,7 +1070,7 @@ void Dashboard::update_members_of_organization()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_members_in_organization.size()-1;i++)
+        for (int i = 0;i<list_of_members_in_organization.size();i++)
         {
             if(list_of_members_in_organization[i]!=""){
                 QString name_of_member_in_org = list_of_members_in_organization[i];
@@ -1128,7 +1127,7 @@ void Dashboard::on_pushButton_search_for_new_member_for_org_clicked()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_member_search_reualt.size()-1;i++)
+        for (int i = 0;i<list_of_member_search_reualt.size();i++)
         {
             if(list_of_member_search_reualt[i]!=""){
 
@@ -1226,7 +1225,7 @@ void Dashboard::on_HomeOrgFilterBotton_clicked()
                 existingLayout = new QVBoxLayout();
                 //ui->widget_dynamic->setLayout(existingLayout);
             }
-            for (int i = 0;i<list_of_organizations.size()-1;i++)
+            for (int i = 0;i<list_of_organizations.size();i++)
             {
                 if(list_of_organizations[i] != ""){
                     QString name_of_organization = list_of_organizations[i];
@@ -1267,7 +1266,7 @@ void Dashboard::on_HomeTeamFilterBotton_clicked()
                 //ui->widget_dynamic->setLayout(existingLayout);
             }
 
-            for (int i = 0;i<list_of_teams.size()-1;i++)
+            for (int i = 0;i<list_of_teams.size();i++)
             {
                 if(list_of_teams[i]!=""){
                     QString name_of_team = list_of_teams[i];
@@ -1401,7 +1400,7 @@ void Dashboard::update_comments_of_task()
             //ui->widget_dynamic->setLayout(existingLayout);
         }
 
-        for (int i = 0;i<list_of_comments.size()-1;i++)
+        for (int i = 0;i<list_of_comments.size();i++)
         {
             if(list_of_comments[i]!=""){
 
