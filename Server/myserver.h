@@ -16,7 +16,6 @@
 #include <QFile>
 
 
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class myServer;
@@ -127,6 +126,9 @@ private slots:
     void archive_task(QString& project_id,QString& task_id);
     void unarchive_task(QString& project_id,QString task_id);
 
+    QVector<QString> get_archived_tasks(QString& project_id);
+    QVector<QString> get_unarchived_tasks(QString& project_id);
+
     void add_project_to_data_base(QString& project_data);
     void changing_name_of_project(QString& project_id ,QString& new_project_name);
     void changing_type_of_project(QString& project_id ,QString& new_project_type);
@@ -142,17 +144,25 @@ private slots:
     //-------------------------
 
     //tasks function
+
+    QString getting_each_task_information(QStringList lst);
+
     void add_task_to_data_task(QString& task_data);
     void changing_task_id(QString& task_id ,QString& task_new_id);
     void changing_text_of_task(QString& task_id,QString& new_text);
+    void changing_person_of_task(QString& task_id,QString new_person);
     void changing_project_of_task(QString& task_id ,QString& new_project);
     void adding_person_to_task(QString& task_id,QString& person_to_add);
+    void adding_comment_to_task(QString& task_id,QString& comment);
     void changing_is_done_of_task(QString& task_id,QString& new_id_done);
     void changing_priority_of_task(QString& task_id,QString& new_priority);
     void chaning_date_of_task(QString& task_name,QString& new_task_date);
     QString getting_info_of_tasks(QString& task_id);
     void removing_person_from_task(QString& task_id,QString& person_id);
+    void remove_comment_from_task(QString& task_id,QString& comment_id);
+
     QVector<QString> getting_persons_of_task(QString& task_id);
+    QVector<QString> getting_comments_of_task(QString& task_id);
 
     //--------------------------
     //comment functions

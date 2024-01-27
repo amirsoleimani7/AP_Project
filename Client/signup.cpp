@@ -77,7 +77,6 @@ void Signup::on_pushButton_signup_clicked()
                 else{
                     QMessageBox::information(this,"warning",x);
                 }
-
             }
             else{
                 QMessageBox::information(this,"this","try again");
