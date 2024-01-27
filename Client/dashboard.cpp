@@ -1402,6 +1402,9 @@ void Dashboard::on_pushButton_8_clicked()
 
 void Dashboard::on_pushButton_4_clicked()
 {
+    if ((ui->ProfileNewNameLineEdit->text().isEmpty()))
+        QMessageBox::warning(this,"Empty Field","New Personal Name Is Empty");
+    else{
     QString comment = ui->lineEdit->text();
     QString instruction = "add_comment*"+currentTask+"*"+comment;
     socket->witing_instructions(instruction);
@@ -1409,6 +1412,7 @@ void Dashboard::on_pushButton_4_clicked()
     update_comments_of_task();
     QMessageBox::information(this,"Comments","Commments Added");
     // horizontalSpacer_for_comment
+    }
 }
 
 void Dashboard::update_comments_of_task()

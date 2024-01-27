@@ -42,7 +42,7 @@ void Signup::on_pushButton_signup_clicked()
     if(ui->lineEdit_user_name->text().isEmpty() || ui->lineEdit_pass->text().isEmpty() || ui->lineEdit_personal_name->text().isEmpty()||
         ui->lineEdit_email->text().isEmpty() || ui->lineEdit_recoveryWordAnimal->text().isEmpty() || ui->lineEdit_recoveryWordColor->text().isEmpty()||
         ui->lineEdit_recoveryWordCity->text().isEmpty())
-        QMessageBox::information(this,"this","fill all the fields");
+        QMessageBox::information(this,"Empty","Fill All The Fields");
 
     else{
 
@@ -72,18 +72,18 @@ void Signup::on_pushButton_signup_clicked()
                 QString x = socket->reading_feed_back();
                 qDebug() << "feed back for signup : "<< x;
                 if(x == "true_person_add"){
-                    QMessageBox::information(this,"add account","person added");
+                    QMessageBox::information(this,"Add Account","Person Added");
                 }
                 else{
                     QMessageBox::information(this,"warning",x);
                 }
             }
             else{
-                QMessageBox::information(this,"this","try again");
+                QMessageBox::information(this,"this","A Capital and a small Character in Password");
             }
         }
         else{
-            QMessageBox::information(this,"this","too short try again");
+            QMessageBox::information(this,"this","Too short Password try again");
         }
     }
 }

@@ -1,0 +1,11 @@
+release/dashboard.o
+release/forgotpass.o
+release/main.o
+release/myclient.o
+release/signup.o
+release/socket_connection.o
+release/moc_dashboard.o
+release/moc_forgotpass.o
+release/moc_myclient.o
+release/moc_signup.o
+release/moc_socket_connection.o

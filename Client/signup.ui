@@ -190,7 +190,7 @@ font-weight: bold;
          <item>
           <widget class="QLabel" name="label_personal_name">
            <property name="text">
-            <string>Personal</string>
+            <string>Personal Name</string>
            </property>
           </widget>
          </item>
