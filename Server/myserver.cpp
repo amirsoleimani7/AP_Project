@@ -159,6 +159,8 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         getting_projects_of_team(fields[1]);
     }
     if(main_instruction == "delete_team_of_member"){
+//        QString instruction = "delete_team_of_member*"+CurrentUserName+"*"+CurrentTeamName+"*"+CurrentOrganizationName;
+        removing_team_from_organization(fields[3],fields[2]);
         remove_team_from_person(fields[1],fields[2]);
         removing_person_from_team(fields[2],fields[1]);
     }
@@ -1968,8 +1970,8 @@ void myServer::removing_team_from_organization(QString &organization_id, QString
     QString organization_id_in_data_base  = organization_id;  // Set the actual username
     QString remove_team_from_organization = cid_of_team_to_remove;
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_id = :organization_id_in_data_base");
+    QSqlQuery selectQuery(mydb_organization);
+    selectQuery.prepare("SELECT * FROM organization_info_database WHERE organization_name = :organization_id_in_data_base");
     selectQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
     if (selectQuery.exec() && selectQuery.next()) {
@@ -1987,8 +1989,8 @@ void myServer::removing_team_from_organization(QString &organization_id, QString
             QString newListOfproject = existingteams.join(",");
 
             // Update the row with the new list of organizations
-            QSqlQuery updateQuery;
-            updateQuery.prepare("UPDATE organization_info_database SET organization_team = :new_organization_team WHERE organization_id = :organization_id_in_data_base");
+            QSqlQuery updateQuery(mydb_organization);
+            updateQuery.prepare("UPDATE organization_info_database SET organization_team = :new_organization_team WHERE organization_name = :organization_id_in_data_base");
             updateQuery.bindValue(":new_organization_team", newListOfproject);
             updateQuery.bindValue(":organization_id_in_data_base", organization_id_in_data_base);
 
@@ -2260,7 +2262,7 @@ void myServer::add_team_to_data_base(QString &team_data)
     QString data_recieved_by_socket_to_add_to_team = team_data;
 
     QStringList fields = data_recieved_by_socket_to_add_to_team.split("*");
-    QString id_team_to_database = fields[1];
+    QString id_team_to_database = fields[2];
 
     QSqlQuery checkQuery(mydb_team);
 
