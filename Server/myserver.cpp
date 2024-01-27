@@ -314,6 +314,9 @@ void myServer::choose_funtion(QString &instruction_from_socket)
         //    QString instruction = "remove_task_from_project*"+CurrentProjectName+"*"+currentTask;
         remove_task_from_project(fields[1],fields[2]);
     }
+    if(main_instruction == "remove_task"){
+        remove_task_from_project(fields[1],fields[2]);
+    }
     else{
         qDebug() << "invalid";
     }

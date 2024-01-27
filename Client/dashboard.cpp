@@ -1309,9 +1309,10 @@ void Dashboard::on_pushButton_create_new_project_clicked()
 
 void Dashboard::on_pushButton_6_clicked()
 {
-    QString instruction = "remove_task_from_project*"+CurrentProjectName+"*"+currentTask;
+    QString instruction = "remove_task*"+CurrentProjectName+"*"+currentTask+"$";
     socket->witing_instructions(instruction);
     socket->delay();
+    update_ProjectTaskListLayout_objects();
     update_archived_tasks_in_peojet();
 }
 
@@ -1460,7 +1461,7 @@ void Dashboard::on_pushButton_unarchive_clicked()
 
 void Dashboard::on_pushButton_5_clicked()
 {
-    QString instruction = "unarchive*"+CurrentProjectName+"*"+currentTask;
+    QString instruction = "remove_task*"+CurrentProjectName+"*"+currentTask;
     socket->witing_instructions(instruction);
     socket->delay();
     update_ProjectTaskListLayout_objects();
